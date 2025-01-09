@@ -1,8 +1,11 @@
-﻿namespace CodeShare_Library.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CodeShare_Library.Models
 {
     public class Users
     {
-        public long  Id { get; set; }
+        [Key]
+        public long UsersId { get; set; }
 
         public string Name { get; set; }
 

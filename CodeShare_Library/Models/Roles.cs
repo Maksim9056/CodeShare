@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeShare_Library.Models
 {
-    internal class Roles
+    public class Roles
     {
+        [Key]
+        public long RolesId { get; set; }
     }
 }
