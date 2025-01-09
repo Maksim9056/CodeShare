@@ -11,5 +11,7 @@ namespace CodeShare_Library.Models
     {
         [Key]
         public long RolesId { get; set; }
+
+        public string NameRole { get; set; }
     }
 }
