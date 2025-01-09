@@ -11,5 +11,12 @@ namespace CodeShare_Library.Models
     {
         [Key]
         public long HistoryId { get; set; }
+
+
+        public string Change_date { get; set; }
+
+        public long SnippetId { get; set; }
+        public string Year { get; set; }
+
     }
 }

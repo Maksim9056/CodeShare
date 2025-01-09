@@ -11,5 +11,14 @@ namespace CodeShare_Library.Models
     {
         [Key]
         public long Changes_in_the_systemId { get; set; }
+
+
+        public  string Text_update { get; set; }
+
+        public string Action_Type { get; set; }
+
+        public long UserId { get; set; }
+        public string  CreateAt { get; set; }
+
     }
 }

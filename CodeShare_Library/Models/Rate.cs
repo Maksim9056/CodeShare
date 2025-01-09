@@ -11,5 +11,7 @@ namespace CodeShare_Library.Models
     {
         [Key]
         public long RateId { get; set; }
+
+        public string Name_Rate { get; set; }
     }
 }

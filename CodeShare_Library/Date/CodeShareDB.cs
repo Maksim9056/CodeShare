@@ -33,6 +33,9 @@ namespace CodeShare_Library.Date
         {
             try
             {
+                modelBuilder.Entity<CodeSnippets>().HasMany(i => i.)
+                    .WithOne(ic => ic.Image)
+                    .HasForeignKey(ic => ic.ImageID);
             }
             catch (Exception ex)
             {

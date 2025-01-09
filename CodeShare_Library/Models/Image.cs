@@ -11,5 +11,15 @@ namespace CodeShare_Library.Models
     {
         [Key]
         public long ImageId { get; set; }
+
+        public string ImageDate { get; set; }
+
+        public long  LogotypeId { get; set; }
+
+        public long UserId { get; set; }
+
+        public string CreateAt { get; set; }
+
+        
     }
 }

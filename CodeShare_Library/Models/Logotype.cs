@@ -11,5 +11,15 @@ namespace CodeShare_Library.Models
     {
         [Key]
         public long LogotypeId { get; set; }
+
+        public string Name_Logotype { get; set; }
+
+        public long  Image {  get; set; }
+
+        public bool Active { get; set; }
+
+        public bool Inactive { get; set; }
+        public bool Realtime { get; set; }
+
     }
 }

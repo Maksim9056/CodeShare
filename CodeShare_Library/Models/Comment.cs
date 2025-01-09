@@ -11,5 +11,17 @@ namespace CodeShare_Library.Models
     {
         [Key]
         public long CommentId { get; set; }
+
+        public string Name_Comment { get; set; }
+        public string Selected_Range { get; set; }
+
+       public long RatingId {  get; set; }
+
+        public int SnippetsId { get; set; }
+
+        public long UserId { get; set; }
+
+        public string CreateAt { get; set; }
+        public string Comment_Text { get; set; }
     }
 }
