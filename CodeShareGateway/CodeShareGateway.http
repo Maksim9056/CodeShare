@@ -1,0 +1,6 @@
+@CodeShareGateway_HostAddress = http://localhost:5186
+
+GET {{CodeShareGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

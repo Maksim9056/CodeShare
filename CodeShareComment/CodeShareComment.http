@@ -1,0 +1,6 @@
+@CodeShareComment_HostAddress = http://localhost:5193
+
+GET {{CodeShareComment_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

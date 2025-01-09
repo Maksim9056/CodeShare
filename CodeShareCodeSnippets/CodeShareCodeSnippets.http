@@ -1,0 +1,6 @@
+@CodeShareCodeSnippets_HostAddress = http://localhost:5056
+
+GET {{CodeShareCodeSnippets_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

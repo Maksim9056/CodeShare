@@ -1,0 +1,6 @@
+@CodeShareHistory_HostAddress = http://localhost:5161
+
+GET {{CodeShareHistory_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
