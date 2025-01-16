@@ -1,4 +1,7 @@
 
+using CodeShare_Library.Date;
+using Microsoft.EntityFrameworkCore;
+
 namespace CodeShareCodeSnippets
 {
     public class Program
@@ -13,7 +16,12 @@ namespace CodeShareCodeSnippets
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            //builder.Services.AddDbContext<CodeShareDB>(options =>
+            //options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));
+            builder.Services.AddDbContext<CodeShareDB>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare1")));
+            //builder.Services.AddDbContext<CodeShareDB>(options =>
+            //options.UseSqlServer(builder.Configuration.GetConnectionString("CodeShare")));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -27,7 +35,16 @@ namespace CodeShareCodeSnippets
 
             app.UseAuthorization();
 
-
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<CodeShareDB>();
+                // ѕровер€ем, есть ли неприемленные миграции
+                if (dbContext.Database.GetPendingMigrations().Any())
+                {
+                    dbContext.Database.Migrate();
+                }
+                //dbContext.Database.Migrate(); 
+            }
             app.MapControllers();
 
             app.Run();

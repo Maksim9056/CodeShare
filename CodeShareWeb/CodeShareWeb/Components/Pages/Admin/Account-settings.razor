@@ -1,0 +1,43 @@
+﻿@page "/Account-settings"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<link rel="stylesheet" href="/css/account-settings.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <main class="content">
+            <header class="header">
+                <h1 class="content-title"><a href="settings-page.html">Настройки аккаунта</a></h1>
+                <div class="user-info">
+                    <span class="user-name">Имя</span>
+                    <div class="user-avatar"></div>
+                </div>
+            </header>
+        
+        <!-- Форма -->
+        <section class="form-section">
+            <label for="address" class="input-label">Адрес</label>
+            <input type="text" id="address" class="input-field" placeholder="Введите адрес">
+            
+            <label for="email" class="input-label">Почта</label>
+            <input type="email" id="email" class="input-field" placeholder="Введите почту">
+            
+            <label for="password" class="input-label">Пароль</label>
+            <input type="password" id="password" class="input-field" placeholder="Введите пароль">
+            
+            <div class="button-group">
+                <button class="action-button edit-button">Редактировать</button>
+                <button class="action-button save-button">Сохранить</button>
+            </div>
+        </section>
+      </main>
+
+    <script>
+        function scrollToTitle() {
+            const titleElement = document.getElementById('account-settings');
+            titleElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+@code {
+
+}

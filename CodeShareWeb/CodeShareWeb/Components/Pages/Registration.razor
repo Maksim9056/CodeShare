@@ -1,0 +1,55 @@
+﻿@page "/Registration"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<title>CodeShare - Регистрация</title>
+<link rel="stylesheet" href="/css/registration.css">
+<div class="container">
+    <div class="logo">
+        <p>CodeShare</p>
+    </div>
+    <div class="form-box">
+        <h1>Регистрация</h1>
+        <p>Заполните поля для создания аккаунта</p>
+        <form>
+            <div class="input-group">
+                <label for="name">Имя</label>
+                <input type="text" id="name" placeholder="Введите ваше имя" required>
+            </div>
+            <div class="input-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" placeholder="+7 (900) 123-45-67" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Почта</label>
+                <input type="email" id="email" placeholder="example@email.com" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" placeholder="Введите пароль" required>
+            </div>
+            <div class="input-group">
+                <label for="role">Роль</label>
+                <select id="role" required>
+                    <option value="user">Пользователь</option>
+                    <option value="admin">Администратор</option>
+                </select>
+            </div>
+            <div class="button-group">
+                <button type="button" @onclick="Calback" class="cancel-button">Отмена</button>
+                <button type="submit" @onclick="Reg" class="register-button">Регистрация</button>
+            </div>
+        </form>
+    </div>
+</div>
+@code {
+    public void Calback()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    public void Reg()
+    {
+        // NavigationManager.NavigateTo("/");
+    }
+}

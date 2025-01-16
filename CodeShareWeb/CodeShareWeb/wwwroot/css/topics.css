@@ -1,0 +1,198 @@
+/* Общие стили */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    background: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+/* Боковое меню */
+.sidebar {
+    width: 250px;
+    background: #6a11cb;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar nav ul li {
+    margin: 10px 0;
+}
+
+.sidebar nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.sidebar nav ul li a.active {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    font-weight: bold;
+}
+
+.sidebar nav ul li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Основной контент */
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.user-settings {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-settings .avatar {
+    width: 40px;
+    height: 40px;
+    background: #ddd;
+    border-radius: 50%;
+}
+
+.user-settings a {
+    text-decoration: none;
+    color: #6a11cb;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.user-settings a:hover {
+    color: #2575fc;
+}
+
+/* Темы */
+.topics {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.topics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.topics-header h2 {
+    font-size: 20px;
+    color: #333;
+}
+
+/* Чекбокс фильтра */
+.filter {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Расстояние между чекбоксом и текстом */
+}
+
+.filter input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #6a11cb; /* Цвет чекбокса */
+}
+
+.filter label {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Кнопка "Создать тему" */
+.create-topic-button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-left: auto; /* Выравниваем кнопку вправо */
+}
+
+.create-topic-button:hover {
+    background: linear-gradient(135deg, #2575fc, #6a11cb);
+    transform: scale(1.05); /* Лёгкое увеличение при наведении */
+    box-shadow: 0 6px 15px rgba(106, 17, 203, 0.5);
+}
+
+/* Список тем */
+.topics-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.topics-list ul li {
+    margin-bottom: 15px; /* Отступ между темами */
+    border: 1px solid #e6e6e6; /* Границы для каждой темы */
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topics-list ul li:hover {
+    transform: scale(1.03); /* Небольшое увеличение */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Тень при наведении */
+}
+
+.topic-info {
+    font-size: 12px;
+    color: #666; /* Текст для информации о комментариях */
+}

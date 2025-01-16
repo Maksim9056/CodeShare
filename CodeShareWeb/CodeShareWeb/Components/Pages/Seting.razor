@@ -1,0 +1,60 @@
+﻿@page "/Seting"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<link rel="stylesheet" href="/css/settings.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Настройки Темы</title>
+      
+<!-- Основной контент -->
+<main class="content">
+    <header class="header">
+        <h1>Настройки Темы</h1>
+        <div class="user-settings">
+            <span>Имя</span>
+            <div class="avatar"></div>
+            <a href="#">Настройки</a>
+        </div>
+    </header>
+
+    <section class="settings">
+        <h2>Настройки доступа</h2>
+        <div class="visibility">
+            <h3>Видимость темы</h3>
+            <button class="button private">Приватное</button>
+            <button class="button public">Публичное</button>
+        </div>
+
+        <div class="comments-settings">
+            <h3>Настройки для комментариев</h3>
+            <button class="button hide">Скрывать</button>
+            <button class="button block">Заблокировать</button>
+            <button class="button ban">Запретить</button>
+            <button class="button allow">Разрешить</button>
+        </div>
+
+        <div class="actions">
+            <button class="button delete">Удалить</button>
+            <button class="button delete-theme">Удалить тему</button>
+        </div>
+
+        <div class="save">
+            <button @onclick="Save" class="button save">Сохранить</button>
+        </div>
+    </section>
+</main>
+
+@code{
+
+    public void Comments_management()
+    {
+        NavigationManager.NavigateTo("/Comments-management");
+    }
+
+    public void Save()
+    {
+        // NavigationManager.NavigateTo("/Comments-management");
+    }
+}

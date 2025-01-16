@@ -1,0 +1,32 @@
+﻿@page "/System-update-list"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<link rel="stylesheet" href="/css/system-update-list.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+@* <title>Изменения в системе</title>
+ *@
+ <div class="content"> 
+    <!-- Информация о пользователе -->
+    <div class="user-info">
+        <span class="user-name">Имя</span>
+        <div class="user-icon"></div>
+    </div>
+    <!-- Список обновлений -->
+    <div class="updates-container">
+        <div class="updates-list">
+            <h3>Список обновлений</h3>
+            <div class="update-item">Обновление 1: Улучшена производительность системы</div>
+            <div class="update-item">Обновление 2: Добавлена новая функция поиска</div>
+            <div class="update-item">Обновление 3: Исправлены баги интерфейса</div>
+        </div>
+        <div class="buttons">
+            <button class="button add-button">Добавить</button>
+            <button class="button save-button">Сохранить</button>
+        </div>
+    </div>
+</div>
+@code {
+
+    // "System-updates"
+}

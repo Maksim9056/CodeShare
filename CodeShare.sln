@@ -5,31 +5,31 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShare_Library", "CodeShare_Library\CodeShare_Library.csproj", "{17C8068B-DD05-42A1-BAC7-75C9649476AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareWeb", "CodeShareWeb\CodeShareWeb\CodeShareWeb.csproj", "{CAC7A6B6-66D6-4A5C-A071-0CCF0BF5F5B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareWeb", "CodeShareWeb\CodeShareWeb\CodeShareWeb.csproj", "{CAC7A6B6-66D6-4A5C-A071-0CCF0BF5F5B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareWeb.Client", "CodeShareWeb\CodeShareWeb.Client\CodeShareWeb.Client.csproj", "{40A4AF3B-5A84-4EBB-AC6B-CBD7C8B75C15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareWeb.Client", "CodeShareWeb\CodeShareWeb.Client\CodeShareWeb.Client.csproj", "{40A4AF3B-5A84-4EBB-AC6B-CBD7C8B75C15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareHistory", "CodeShareHistory\CodeShareHistory.csproj", "{556F914C-656F-4438-8087-175013A98EF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareHistory", "CodeShareHistory\CodeShareHistory.csproj", "{556F914C-656F-4438-8087-175013A98EF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareChanges_in_the_system", "CodeShareChanges_in_the_system\CodeShareChanges_in_the_system.csproj", "{3B3F5EF6-F9EB-450C-9E0E-767A6D531D89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareChanges_in_the_system", "CodeShareChanges_in_the_system\CodeShareChanges_in_the_system.csproj", "{3B3F5EF6-F9EB-450C-9E0E-767A6D531D89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareCodeSnippets", "CodeShareCodeSnippets\CodeShareCodeSnippets.csproj", "{6394DF32-C651-4B36-8E98-4BCD69F1B94D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareCodeSnippets", "CodeShareCodeSnippets\CodeShareCodeSnippets.csproj", "{6394DF32-C651-4B36-8E98-4BCD69F1B94D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareUsers", "CodeShareUsers\CodeShareUsers.csproj", "{4B64845B-4640-451A-A36A-26415D3454AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareUsers", "CodeShareUsers\CodeShareUsers.csproj", "{4B64845B-4640-451A-A36A-26415D3454AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareLogotype", "CodeShareLogotype\CodeShareLogotype.csproj", "{6E167977-920A-4931-A7F8-BC28392AC8EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareLogotype", "CodeShareLogotype\CodeShareLogotype.csproj", "{6E167977-920A-4931-A7F8-BC28392AC8EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareRate", "CodeShareRate\CodeShareRate.csproj", "{18D9610A-ADCD-4379-9D05-048D79E82B94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareRate", "CodeShareRate\CodeShareRate.csproj", "{18D9610A-ADCD-4379-9D05-048D79E82B94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareRoles", "CodeShareRoles\CodeShareRoles.csproj", "{BC35249A-196F-4F7C-8BC9-85AD27E45CC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareRoles", "CodeShareRoles\CodeShareRoles.csproj", "{BC35249A-196F-4F7C-8BC9-85AD27E45CC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareComment", "CodeShareComment\CodeShareComment.csproj", "{B655FB85-6279-4362-96E0-51E94BE1AA46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareComment", "CodeShareComment\CodeShareComment.csproj", "{B655FB85-6279-4362-96E0-51E94BE1AA46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareFiles", "CodeShareFiles\CodeShareFiles.csproj", "{F3D581CF-C418-41AB-95BE-5080D939E735}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareFiles", "CodeShareFiles\CodeShareFiles.csproj", "{F3D581CF-C418-41AB-95BE-5080D939E735}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareSetting", "CodeShareSetting\CodeShareSetting.csproj", "{B3C7CA76-D260-4F30-9073-0B62A0A73CA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareSetting", "CodeShareSetting\CodeShareSetting.csproj", "{B3C7CA76-D260-4F30-9073-0B62A0A73CA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareGateway", "CodeShareGateway\CodeShareGateway.csproj", "{2CF04C3F-BB82-47B3-BFAF-6720AE85FE44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareGateway", "CodeShareGateway\CodeShareGateway.csproj", "{2CF04C3F-BB82-47B3-BFAF-6720AE85FE44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

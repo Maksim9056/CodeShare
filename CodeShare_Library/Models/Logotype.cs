@@ -14,7 +14,7 @@ namespace CodeShare_Library.Models
 
         public string Name_Logotype { get; set; }
 
-        public long  Image {  get; set; }
+        public long  ImageId {  get; set; }
 
         public bool Active { get; set; }
 

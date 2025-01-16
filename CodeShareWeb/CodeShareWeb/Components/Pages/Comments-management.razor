@@ -1,0 +1,52 @@
+﻿@page "/Comments-management"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<link rel="stylesheet" href="/css/comments-management.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Управление комментариями</title>
+
+<!-- Основной контент -->
+<main class="content">
+    <header class="header">
+        <h1>Управление комментариями</h1>
+        <div class="user-settings">
+            <span>Имя</span>
+            <div class="avatar"></div>
+            <a href="/User-profile">Настройки</a>
+        </div>
+    </header>
+
+    <section class="comments-management">
+        <h2>Список комментариев</h2>
+
+        <div class="actions">
+            <button class="button hide-all">Скрывать</button>
+        </div>
+
+        <ul class="comments-list">
+            <li class="comment">
+                Комментарий 1
+                <button class="button hide-comment">Скрыть</button>
+                <button class="button show-comment">Показывать</button>
+            </li>
+            <li class="comment">
+                Комментарий 2
+                <button class="button hide-comment">Скрыть</button>
+                <button class="button show-comment">Показывать</button>
+            </li>
+            <li class="comment">
+                Комментарий 3
+                <button class="button hide-comment">Скрыть</button>
+                <button class="button show-comment">Показывать</button>
+            </li>
+        </ul>
+
+        <div class="save">
+            <button class="button save">Сохранить</button>
+        </div>
+    </section>
+</main>
+@code {
+
+}

@@ -1,0 +1,146 @@
+/* Общие стили */ 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login-container {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 360px;
+    padding: 40px 30px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Логотип */
+.logo p {
+    font-size: 26px;
+    font-weight: 700;
+    color: #6a11cb;
+    margin-bottom: 30px;
+}
+
+/* Заголовок */
+.login-box h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.login-box p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Стили для полей ввода */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #f9f9f9;
+}
+
+.input-group input:focus {
+    border-color: #6a11cb;
+    outline: none;
+    box-shadow: 0 0 8px rgba(106, 17, 203, 0.3);
+    background: #ffffff;
+}
+
+/* Ссылка "Забыли пароль?" */
+.forgot-password {
+    display: block;
+    text-align: right;
+    font-size: 14px;
+    color: #6a11cb;
+    margin-bottom: 20px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #2575fc;
+}
+
+/* Кнопки */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.register-button {
+    background-color: #f3f3f3;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.register-button:hover {
+    background-color: #eaeaea;
+    transform: scale(1.02);
+}
+
+.login-button {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+}
+
+.login-button:hover {
+    background: linear-gradient(135deg, #2575fc, #6a11cb);
+    transform: scale(1.02);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

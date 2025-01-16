@@ -1,0 +1,60 @@
+﻿@page "/Main"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/main.css">
+    <div class="container">
+
+<main class="content">
+    <header class="header">
+        <h1>Главная страница</h1>
+        <div class="user-settings">
+            <span>Имя</span>
+            <div class="avatar"></div>
+                <a href="/User-profile">Настройки</a>
+        </div>
+    </header>
+
+    <!-- Блок статистики -->
+    <section class="stats">
+        <div class="stat-box">
+            <p>Количество тем</p>
+            <a href="#">Создано: <strong>42</strong></a>
+        </div>
+        <div class="activity-chart">
+            <p>График активности</p>
+            <div class="chart">
+                <!-- Пример графика (можно подключить библиотеку Chart.js) -->
+                <p>Активность за последние 7 дней</p>
+                <ul>
+                    <li>Пн: 5 задач</li>
+                    <li>Вт: 3 задачи</li>
+                    <li>Ср: 8 задач</li>
+                    <li>Чт: 2 задачи</li>
+                    <li>Пт: 4 задачи</li>
+                    <li>Сб: 6 задач</li>
+                    <li>Вс: 1 задача</li>
+                </ul>
+            </div>
+        </div>
+        <div class="years">
+            <p>Года</p>
+            <ul>
+                <li>2022: <strong>120 задач</strong></li>
+                <li>2023: <strong>85 задач</strong></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Блок действий -->
+    <section class="action">
+        <button>После изменения и постоянные при нажатии</button>
+    </section>
+</main>
+</div>
+
+@* @code {
+
+}
+ *@

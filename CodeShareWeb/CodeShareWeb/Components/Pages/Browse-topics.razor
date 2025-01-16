@@ -1,0 +1,50 @@
+﻿@page "/browse-topics"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<title> Просмотр тем</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="/css/browse-topics.css">
+
+
+<!-- Основной контент -->
+<main class="content">
+    <header class="header">
+        <h1>Просмотр тем</h1>
+        <div class="user-settings">
+            <span>Имя</span>
+            <div class="avatar"></div>
+            <a href="/User-profile">Настройки</a>
+        </div>
+    </header>
+
+    <!-- Поиск -->
+    <div class="search-bar">
+        <input type="text" placeholder="Поиск темы..." class="search-input">
+        <button class="search-button">Найти</button>
+    </div>
+
+    <!-- Список тем -->
+    <section class="topics-list">
+        <div class="topic-item">
+            <span class="topic-title">Тема 1</span>
+            <span class="topic-language">C++</span>
+            <button class="go-to-button">Перейти</button>
+        </div>
+        <div class="topic-item">
+            <span class="topic-title">Тема 2</span>
+            <span class="topic-language">Python</span>
+            <button class="go-to-button">Перейти</button>
+        </div>
+        <div class="topic-item">
+            <span class="topic-title">Тема 3</span>
+            <span class="topic-language">Java</span>
+            <button class="go-to-button">Перейти</button>
+        </div>
+    </section>
+</main>
+@code {
+
+}

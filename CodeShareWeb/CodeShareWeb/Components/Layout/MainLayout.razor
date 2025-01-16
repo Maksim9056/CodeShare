@@ -1,14 +1,21 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+    @if (ShouldHideSidebar == false)
+    {
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+    }
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+        @if (!ShouldHideTopRow)
+        {
+            <div class="top-row px-4">
+                <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            </div>
+        }
 
         <article class="content px-4">
             @Body
@@ -21,3 +28,32 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    private bool ShouldHideSidebar;
+    private bool ShouldHideTopRow;
+
+    private readonly List<string> HiddenSidebarUrls = new()
+    {
+        "/", "/login", "/registration"  ,"/reset-password"// Добавьте сюда URL, для которых скрывается sidebar
+    };
+
+    private readonly List<string> HiddenTopRowUrls = new()
+    {
+        "/", "/profile" // Добавьте сюда URL, для которых скрывается top-row
+    };
+
+    protected override void OnInitialized()
+    {
+        var currentUri = NavigationManager.Uri.ToLower();
+        var uri = new Uri(currentUri);
+
+        // Извлекаем часть после порта
+        var pathAfterPort = uri.AbsolutePath;
+        // Проверяем текущий URL для скрытия sidebar
+        ShouldHideSidebar = HiddenSidebarUrls.Any(url => pathAfterPort == url);
+
+        // Проверяем текущий URL для скрытия top-row
+        ShouldHideTopRow = HiddenTopRowUrls.Any(url => currentUri.Contains(url));
+    }
+}

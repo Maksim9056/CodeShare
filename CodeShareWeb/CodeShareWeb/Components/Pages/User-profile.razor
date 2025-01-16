@@ -1,0 +1,48 @@
+﻿@page "/User-profile"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Профиль пользователя</title>
+<link rel="stylesheet" href="/css/user-profile.css">
+
+
+<!-- Основной контент -->
+<main class="content">
+    <header class="header">
+        <h1>Профиль пользователя</h1>
+        <div class="user-settings">
+            <span>Имя</span>
+            <div class="avatar"></div>
+            <a href="/User-profile">Настройки</a>
+        </div>
+    </header>
+
+    <section class="profile-section">
+        <div class="profile-container">
+            <!-- Левая часть: Фото и данные -->
+            <div class="profile-card">
+                <div class="profile-photo">
+                    Фото
+                </div>
+                <div class="profile-info">
+                    <input type="text" placeholder="Имя">
+                    <input type="text" placeholder="Телефон">
+                    <input type="email" placeholder="Почта">
+                    <input type="password" placeholder="Пароль">
+                </div>
+            </div>
+
+            <!-- Правая часть: Кнопки -->
+            <div class="profile-actions">
+                <button class="edit">Редактировать</button>
+                <button class="apply">Применить</button>
+                <button class="delete">Удалить</button>
+            </div>
+        </div>
+    </section>
+</main>
+@code {
+
+}
+@* user-profile. *@

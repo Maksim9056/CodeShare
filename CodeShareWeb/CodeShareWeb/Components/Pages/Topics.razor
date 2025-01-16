@@ -1,0 +1,81 @@
+﻿@page "/topics"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<link rel="stylesheet" href="/css/topics.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeShare - Страница тем</title>
+<div class="container">
+
+<h3>Topics</h3>
+    <!-- Основной контент -->
+        <main class="content">
+            <header class="header">
+                <h1>Страница тем</h1>
+                <div class="user-settings">
+                    <span>Имя</span>
+                    <div class="avatar"></div>
+                 <a href="/User-profile">Настройки</a>
+                </div>
+            </header>
+
+            <!-- Раздел с темами -->
+            <section class="topics">
+                <div class="topics-header">
+                    <h2>Темы</h2>
+                    <div class="filter">
+                        <input type="checkbox" id="latest-comments" onclick="filterTopics()">
+                        <label for="latest-comments">Последний комментарий</label>
+                    </div>
+                <button class="create-topic-button"><a href="/create-topic">Создать тему</a></button>
+                </div>
+                <div class="topics-list">
+                    <ul>
+                        <!-- Пример темы с последним комментарием -->
+                        <li class="topic" data-latest="true">
+                        <a href="/review-code">
+                            <div class="topic-title">Тема 1</div>
+                                <div class="topic-info">Последний комментарий: 5 минут назад</div>
+                            </a>
+                        </li>
+                        <li class="topic" data-latest="false">
+                        <a href="/review-code">
+                                <div class="topic-title">Тема 2</div>
+                                <div class="topic-info">Комментарий отсутствует</div>
+                            </a>
+                        </li>
+                        <li class="topic" data-latest="true">
+                        <a href="/review-code">
+                                <div class="topic-title">Тема 3</div>
+                                <div class="topic-info">Последний комментарий: 2 часа назад</div>
+                            </a>
+                        </li>
+                        <li class="topic" data-latest="false">
+                        <a href="/review-code">
+                            <div class="topic-title">Тема 4</div>
+                                <div class="topic-info">Комментарий отсутствует</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Функция фильтрации тем по последнему комментарию
+        function filterTopics() {
+            const checkbox = document.getElementById('latest-comments');
+            const topics = document.querySelectorAll('.topic');
+
+            topics.forEach(topic => {
+                const isLatest = topic.getAttribute('data-latest') === 'true';
+                topic.style.display = checkbox.checked && !isLatest ? 'none' : 'block';
+            });
+        }
+    </script>
+@code {
+
+}

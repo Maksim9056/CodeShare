@@ -1,0 +1,56 @@
+﻿@page "/Create_logo"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<link rel="stylesheet" href="/css/create_logo.css">
+<h3>Create_logo</h3>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Добавление логотипа</title>
+
+    <div class="main-content">
+            <div class="header">
+                <h1 class="content-title">Добавление логотипа</h1>
+                <div class="user">
+                    <span>Имя</span>
+                    <div class="user-avatar"></div>
+                </div>
+            </div>
+
+            <form class="logo-form">
+                <div class="form-group">
+                    <label for="logo-name">Название логотипа</label>
+                    <input type="text" id="logo-name" placeholder="Введите название логотипа">
+                </div>
+                <div class="form-group">
+                    <label for="logo-preview">Фотография логотипа</label>
+                    <div class="preview-container" id="preview-container">
+                        <p>Предпросмотр логотипа</p>
+                    </div>
+                    <input type="file" id="logo-preview" accept="image/*" onchange="showPreview(event)">
+                </div>
+                <div class="buttons">
+                    <button type="button" class="button cancel-button">Отмена</button>
+                    <button type="submit" class="button upload-button">Сохранить</button>
+                </div>
+            </form>
+        </div>
+
+    <script>
+        function showPreview(event) {
+            const file = event.target.files[0];
+            const previewContainer = document.getElementById('preview-container');
+            previewContainer.innerHTML = ''; // Очистить контейнер перед отображением нового изображения
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.innerHTML = '<p>Предпросмотр логотипа</p>';
+            }
+        }
+    </script>

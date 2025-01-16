@@ -1,0 +1,65 @@
+﻿@page "/create-topic"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<link rel="stylesheet" href="/css/create-topic.css">
+
+
+
+<!-- Основной контент -->
+<main class="content">
+    <header class="header">
+        <h1>Создание темы</h1>
+        <div class="user-settings">
+            <span>Имя</span>
+            <div class="avatar"></div>
+            <a href="/User-profile">Настройки</a>
+        </div>
+    </header>
+
+    <!-- Форма создания темы -->
+    <section class="create-topic">
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="topic-title">Название темы</label>
+                <input type="text" id="topic-title" name="topic-title" placeholder="Введите название темы" required>
+            </div>
+
+            <div class="form-group">
+                <label for="programming-language">Язык программирования</label>
+                <select id="programming-language" name="programming-language">
+                    <option value="csharp">C#</option>
+                    <option value="java">Java</option>
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="code">Код</label>
+                <textarea id="code" name="code" rows="10" placeholder="Введите ваш код"></textarea>
+            </div>
+
+            <div class="form-buttons">
+                <button type="button" @onclick="Callback" class="cancel-button">Отмена</button>
+                <button type="submit" @onclick="Сreate" class="create-button">Создать</button>
+            </div>
+        </form>
+    </section>
+</main>
+
+@code {
+
+        public void Callback()
+        {
+          NavigationManager.NavigateTo("/topics");
+        }
+
+
+
+        public void Сreate()
+        {
+         NavigationManager.NavigateTo("/review-code");
+        }
+    
+}

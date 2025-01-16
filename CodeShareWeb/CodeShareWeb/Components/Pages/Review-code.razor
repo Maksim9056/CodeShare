@@ -1,0 +1,240 @@
+﻿@page "/review-code"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Проверка кода</title>
+<link rel="stylesheet" href="/css/review-code.css">
+
+<!-- Основной контент -->
+<main class="content">
+    <header class="header">
+        <h1>Проверка кода и оценка</h1>
+        <div class="user-settings">
+            <span>Имя</span>
+            <div class="avatar"></div>
+            <a href="/User-profile">Настройки</a>
+        </div>
+
+    </header>
+    <!-- Код и инструменты -->
+    <section class="code-review">
+
+        <div class="code-container">
+            <button @onclick="Comments_management">Настройки темы</button>
+
+            <div class="code-header">
+                <h2>
+                    Код                <span class="language">:C++</span>
+                </h2>
+            </div>
+            <div class="code-section" id="code-display">
+                <div class="code-line" data-line="1"><span class="line-number">1</span> int main() {</div>
+                <div class="code-line" data-line="2"><span class="line-number">2</span>     printf("Hello, World!\n");</div>
+                <div class="code-line" data-line="3"><span class="line-number">3</span>     return 0;</div>
+                <div class="code-line" data-line="4"><span class="line-number">4</span> }</div>
+            </div>
+
+        </div>
+
+        <!-- Форма комментариев -->
+        <div class="comments-section">
+            <h3>Оставьте комментарий</h3>
+            <form  method="POST">
+                <div class="form-group">
+                    <label for="selected-range">Выбранный диапазон:</label>
+                    <input type="text" id="selected-range" readonly placeholder="Нажмите на линии, чтобы выбрать диапозон" />
+                </div>
+
+                <div class="form-group">
+                    <textarea id="comment" name="comment" rows="4" placeholder="Напишите свой комментарий здесь..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">Оцените этот код:</label>
+                    <select id="rating" name="rating">
+                        <option value="excellent">Отлично</option>
+                        <option value="good">Хорошо</option>
+                        <option value="average">Средне</option>
+                        <option value="bad">Плохо</option>
+                    </select>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" onclick="submitComment" class="save-button">Сохранить</button>
+                    <button type="button"  class="cancel-button">Отменить выбранный диапазон</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Фильтры -->
+        <div class="filters">
+            <h3>Фильтры</h3>
+            <div class="filter-group">
+                <label for="filter-rating">Фильтр по рейтингу:</label>
+                <select id="filter-rating">
+                    <option value="all">Все</option>
+                    <option value="excellent">Отлично</option>
+                    <option value="good">Хорошо</option>
+                    <option value="average">Средне</option>
+                    <option value="bad">Плохо</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filter-range">Фильтр по диапазону:</label>
+                <input type="text" id="filter-range" placeholder="Введите диапазон, например, 1-3">
+            </div>
+            <div class="filter-group">
+                <label for="filter-user">Фильтр по пользователю:</label>
+                <input type="text" id="filter-user" placeholder="Введите имя пользователя">
+            </div>
+        </div>
+
+        <!-- Комментарии -->
+        <div class="comments">
+            <h3>Комментарии</h3>
+            <ul class="comments-list">
+                <li>Комментарий 1...</li>
+                <li>Комментарий 2...</li>
+                <li>Комментарий 3...</li>
+            </ul>
+        </div>
+    </section>
+</main>
+<script>
+    let startLine = null;
+    let endLine = null;
+    let comments = [];
+
+    function loadCommentsFromFile() {
+        fetch('comments.json')
+            .then(response => response.json())
+            .then(data => {
+                comments = data;
+                displayComments();
+            })
+            .catch(error => console.error('Error loading comments:', error));
+    }
+
+    document.querySelectorAll('.code-line').forEach(line => {
+        line.addEventListener('click', function () {
+            const lineNumber = parseInt(this.getAttribute('data-line'));
+
+            if (startLine === null) {
+                startLine = lineNumber;
+                this.classList.add('selected');
+            } else if (endLine === null) {
+                endLine = lineNumber;
+                highlightRange();
+            } else {
+                resetSelection();
+                startLine = lineNumber;
+                this.classList.add('selected');
+            }
+            updateSelectedRange();
+        });
+    });
+
+    function highlightRange() {
+        if (startLine !== null && endLine !== null) {
+            const start = Math.min(startLine, endLine);
+            const end = Math.max(startLine, endLine);
+
+            document.querySelectorAll('.code-line').forEach(line => {
+                const lineNumber = parseInt(line.getAttribute('data-line'));
+                if (lineNumber >= start && lineNumber <= end) {
+                    line.classList.add('selected');
+                } else {
+                    line.classList.remove('selected');
+                }
+            });
+        }
+    }
+
+    function resetSelection() {
+        startLine = null;
+        endLine = null;
+        document.querySelectorAll('.code-line').forEach(line => {
+            line.classList.remove('selected');
+        });
+    }
+
+    function updateSelectedRange() {
+        const rangeInput = document.getElementById('selected-range');
+        if (startLine !== null && endLine !== null) {
+            rangeInput.value = `${Math.min(startLine, endLine)} - ${Math.max(startLine, endLine)}`;
+        } else if (startLine !== null) {
+            rangeInput.value = `Line ${startLine}`;
+        } else {
+            rangeInput.value = '';
+        }
+    }
+
+    function cancelSelection() {
+        resetSelection();
+        document.getElementById('selected-range').value = '';
+        alert('Selection has been canceled.');
+    }
+
+    function submitComment() {
+        const range = document.getElementById('selected-range').value;
+        const comment = document.querySelector('.comment-box').value;
+        const rating = document.getElementById('rating').value;
+
+        if (!range) {
+            alert('Please select a range of lines to comment on.');
+            return;
+        }
+
+        const newComment = {
+            range: range,
+            comment: comment,
+            rating: rating
+        };
+
+        comments.push(newComment);
+        saveCommentsToFile();
+        displayComments();
+
+        alert(`Comment submitted for range: ${range}\nComment: ${comment}\nRating: ${rating}`);
+        resetSelection();
+        document.querySelector('.comment-box').value = '';
+    }
+
+    function displayComments() {
+        const commentsDisplay = document.getElementById('comments-display');
+        commentsDisplay.innerHTML = '<h2>Коментарии</h2>';
+        comments.forEach(comment => {
+            const commentItem = document.createElement('div');
+            commentItem.className = 'comment-item';
+            commentItem.innerHTML = `<strong>Range:</strong> ${comment.range}<br><strong>Коментарий:</strong> ${comment.comment}<br><strong>Рейтинг:</strong> ${comment.rating}`;
+            commentsDisplay.appendChild(commentItem);
+        });
+    }
+    function saveCommentsToFile() {
+        fetch('save-comments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(comments)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save comments');
+                }
+                console.log('Comments saved successfully');
+            })
+            .catch(error => {
+                console.error('Error saving comments:', error);
+            });
+    }
+</script>
+@code {
+
+    public void Comments_management()
+    {
+        NavigationManager.NavigateTo("/Seting");
+    }
+
+}

@@ -17,7 +17,7 @@ namespace CodeShare_Library.Models
 
        public long RatingId {  get; set; }
 
-        public int SnippetsId { get; set; }
+        public long SnippetsId { get; set; }
 
         public long UserId { get; set; }
 

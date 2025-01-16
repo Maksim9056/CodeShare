@@ -8,7 +8,6 @@ namespace CodeShare_Library.Models
         public long UsersId { get; set; }
 
         public string UsersName { get; set; }
-        public long UserId { get; set; }
         public long RoleId { get; set; }
         public string Phone {  get; set; }
         public string Email {get;set;}

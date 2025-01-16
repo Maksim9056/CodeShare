@@ -1,0 +1,64 @@
+﻿@page "/Logos-page"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@* <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ *@<title>Логотипы системы</title>
+<link rel="stylesheet" href="/css/logos-page.css">
+    <div class="container">
+
+<div class="main-content">
+    <div class="header">
+        <h1 class="content-title">Логотип системы</h1>
+        <div class="user">
+            <span>Имя</span>
+            <div class="user-avatar"></div>
+            <button class="add-button">Добавить</button>
+        </div>
+    </div>
+
+
+    <!-- Logos List -->
+    <div class="logos-list">
+        <table class="logos-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Фотография</th>
+                    <th>Использовать</th>
+                    <th>Не используется</th>
+                    <th>Сейчас</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Active Logo Row -->
+                <tr class="active-logo">
+                    <td>Пример 1</td>
+                    <td><img src="Logo.png" alt="Пример"></td>
+                    <td><button class="table-button use">Использовать</button></td>
+                    <td><button class="table-button not-used">Не используется</button></td>
+                    <td><button class="table-button current">Сейчас</button></td>
+                    <td><button class="table-button delete">Удалить</button></td>
+                </tr>
+                <!-- Other Logos -->
+                <tr>
+                    <td>Пример 2</td>
+                    <td><img src="example2.png" alt="Пример"></td>
+                    <td><button class="table-button use">Использовать</button></td>
+                    <td><button class="table-button not-used">Не используется</button></td>
+                    <td><button class="table-button current">Сейчас</button></td>
+                    <td><button class="table-button delete">Удалить</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+@code{
+    public void Create_logo()
+    {
+        NavigationManager.NavigateTo("/Create_logo");
+    }
+
+    
+}

@@ -1,4 +1,96 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+@inject NavigationManager NavigationManager
+<link rel="stylesheet" href="/css/main.css">
+
+@if (!ShouldHideNavbar)
+{
+    <div class="top-row ps-3 navbar navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="">CodeShareWeb</a>
+        </div>
+    </div>
+
+    <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+    <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+        <nav class="flex-column">
+            <AuthorizeView Roles="Пользователь">
+
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Main" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Главная
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/topics">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Тема
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="browse-topics">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>   Просматривать темы
+                </NavLink>
+            </div>
+            </AuthorizeView>
+
+            <AuthorizeView Roles="Админ">
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="System-updates">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>  Настройки аккаунта
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3" >
+                <NavLink class="nav-link" href="System-updates">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>   Изменения в системе
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="System-updates">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>  Логотип системы
+                </NavLink>
+            </div>
+            </AuthorizeView>
+
+
+        </nav>
+    </div>
+}
+
+@code {
+    private bool ShouldHideNavbar;
+
+    private readonly List<string> HiddenNavbarUrls = new()
+    {
+        "/",            // Главная страница
+        "/login",       // Страница входа
+        "/registration"     // Страница регистрации
+    };
+
+    protected override void OnInitialized()
+    {
+        // Проверяем текущий URL
+        var currentUri = NavigationManager.Uri.ToLower();
+        var uri = new Uri(currentUri);
+
+        // Извлекаем часть после порта
+        var pathAfterPort = uri.AbsolutePath;
+        // Если текущий адрес совпадает с одним из HiddenNavbarUrls, скрываем navbar
+        ShouldHideNavbar = HiddenNavbarUrls.Any(url => pathAfterPort ==url);
+    }
+}
+
+
+
+
+
+@* <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">CodeShareWeb</a>
     </div>
@@ -28,3 +120,4 @@
     </nav>
 </div>
 
+ *@

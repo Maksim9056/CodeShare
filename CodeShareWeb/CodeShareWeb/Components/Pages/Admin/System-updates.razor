@@ -1,0 +1,66 @@
+﻿@page "/System-updates"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<title> Просмотр тем</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="/css/system-updates.css">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Изменения в системе</title>
+
+<div class="container">
+
+    <!-- Основной контент -->
+    <main class="content">
+        <!-- Информация о пользователе -->
+        <div class="user-info">
+            <span class="user-name">Имя</span>
+            <div class="user-avatar"></div>
+        </div>
+        <!-- Боковое меню -->
+    @*     <aside class="sidebar">
+            <button class="menu-button">Изменения в системе</button>
+        </aside>
+ *@
+        <!-- Заголовок -->
+        <div class="header">
+            <h1>Изменения в системе</h1>
+        </div>
+
+        <!-- Поля ввода -->
+        <div class="updates-section">
+            <div>
+                <label for="version">Введите версию:</label>
+                <input type="text" id="version" placeholder="Введите номер версии">
+            </div>
+            <div>
+                <label for="update-text">Введите текст обновления:</label>
+                <textarea id="update-text" placeholder="Введите описание обновления"></textarea>
+            </div>
+        </div>
+
+        <!-- Кнопки -->
+        <div class="buttons-container">
+            <button class="cancel-button">Отмена</button>
+            <button class="save-button">Сохранить</button>
+        </div>
+    </main>
+</div>
+
+<!-- JS для автоматического расширения текстового поля -->
+<script>
+    const textarea = document.getElementById('update-text');
+
+    textarea.addEventListener('input', function () {
+        textarea.style.height = '120px'; // Сбрасываем высоту
+        textarea.style.height = `${textarea.scrollHeight}px`; // Устанавливаем новую высоту
+    });
+</script>
+@code {
+
+}

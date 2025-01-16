@@ -13,6 +13,14 @@ namespace CodeShareWeb
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
+            builder.Services.AddAuthentication("Identity.Application").AddCookie();
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Админ"));
+                options.AddPolicy("UsersPolicy", policy => policy.RequireRole("Пользователь"));
+
+            });
 
             var app = builder.Build();
 

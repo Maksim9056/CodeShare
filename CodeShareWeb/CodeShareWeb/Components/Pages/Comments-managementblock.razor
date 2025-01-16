@@ -1,0 +1,54 @@
+﻿@page "/Comments-managementblock"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+<link rel="stylesheet" href="/css/comments-managementblock.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Управление комментариями</title>
+<!-- Основной контент -->
+<main class="content">
+    <header class="header">
+        <h1>Управление комментариями</h1>
+        <div class="user-settings">
+            <span>Имя</span>
+            <div class="avatar"></div>
+            <a href="#">Настройки</a>
+        </div>
+    </header>
+
+    <section class="comments-management">
+        <h2>Список комментариев</h2>
+
+        <!-- Блок действий -->
+        <div class="actions">
+            <button class="button block-all">Заблокировать</button>
+        </div>
+
+        <!-- Список комментариев -->
+        <ul class="comments-list">
+            <li class="comment">
+                Комментарий 1
+                <button class="button block-comment">Заблокировать</button>
+                <button class="button unblock-comment">Разблокировать</button>
+            </li>
+            <li class="comment">
+                Комментарий 2
+                <button class="button block-comment">Заблокировать</button>
+                <button class="button unblock-comment">Разблокировать</button>
+            </li>
+            <li class="comment">
+                Комментарий 3
+                <button class="button block-comment">Заблокировать</button>
+                <button class="button unblock-comment">Разблокировать</button>
+            </li>
+        </ul>
+
+        <!-- Кнопка сохранения -->
+        <div class="save">
+            <button class="button save">Сохранить</button>
+        </div>
+    </section>
+</main>
+@code {
+
+}
