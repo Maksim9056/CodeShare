@@ -1,5 +1,7 @@
+using Blazored.LocalStorage;
 using CodeShareWeb.Client.Pages;
 using CodeShareWeb.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace CodeShareWeb
 {
@@ -13,14 +15,21 @@ namespace CodeShareWeb
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
-            builder.Services.AddAuthentication("Identity.Application").AddCookie();
 
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Админ"));
-                options.AddPolicy("UsersPolicy", policy => policy.RequireRole("Пользователь"));
+               builder.Services.AddAuthentication("CustomAuthScheme")
+                .AddCookie("CustomAuthScheme", options =>
+                {
+                    options.LoginPath = "/Main"; 
+                    options.AccessDeniedPath = "/access-denied"; 
+                });
+            builder.Services.AddBlazoredLocalStorage(); // Register Blazored.LocalStorage
 
-            });
+            builder.Services.AddRazorPages();
+            builder.Services.AddServerSideBlazor();
+            //builder.Services.AddCascadingAuthenticationState();
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddMemoryCache();
 
             var app = builder.Build();
 
@@ -35,11 +44,14 @@ namespace CodeShareWeb
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+          
 
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseAntiforgery();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
@@ -50,3 +62,12 @@ namespace CodeShareWeb
         }
     }
 }
+//builder.Services.AddAuthentication("Identity.Application").AddCookie();
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Админ"));
+//    options.AddPolicy("UsersPolicy", policy => policy.RequireRole("Пользователь"));
+
+//});
+// Регистрация CustomAuthenticationStateProvider

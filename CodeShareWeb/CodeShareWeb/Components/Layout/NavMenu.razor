@@ -1,6 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
-
+@using System.Security.Claims
+@using Microsoft.Extensions.Caching.Memory
+@inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IMemoryCache MemoryCache
+
 <link rel="stylesheet" href="/css/main.css">
 
 @if (!ShouldHideNavbar)
@@ -15,57 +20,56 @@
 
     <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
         <nav class="flex-column">
-            <AuthorizeView Roles="Пользователь">
+            @if (Rolles == "Пользователь")
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Main" Match="NavLinkMatch.All">
+                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Главная
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/topics">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Тема
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="browse-topics">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>   Просматривать темы
+                    </NavLink>
+
+                </div>
+            }
 
 
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="Main" Match="NavLinkMatch.All">
-                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Главная
-                </NavLink>
-            </div>
+            @if (Rolles == "Админ")
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Account-settings">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>  Настройки аккаунта
+                    </NavLink>
+                </div>
 
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="/topics">
-                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Тема
-                </NavLink>
-            </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="System-update-list">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>   Изменения в системе
+                    </NavLink>
+                </div>
 
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="browse-topics">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>   Просматривать темы
-                </NavLink>
-            </div>
-            </AuthorizeView>
-
-            <AuthorizeView Roles="Админ">
-
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="System-updates">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>  Настройки аккаунта
-                </NavLink>
-            </div>
-
-            <div class="nav-item px-3" >
-                <NavLink class="nav-link" href="System-updates">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>   Изменения в системе
-                </NavLink>
-            </div>
-
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="System-updates">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>  Логотип системы
-                </NavLink>
-            </div>
-            </AuthorizeView>
-
-
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Logos-page">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>  Логотип системы
+                    </NavLink>
+                </div>
+            }
         </nav>
     </div>
 }
 
 @code {
     private bool ShouldHideNavbar;
-
+    public string Rolles { get; set; }
     private readonly List<string> HiddenNavbarUrls = new()
     {
         "/",            // Главная страница
@@ -75,15 +79,44 @@
 
     protected override void OnInitialized()
     {
-        // Проверяем текущий URL
-        var currentUri = NavigationManager.Uri.ToLower();
-        var uri = new Uri(currentUri);
+        try
+        {
 
-        // Извлекаем часть после порта
-        var pathAfterPort = uri.AbsolutePath;
-        // Если текущий адрес совпадает с одним из HiddenNavbarUrls, скрываем navbar
-        ShouldHideNavbar = HiddenNavbarUrls.Any(url => pathAfterPort ==url);
+            var currentUri = NavigationManager.Uri.ToLower();
+            var uri = new Uri(currentUri);
+
+            // Извлекаем часть после порта
+            var pathAfterPort = uri.AbsolutePath;
+            // Если текущий адрес совпадает с одним из HiddenNavbarUrls, скрываем navbar
+            ShouldHideNavbar = HiddenNavbarUrls.Any(url => pathAfterPort == url);
+
+            var roles = MemoryCache.Get<string>("Roles");
+            if (!string.IsNullOrEmpty(roles))
+            {
+                Rolles = roles;
+
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
+
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // // {
+    // //     // Проверяем текущий URL
+    // //     var currentUri = NavigationManager.Uri.ToLower();
+    // //     var uri = new Uri(currentUri);
+
+    // //     // Извлекаем часть после порта
+    // //     var pathAfterPort = uri.AbsolutePath;
+    // //     // Если текущий адрес совпадает с одним из HiddenNavbarUrls, скрываем navbar
+    // //     ShouldHideNavbar = HiddenNavbarUrls.Any(url => pathAfterPort == url);
+    //     var Roles = await localStorage.GetItemAsync<string>("Roles");
+    //     Rolles = Roles;
+    //     StateHasChanged();
+    // }
 }
 
 

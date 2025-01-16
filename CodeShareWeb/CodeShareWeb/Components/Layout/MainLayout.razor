@@ -1,11 +1,16 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.Extensions.Caching.Memory
+@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IMemoryCache MemoryCache
 
 <div class="page">
     @if (ShouldHideSidebar == false)
     {
         <div class="sidebar">
-            <NavMenu />
+         
+                <NavMenu  />
+            
         </div>
     }
 
@@ -32,6 +37,7 @@
 @code {
     private bool ShouldHideSidebar;
     private bool ShouldHideTopRow;
+    public string Rolles = "";
 
     private readonly List<string> HiddenSidebarUrls = new()
     {
@@ -42,18 +48,53 @@
     {
         "/", "/profile" // Добавьте сюда URL, для которых скрывается top-row
     };
+    private bool isFirstRender = true;
 
-    protected override void OnInitialized()
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     try
+    //     {
+
+
+    //         if (isFirstRender) // Выполняем логику только при первом рендере
+    //         {
+    //             // Безопасно получаем значение Roles из localStorage
+    //             var roles = await localStorage.GetItemAsync<string>("Roles");
+    //             Rolles = roles ?? ""; // Если null, присваиваем пустую строку
+
+    //             StateHasChanged(); // Обновляем компонент
+    //         }
+
+
+    //         Console.WriteLine(firstRender);
+    //     }
+    //     catch(Exception e)
+    //     {
+    //         Console.WriteLine(e.Message);
+    //     }
+    // }
+
+    protected override  void OnInitialized()
     {
-        var currentUri = NavigationManager.Uri.ToLower();
-        var uri = new Uri(currentUri);
+        try
+        {
+            var currentUri = NavigationManager.Uri.ToLower();
+            var uri = new Uri(currentUri);
 
-        // Извлекаем часть после порта
-        var pathAfterPort = uri.AbsolutePath;
-        // Проверяем текущий URL для скрытия sidebar
-        ShouldHideSidebar = HiddenSidebarUrls.Any(url => pathAfterPort == url);
+            // Извлекаем часть после порта
+            var pathAfterPort = uri.AbsolutePath;
+            // Проверяем текущий URL для скрытия sidebar
+            ShouldHideSidebar = HiddenSidebarUrls.Any(url => pathAfterPort == url);
 
-        // Проверяем текущий URL для скрытия top-row
-        ShouldHideTopRow = HiddenTopRowUrls.Any(url => currentUri.Contains(url));
+            // Проверяем текущий URL для скрытия top-row
+            ShouldHideTopRow = HiddenTopRowUrls.Any(url => currentUri.Contains(url));
+           
+            // await OnAfterRenderAsync(true);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
+
 }
