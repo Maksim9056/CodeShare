@@ -1,0 +1,17 @@
+﻿<aside class="sidebar">
+    <div class="logo">Логотип</div>
+    <nav>
+        <ul>
+            <li><a href="/Main" class="active">Главная</a></li>
+            <li><a href="/topics">Тема</a></li>
+            <li><a href="/browse-topics">Просматривать темы</a></li>
+        </ul>
+    </nav>
+</aside>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("Sidebar загружен");
+    }
+}

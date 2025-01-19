@@ -75,10 +75,10 @@
         if (users != null)
         {
 
-               var role = new Roles
+            var role = new Roles
                 {
                     RolesId = 1,
-                    NameRole = "Админ"
+                    NameRole = "Пользователь"
                 };
 
             // Создаем клеймы
@@ -95,23 +95,23 @@
                     break;
 
                 case "Админ":
-                     NavigationManager.NavigateTo("/Main");
+                    NavigationManager.NavigateTo("/Main");
 
                     break;
             }
-            // await localStorage.SetItemAsync("Id", users.UsersId);
-            // await localStorage.SetItemAsync("Roles", role.NameRole);
+            await localStorage.SetItemAsync("Id", users.UsersId);
+            await localStorage.SetItemAsync("Roles", role.NameRole);
 
-         
+
         }
         else
         {
             Console.WriteLine("Пользователь не найден или пароль неверный.");
         }
 
-
         authMessage = "Вы успешно вошли!";
         // StateHasChanged();
+        StateHasChanged();
 
    
     }

@@ -11,12 +11,13 @@ namespace CodeShareWeb
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            //// Add services to the container.
+            // Добавляем поддержку Razor компонентов с серверным и клиентским рендерингом
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
-               builder.Services.AddAuthentication("CustomAuthScheme")
+            builder.Services.AddAuthentication("CustomAuthScheme")
                 .AddCookie("CustomAuthScheme", options =>
                 {
                     options.LoginPath = "/Main"; 

@@ -3,24 +3,26 @@
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IMemoryCache MemoryCache
+@inject IJSRuntime JS
 
 <div class="page">
-    @if (ShouldHideSidebar == false)
+
+@*     @if (ShouldHideSidebar == false)
     {
         <div class="sidebar">
+                          <NavMenu  />
          
-                <NavMenu  />
-            
         </div>
-    }
+    } *@
+ @*    @if (!ShouldHideTopRow)
+    {
+        <div class="top-row px-4">
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        </div>
+    } *@
 
     <main>
-        @if (!ShouldHideTopRow)
-        {
-            <div class="top-row px-4">
-                <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-            </div>
-        }
+   
 
         <article class="content px-4">
             @Body
@@ -49,52 +51,64 @@
         "/", "/profile" // Добавьте сюда URL, для которых скрывается top-row
     };
     private bool isFirstRender = true;
+   public EventCallback<string> OnClickCallback { get; set; }
+    private bool _shouldRenderAgain;
 
     // protected override async Task OnAfterRenderAsync(bool firstRender)
     // {
+    //     if (firstRender || _shouldRenderAgain)
+    //     {
+    //         try
+    //         {
+    //             // Вызов JavaScript
+    //             await JS.InvokeVoidAsync("console.log", "JavaScript вызван из OnAfterRenderAsync");
+    //             _shouldRenderAgain = false; // Сбрасываем флаг
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             Console.WriteLine($"Ошибка в OnAfterRenderAsync: {ex.Message}");
+    //         }
+    //     }
+    // }
+    private string role;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var currentUri = NavigationManager.Uri.ToLower();
+                var uri = new Uri(currentUri);
+
+                // Извлекаем часть после порта
+                var pathAfterPort = uri.AbsolutePath;
+                // Проверяем текущий URL для скрытия sidebar
+                ShouldHideSidebar = HiddenSidebarUrls.Any(url => pathAfterPort == url);
+
+                // Проверяем текущий URL для скрытия top-row
+                ShouldHideTopRow = HiddenTopRowUrls.Any(url => currentUri.Contains(url));
+        // role = await localStorage.GetItemAsync<string>("Roles");
+
+        // Console.WriteLine($"Роль: {role}");
+    }
+    // protected override  void OnInitialized()
+    // {
     //     try
     //     {
+    //         var currentUri = NavigationManager.Uri.ToLower();
+    //         var uri = new Uri(currentUri);
 
+    //         // Извлекаем часть после порта
+    //         var pathAfterPort = uri.AbsolutePath;
+    //         // Проверяем текущий URL для скрытия sidebar
+    //         ShouldHideSidebar = HiddenSidebarUrls.Any(url => pathAfterPort == url);
 
-    //         if (isFirstRender) // Выполняем логику только при первом рендере
-    //         {
-    //             // Безопасно получаем значение Roles из localStorage
-    //             var roles = await localStorage.GetItemAsync<string>("Roles");
-    //             Rolles = roles ?? ""; // Если null, присваиваем пустую строку
-
-    //             StateHasChanged(); // Обновляем компонент
-    //         }
-
-
-    //         Console.WriteLine(firstRender);
+    //         // Проверяем текущий URL для скрытия top-row
+    //         ShouldHideTopRow = HiddenTopRowUrls.Any(url => currentUri.Contains(url));
+           
+    //         // await OnAfterRenderAsync(true);
     //     }
-    //     catch(Exception e)
+    //     catch (Exception e)
     //     {
     //         Console.WriteLine(e.Message);
     //     }
     // }
-
-    protected override  void OnInitialized()
-    {
-        try
-        {
-            var currentUri = NavigationManager.Uri.ToLower();
-            var uri = new Uri(currentUri);
-
-            // Извлекаем часть после порта
-            var pathAfterPort = uri.AbsolutePath;
-            // Проверяем текущий URL для скрытия sidebar
-            ShouldHideSidebar = HiddenSidebarUrls.Any(url => pathAfterPort == url);
-
-            // Проверяем текущий URL для скрытия top-row
-            ShouldHideTopRow = HiddenTopRowUrls.Any(url => currentUri.Contains(url));
-           
-            // await OnAfterRenderAsync(true);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
-    }
 
 }

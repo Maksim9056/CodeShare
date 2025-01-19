@@ -5,7 +5,7 @@
 
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private  ClaimsPrincipal _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+        private ClaimsPrincipal _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
 
         public override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
@@ -15,10 +15,10 @@
         public void SignIn(string userEmail, string roleName)
         {
             var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, userEmail),
-        new Claim(ClaimTypes.Role, roleName)
-    };
+            {
+             new Claim(ClaimTypes.Name, userEmail),
+             new Claim(ClaimTypes.Role, roleName)
+            };
 
             var identity = new ClaimsIdentity(claims, authenticationType: "CustomAuth");
             _currentUser = new ClaimsPrincipal(identity);

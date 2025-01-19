@@ -5,66 +5,27 @@
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IMemoryCache MemoryCache
+@inject IJSRuntime JS
 
 <link rel="stylesheet" href="/css/main.css">
-
 @if (!ShouldHideNavbar)
-{
-    <div class="top-row ps-3 navbar navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="">CodeShareWeb</a>
+{ 
+  <aside class="sidebar">
+
+        <div class="logo">
+            <p>Логотип</p>
         </div>
-    </div>
-
-    <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-    <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-        <nav class="flex-column">
-            @if (Rolles == "Пользователь")
-            {
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Main" Match="NavLinkMatch.All">
-                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Главная
-                    </NavLink>
-                </div>
-
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/topics">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Тема
-                    </NavLink>
-                </div>
-
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="browse-topics">
-                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>   Просматривать темы
-                    </NavLink>
-
-                </div>
-            }
-
-
-            @if (Rolles == "Админ")
-            {
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account-settings">
-                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>  Настройки аккаунта
-                    </NavLink>
-                </div>
-
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="System-update-list">
-                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>   Изменения в системе
-                    </NavLink>
-                </div>
-
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Logos-page">
-                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>  Логотип системы
-                    </NavLink>
-                </div>
-            }
+        <nav>
+            <ul>
+                <li><a href="Main" class="active">Главная</a></li>
+                <li><a href="/topics">Тема</a></li>
+                <li><a href="browse-topics">Просматривать темы</a></li>
+            </ul>
         </nav>
-    </div>
+
+
+    </aside>
+
 }
 
 @code {
@@ -76,81 +37,36 @@
         "/login",       // Страница входа
         "/registration"     // Страница регистрации
     };
+    private bool _shouldRenderAgain;
 
-    protected override void OnInitialized()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        try
+        if (firstRender || _shouldRenderAgain)
         {
-
-            var currentUri = NavigationManager.Uri.ToLower();
-            var uri = new Uri(currentUri);
-
-            // Извлекаем часть после порта
-            var pathAfterPort = uri.AbsolutePath;
-            // Если текущий адрес совпадает с одним из HiddenNavbarUrls, скрываем navbar
-            ShouldHideNavbar = HiddenNavbarUrls.Any(url => pathAfterPort == url);
-
-            var roles = MemoryCache.Get<string>("Roles");
-            if (!string.IsNullOrEmpty(roles))
+            try
             {
-                Rolles = roles;
+            var currentUri = NavigationManager.Uri.ToLower();
+                        var uri = new Uri(currentUri);
 
+                        // Извлекаем часть после порта
+                        var pathAfterPort = uri.AbsolutePath;
+                        // Если текущий адрес совпадает с одним из HiddenNavbarUrls, скрываем navbar
+                        ShouldHideNavbar = HiddenNavbarUrls.Any(url => pathAfterPort == url);
+
+                // Вызов JavaScript
+                await JS.InvokeVoidAsync("console.log", "JavaScript вызван из OnAfterRenderAsync");
+                _shouldRenderAgain = false; // Сбрасываем флаг
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка в OnAfterRenderAsync: {ex.Message}");
             }
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
     }
-
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // // {
-    // //     // Проверяем текущий URL
-    // //     var currentUri = NavigationManager.Uri.ToLower();
-    // //     var uri = new Uri(currentUri);
-
-    // //     // Извлекаем часть после порта
-    // //     var pathAfterPort = uri.AbsolutePath;
-    // //     // Если текущий адрес совпадает с одним из HiddenNavbarUrls, скрываем navbar
-    // //     ShouldHideNavbar = HiddenNavbarUrls.Any(url => pathAfterPort == url);
-    //     var Roles = await localStorage.GetItemAsync<string>("Roles");
-    //     Rolles = Roles;
-    //     StateHasChanged();
-    // }
 }
 
 
 
 
 
-@* <div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">CodeShareWeb</a>
-    </div>
-</div>
-
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
- *@
