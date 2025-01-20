@@ -11,12 +11,18 @@ body {
 
 .container {
     display: flex;
+    margin: 0;
+    padding: 0;
     width: 100%;
 }
 
-/* Боковое меню */
+/* Sidebar */
 .sidebar {
-    width: 250px;
+    position: fixed; /* Фиксируем sidebar */
+    top: 0;
+    left: 0; /* Убираем любые отступы от левого края */
+    height: 100vh; /* Высота на весь экран */
+    width: 250px; /* Задаем ширину */
     background: #6a11cb;
     color: #fff;
     display: flex;
@@ -24,7 +30,9 @@ body {
     align-items: center;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Убедитесь, что sidebar выше других элементов */
 }
+
 
 .sidebar .logo {
     font-size: 18px;
@@ -71,13 +79,21 @@ body {
 }
 
 /* Основной контент */
+/* Main content */
 .content {
     flex: 1;
+    margin-left: 250px; /* Оставляем место для sidebar */
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    padding: 20px;
 }
 
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
 .header {
     display: flex;
     justify-content: space-between;

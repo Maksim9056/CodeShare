@@ -1,10 +1,18 @@
 ﻿@page "/Comments-managementblock"
+@using CodeShareWeb.Components.Layout
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 <link rel="stylesheet" href="/css/comments-managementblock.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Управление комментариями</title>
+
+
+
+<div class="container">
+
+
+    <Sidebar/>
 <!-- Основной контент -->
 <main class="content">
     <header class="header">
@@ -49,6 +57,8 @@
         </div>
     </section>
 </main>
+</div>
+
 @code {
 
 }

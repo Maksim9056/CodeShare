@@ -8,22 +8,34 @@
 
 .container {
     display: flex;
-    flex-direction: row;
-    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
 /* Sidebar */
 .sidebar {
-    width: 250px;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    position: fixed; /* Фиксируем sidebar */
+    top: 0;
+    left: 0; /* Убираем любые отступы от левого края */
+    height: 100vh; /* Высота на весь экран */
+    width: 250px; /* Задаем ширину */
+    background: #6a11cb;
     color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Убедитесь, что sidebar выше других элементов */
 }
 
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
     .sidebar .logo {
         font-size: 18px;
         font-weight: bold;
@@ -70,9 +82,10 @@
 /* Main content */
 .content {
     flex: 1;
+    margin-left: 250px; /* Оставляем место для sidebar */
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    padding: 20px;
 }
 
 .header {

@@ -45,8 +45,14 @@ namespace CodeShareWeb
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-          
 
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate";
+                context.Response.Headers["Pragma"] = "no-cache";
+                context.Response.Headers["Expires"] = "0";
+                await next();
+            });
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

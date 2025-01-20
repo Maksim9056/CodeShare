@@ -1,4 +1,5 @@
 ﻿@page "/browse-topics"
+@using CodeShareWeb.Components.Layout
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 <title> Просмотр тем</title>
@@ -8,7 +9,9 @@
 
 <link rel="stylesheet" href="/css/browse-topics.css">
 
-
+ 
+<div class="container">
+    <Sidebar/>
 <!-- Основной контент -->
 <main class="content">
     <header class="header">
@@ -45,6 +48,7 @@
         </div>
     </section>
 </main>
+</div>
 @code {
 
 }

@@ -1,4 +1,5 @@
 ﻿@page "/Seting"
+@using CodeShareWeb.Components.Layout
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
@@ -7,7 +8,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Настройки Темы</title>
-      
+<div class="container">
+    <Sidebar/>   
 <!-- Основной контент -->
 <main class="content">
     <header class="header">
@@ -29,8 +31,8 @@
 
         <div class="comments-settings">
             <h3>Настройки для комментариев</h3>
-            <button class="button hide">Скрывать</button>
-            <button class="button block">Заблокировать</button>
+                <button class="button hide" @onclick="Comments_management">Скрывать</button>
+                <button class="button block" @onclick="Block_Comments_management">Заблокировать  </button>
             <button class="button ban">Запретить</button>
             <button class="button allow">Разрешить</button>
         </div>
@@ -45,12 +47,18 @@
         </div>
     </section>
 </main>
+</div>
 
 @code{
 
     public void Comments_management()
     {
         NavigationManager.NavigateTo("/Comments-management");
+    }
+
+    public void Block_Comments_management()
+    {
+        NavigationManager.NavigateTo("/Comments-managementblock");
     }
 
     public void Save()

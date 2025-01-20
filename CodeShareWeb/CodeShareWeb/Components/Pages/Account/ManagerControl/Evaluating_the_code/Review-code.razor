@@ -1,11 +1,15 @@
 ﻿@page "/review-code"
+@using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Проверка кода</title>
 <link rel="stylesheet" href="/css/review-code.css">
+<div class="container">
 
+    <Sidebar/>
 <!-- Основной контент -->
 <main class="content">
     <header class="header">
@@ -29,10 +33,14 @@
                 </h2>
             </div>
             <div class="code-section" id="code-display">
-                <div class="code-line" data-line="1"><span class="line-number">1</span> int main() {</div>
-                <div class="code-line" data-line="2"><span class="line-number">2</span>     printf("Hello, World!\n");</div>
-                <div class="code-line" data-line="3"><span class="line-number">3</span>     return 0;</div>
-                <div class="code-line" data-line="4"><span class="line-number">4</span> }</div>
+                    @foreach (var line in CodeLines)
+                    {
+                        <div class="code-line" @onclick="() => OnLineClick(line)">
+                            <span class="line-number">@line.LineNumber:</span>
+                            <span class="line-content">@line.Content</span>
+                        </div>
+                    }
+                
             </div>
 
         </div>
@@ -101,6 +109,8 @@
         </div>
     </section>
 </main>
+</div>
+
 <script>
     let startLine = null;
     let endLine = null;
@@ -232,9 +242,55 @@
 </script>
 @code {
 
+    private CodeSnippets snippet = new CodeSnippets
+        {
+            CodeSnippetsId = 1,
+            Title = "Callback method snippet",
+            Code = "public void Comments_management()\n{\n    NavigationManager.NavigateTo(\"/Seting\");\n}",
+            UserId = 123,
+            Description = "Пример метода, выполняющего навигацию в приложении",
+            IsAdmin = 0,
+            CreateAt = "2025-01-01",
+            UpdateAt = "2025-01-05",
+            Programming_language = "C#"
+    };
+
+    private List<CodeLine> CodeLines { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        // Разбиваем код на строки
+        var lines = snippet.Code.Split('\n');
+        for (int i = 0; i < lines.Length; i++)
+        {
+            CodeLines.Add(new CodeLine
+                {
+                    LineNumber = i + 1,
+                    Content = lines[i]
+                });
+        }
+    }
+
+    private void OnLineClick(CodeLine line)
+    {
+        Console.WriteLine($"Clicked line {line.LineNumber}: {line.Content}");
+        // Здесь можно реализовать дополнительные действия (например, редактирование строки)
+    }
+
+    private class CodeLine
+    {
+        public int LineNumber { get; set; }
+        public string Content { get; set; }
+    }
     public void Comments_management()
     {
         NavigationManager.NavigateTo("/Seting");
     }
 
+
+
 }
+@* <div class="code-line" data-line="1"><span class="line-number">1</span> int main() {</div>
+<div class="code-line" data-line="2"><span class="line-number">2</span>     printf("Hello, World!\n");</div>
+<div class="code-line" data-line="3"><span class="line-number">3</span>     return 0;</div>
+<div class="code-line" data-line="4"><span class="line-number">4</span> }</div> *@

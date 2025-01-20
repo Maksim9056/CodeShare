@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<svg 
+    width="300" 
+    height="300" 
+    viewBox="0 0 300 300" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg">
+
+    <!-- Фон (можно убрать или сделать прозрачным) -->
+    <rect width="300" height="300" fill="#FFFFFF"/>
+
+    <!-- Левая фигурная скобка -->
+    <path
+        d="M110 60 
+           C100 60,  90 70,  90 80 
+           C90 100, 110 100, 110 120 
+           C110 140,  90 140,  90 160 
+           C90 170,  100 180, 110 180"
+        stroke="#4CAF50"
+        stroke-width="8"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+    
+    <!-- Правая фигурная скобка -->
+    <path
+        d="M190 60 
+           C200 60, 210 70, 210 80 
+           C210 100, 190 100, 190 120 
+           C190 140, 210 140, 210 160 
+           C210 170, 200 180, 190 180"
+        stroke="#4CAF50"
+        stroke-width="8"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+    
+    <!-- Шестеренка в центре (упрощённая) -->
+    <circle 
+        cx="150" 
+        cy="120" 
+        r="26" 
+        fill="none" 
+        stroke="#4CAF50" 
+        stroke-width="8"/>
+
+    <!-- Маленькие выступы, имитирующие зубцы шестерёнки -->
+    <path
+        d="M150 86 L150 70 
+           M150 154 L150 138 
+           M182 120 L198 120 
+           M102 120 L118 120 
+           M173 95 L185 83
+           M127 147 L115 159
+           M173 145 L185 157
+           M127 93  L115 81"
+        stroke="#4CAF50" 
+        stroke-width="6"
+        stroke-linecap="round"/>
+    
+    <!-- Текст «CodeShare» (пример) -->
+    <text
+        x="50%"
+        y="230"
+        font-size="32"
+        text-anchor="middle"
+        fill="#333333"
+        font-family="Arial, sans-serif">
+        CodeShare
+    </text>
+</svg>

@@ -27,7 +27,12 @@ body {
     flex-direction: column;
     gap: 20px;
 }
-
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
 
 /* Sidebar скрывается на мобильных устройствах */
 @media (max-width: 768px) {

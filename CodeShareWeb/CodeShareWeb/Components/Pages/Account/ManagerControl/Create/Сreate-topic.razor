@@ -1,11 +1,14 @@
 ﻿@page "/create-topic"
+@using CodeShareWeb.Components.Layout
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
 <link rel="stylesheet" href="/css/create-topic.css">
 
 
+<div class="container">
 
+    <Sidebar/>
 <!-- Основной контент -->
 <main class="content">
     <header class="header">
@@ -47,6 +50,7 @@
         </form>
     </section>
 </main>
+</div>
 
 @code {
 
