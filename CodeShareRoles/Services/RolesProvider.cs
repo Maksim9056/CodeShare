@@ -15,10 +15,11 @@ namespace CodeShareRoles.Services
             _Database = Database;
         }
 
-        public IEnumerable<Roles> GetAlll()
+        public async Task<IEnumerable<Roles>> GetAlll()
         {
 
-            var rolles = _Database.Roles.ToList().ToArray();
+            var rolles = _Database.Roles.ToList();
+         
             if (rolles == null)
             {
                 return Enumerable.Empty<Roles>();

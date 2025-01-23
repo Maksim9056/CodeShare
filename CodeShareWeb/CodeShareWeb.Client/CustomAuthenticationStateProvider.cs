@@ -1,6 +1,6 @@
 ﻿namespace CodeShareWeb
 {
-    using Microsoft.AspNetCore.Components.Authorization;
+    //using Microsoft.AspNetCore.Components.Authorization;
     using System.Security.Claims;
 
     //public class CustomAuthenticationStateProvider : AuthenticationStateProvider
@@ -43,12 +43,12 @@
     //    //    NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_currentUser)));
     //    //}
 
-    //    public void SignOut()
-    //    {
-    //        // Возвращаем анонимного пользователя
-    //        _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
-    //        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_currentUser)));
-    //    }
+    //    //public void SignOut()
+    //    //{
+    //    //    // Возвращаем анонимного пользователя
+    //    //    _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+    //    //    NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_currentUser)));
+    //    //}
     //}
 
 

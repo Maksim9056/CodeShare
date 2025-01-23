@@ -1,5 +1,6 @@
 ﻿@page "/Main"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @using Microsoft.AspNetCore.Authorization
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
@@ -8,7 +9,7 @@
 <link rel="stylesheet" href="/css/main.css" />
 
 <div class="container">
-    <Sidebar/>
+    <Sidebar roles="roles" />
 
 
     <main class="content">
@@ -57,3 +58,6 @@
         </section>
     </main>
 </div>
+@code {
+    Roles roles = new Roles() { RolesId = 2 ,NameRole=""};
+}

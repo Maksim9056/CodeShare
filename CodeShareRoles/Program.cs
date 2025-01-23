@@ -22,6 +22,16 @@ namespace CodeShareRoles
             options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));
             builder.Services.AddScoped<IRolesProvider,RolesProvider>();
 
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowAll", builder =>
+            //    {
+            //        builder.AllowAnyOrigin()
+            //               .AllowAnyHeader()
+            //               .AllowAnyMethod();
+            //    });
+            //});
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -30,6 +40,7 @@ namespace CodeShareRoles
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            //app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
 

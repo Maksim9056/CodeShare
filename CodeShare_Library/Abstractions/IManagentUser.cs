@@ -15,5 +15,10 @@ namespace CodeShare_Library.Abstractions
 
         Task Delete(Users user);
 
+
+        Task GetUser(long Id);
+
+        Task<Users> CheckUser(string Email, string Password);
+
     }
 }

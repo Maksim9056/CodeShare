@@ -21,9 +21,9 @@ namespace CodeShareRoles.Controllers
         }
 
         [HttpGet("roles/all", Name = "GetAllRoles")]
-        public IEnumerable<Roles> GetAlll()
+        public async Task<IEnumerable<Roles>> GetAlll()
         {
-            return _IRolesProvider.GetAlll();
+            return await _IRolesProvider.GetAlll();
         }
 
         [HttpGet("roles/user", Name = "GetUserRoles")]

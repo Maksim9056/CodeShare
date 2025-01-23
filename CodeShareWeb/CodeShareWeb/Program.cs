@@ -30,22 +30,32 @@ namespace CodeShareWeb
             builder.Services.AddBlazoredLocalStorage(); // Register Blazored.LocalStorage
             //builder.Services.Configure<UserService>(builder.Configuration.GetSection("UserService"));
             
-            builder.Services.AddScoped< UserService>(provider =>
+            builder.Services.AddScoped<IUserServise, CodeShare_Library.Service.UserService>(provider =>
             {
                 string url = builder.Configuration["Urls:UserService"];
                 return new UserService(url);
             });
 
+
+
+            builder.Services.AddScoped<IRolesProvider, CodeShare_Library.Service.RolesService>(provider =>
+            {
+                string url = builder.Configuration["Urls:Code_Share_Roles"];
+                return new RolesService(url);
+            });
+
+
+
             //builder.Services.AddScoped<UserService>();
+            builder.Services.AddHttpClient();
 
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             //builder.Services.AddCascadingAuthenticationState();
-            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            //builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddMemoryCache();
-
-            var app = builder.Build();
+           var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -59,13 +69,6 @@ namespace CodeShareWeb
                 app.UseHsts();
             }
 
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate";
-                context.Response.Headers["Pragma"] = "no-cache";
-                context.Response.Headers["Expires"] = "0";
-                await next();
-            });
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

@@ -29,6 +29,12 @@ namespace CodeShareUsers.Controllers
             await     _managentUser.Registration(user);
         }
 
+        [HttpGet]
+        public async Task<Users> CheckUser([FromQuery]  string Email, [FromQuery] string Password)
+        {
+
+            return await _managentUser.CheckUser(Email, Password);
+        }
         //public async  Task Update(Users user)
         //{
 

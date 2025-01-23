@@ -1,7 +1,12 @@
 ﻿@page "/Registration"
+@using CodeShare_Library.Abstractions
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
-
+@inject IRolesProvider RolesProvider
+@inject HttpClient httpClient
+@inject IConfiguration IConfiguration
+@inject IUserServise IUserServise
 <title>CodeShare - Регистрация</title>
 <link rel="stylesheet" href="/css/registration.css">
 <div class="container">
@@ -14,25 +19,24 @@
         <form>
             <div class="input-group">
                 <label for="name">Имя</label>
-                <input type="text" id="name" placeholder="Введите ваше имя" required>
+                <input type="text" @bind="user.UsersName" id="name" placeholder="Введите ваше имя" required>
             </div>
             <div class="input-group">
                 <label for="phone">Телефон</label>
-                <input type="tel" id="phone" placeholder="+7 (900) 123-45-67" required>
+                <input type="tel" @bind="user.Phone" id="phone" placeholder="+7 (900) 123-45-67" required>
             </div>
             <div class="input-group">
                 <label for="email">Почта</label>
-                <input type="email" id="email" placeholder="example@email.com" required>
+                <input type="email" @bind="user.Email" id="email" placeholder="example@email.com" required>
             </div>
             <div class="input-group">
                 <label for="password">Пароль</label>
-                <input type="password" id="password" placeholder="Введите пароль" required>
+                <input type="password" @bind="user.Password"  id="password" placeholder="Введите пароль" required>
             </div>
             <div class="input-group">
-                <label for="role">Роль</label>
-                <select id="role" required>
-                    <option value="user">Пользователь</option>
-                    <option value="admin">Администратор</option>
+                <label for="role">Роль:</label>
+                <select id="role" @onclick="OnRoleChanged">
+                    <option value="@Roles.RolesId">@Roles.NameRole</option>
                 </select>
             </div>
             <div class="button-group">
@@ -42,14 +46,45 @@
         </form>
     </div>
 </div>
+
 @code {
+    public Users user = new Users() { RoleId =0};
+    public Roles Roles= new Roles() { };
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+            Roles = await RolesProvider.GetUser();
+
+        }
+        catch(Exception e)
+        {
+
+            Console.WriteLine(e.Message);
+        }
+    }
+
+
+    private void OnRoleChanged()
+    {
+        // Изменение значения user.RoleId вручную
+        user.RoleId = Roles.RolesId;
+
+        // Обновляем отображаемое имя роли
+    }
+
     public void Calback()
     {
         NavigationManager.NavigateTo("/");
     }
 
-    public void Reg()
+    public async void Reg()
     {
-        // NavigationManager.NavigateTo("/");
+        user.CreateAt = $"{DateTime.Now}";
+        user.UpdatedAt = "";
+
+         await IUserServise.CreateUser(user);
+         NavigationManager.NavigateTo("/");
     }
 }

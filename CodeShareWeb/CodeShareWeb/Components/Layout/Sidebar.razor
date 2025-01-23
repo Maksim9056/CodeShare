@@ -1,27 +1,58 @@
-﻿<style>
+﻿@using CodeShare_Library.Abstractions
+@using CodeShare_Library.Models
+@inject IRolesProvider RolesProvider
+
+<style>
 
 
 </style>
 <aside class="sidebar">
-    <div class="logo" >
+    <div class="logo">
         <img src="data:image/png;base64,@(Convert.ToBase64String(bytes))" alt="Логотип" class="logos">
 
     </div>
+    @if (roles != null)
+    {
+        <nav>
+            <ul>
 
-    <nav>
-        <ul>
-            <li><a href="Main" class="active">Главная</a></li>
-            <li><a href="topics">Тема</a></li>
-            <li><a href="browse-topics">Просматривать темы</a></li>
-        </ul>
-    </nav>
+
+                @if (roles.RolesId == 2)
+                {
+
+                    <li><a href="Main" class="active">Главная</a></li>
+                    <li><a href="topics">Тема</a></li>
+                    <li><a href="browse-topics">Просматривать темы</a></li>
+                }
+                else if (roles.RolesId == 1)
+                {
+                    <li><a href="/Account-settings" class="active">Настройки аккаунта</a></li>
+                    <li>
+                        <a href="/System-update-list">Изменения в системе</a>
+                    </li>
+                    <li><a href="/Logos-page">Логотип системы</a></li>
+                }
+
+            </ul>
+
+        </nav>
+
+    }
 </aside>
 @code {
+
+    [Parameter]
+    public Roles roles { get; set; }
+
     public byte[] bytes;
-    protected override void OnInitialized()
+
+    public List<Roles> Roles = new List<Roles>();
+
+    protected override async Task OnInitializedAsync()
     {
         string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photo", "CodeShare.png");
-
+        var roles = await RolesProvider.GetAlll();
+        Roles = roles.ToList();
         bytes = File.ReadAllBytes(filePath);
         Console.WriteLine($"Фото загружен {bytes.Length}");
 

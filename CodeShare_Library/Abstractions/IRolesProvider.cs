@@ -9,7 +9,7 @@ namespace CodeShare_Library.Abstractions
 {
     public interface IRolesProvider
     {
-        public IEnumerable<Roles> GetAlll();
+        public Task<IEnumerable<Roles>> GetAlll();
         public  Task<Roles> GetUser();
 
         public Task<Roles> GetAdmin();

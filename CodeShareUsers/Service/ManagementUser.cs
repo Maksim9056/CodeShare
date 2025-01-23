@@ -51,5 +51,15 @@ namespace CodeShareUsers.Service
 
         }
 
+        public async Task GetUser(long Id)
+        {
+
+
+        }
+
+        public async Task<Users> CheckUser(string Email, string Password)
+        {
+          return    await _CodeShareDB.Users.FirstOrDefaultAsync(u => u.Email == Email && u.Password ==Password);
+        }
     }
 }
