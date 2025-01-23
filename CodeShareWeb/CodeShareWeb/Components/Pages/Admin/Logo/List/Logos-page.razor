@@ -1,11 +1,12 @@
 ﻿@page "/Logos-page"
+@using CodeShareWeb.Components.Layout
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @* <meta name="viewport" content="width=device-width, initial-scale=1.0">
  *@<title>Логотипы системы</title>
 <link rel="stylesheet" href="/css/logos-page.css">
-    <div class="container">
-
+<div class="container">
+    <Sidebar />
 <div class="main-content">
     <div class="header">
         <h1 class="content-title">Логотип системы</h1>

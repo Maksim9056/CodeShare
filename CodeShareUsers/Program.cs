@@ -41,6 +41,7 @@ namespace CodeShareUsers
                 }
                 //dbContext.Database.Migrate(); 
             }
+
             app.MapControllers();
 
             app.Run();

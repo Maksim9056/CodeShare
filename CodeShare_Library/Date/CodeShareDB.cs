@@ -13,7 +13,6 @@ namespace CodeShare_Library.Date
     {
         public CodeShareDB(DbContextOptions<CodeShareDB> options) : base(options)
         {
-
             //Database.Migrate();
         }
 
@@ -117,7 +116,7 @@ namespace CodeShare_Library.Date
                     new Roles { RolesId = 1, NameRole = "Админ" }
                 );
                 modelBuilder.Entity<Roles>().HasData(
-               new Roles { RolesId = 2, NameRole = "Пользователь" }
+                new Roles { RolesId = 2, NameRole = "Пользователь" }
                 );
 
                 // Данные для таблицы Users

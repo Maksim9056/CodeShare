@@ -1,7 +1,11 @@
 using Blazored.LocalStorage;
+using CodeShare_Library.Abstractions;
+using CodeShare_Library.Service;
 using CodeShareWeb.Client.Pages;
 using CodeShareWeb.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace CodeShareWeb
 {
@@ -24,6 +28,15 @@ namespace CodeShareWeb
                     options.AccessDeniedPath = "/access-denied"; 
                 });
             builder.Services.AddBlazoredLocalStorage(); // Register Blazored.LocalStorage
+            //builder.Services.Configure<UserService>(builder.Configuration.GetSection("UserService"));
+            
+            builder.Services.AddScoped< UserService>(provider =>
+            {
+                string url = builder.Configuration["Urls:UserService"];
+                return new UserService(url);
+            });
+
+            //builder.Services.AddScoped<UserService>();
 
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();

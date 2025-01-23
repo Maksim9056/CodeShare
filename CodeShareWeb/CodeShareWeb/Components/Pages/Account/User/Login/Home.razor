@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using CodeShare_Library.Models
+@using CodeShare_Library.Service
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 @using Microsoft.Extensions.Caching.Memory
@@ -8,6 +9,7 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IMemoryCache MemoryCache
+@inject UserService UserService
 
 
 <link rel="stylesheet" href="/css/login.css">
@@ -22,11 +24,11 @@
         <form>
             <div class="input-group">
                 <label for="email">Почта</label>
-                <input type="email" id="email" placeholder="example@email.com" required>
+                <input type="email" @bind="Email" id="email" placeholder="example@email.com" required>
             </div>
             <div class="input-group">
                 <label for="password">Пароль</label>
-                <input type="password" id="password" placeholder="Введите пароль" required>
+                <input type="password" @bind="Password" id="password" placeholder="Введите пароль" required>
             </div>
             <a href="Reset-password" class="forgot-password">Забыли пароль?</a>
             <div class="button-group">
@@ -51,9 +53,25 @@
 
 @code
 {
+    public string Email;
+    public string Password;
+
     private string? authMessage;
     private string? surname;
     private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
 
     public void Reg()
     {
@@ -61,53 +79,73 @@
     }
 
 
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     Console.WriteLine($"OnAfterRenderAsync вызван в {DateTime.Now}, firstRender: {firstRender}");
+
+    //     if (firstRender)
+    //     {
+    //         try
+    //         {
+
+    //         }
+    //         catch
+    //         {
+                
+    //         }
+    //     } 
+    // }
 
     public async Task Log()
     {
-        var users = new Users
-            {
-                UsersId = 1,
-                Email = "example@email.com",
-                Password = "123",
-                RoleId = 1 // допустим, 2 - это "Админ" в таблице Roles
-            };
-
-        if (users != null)
-        {
-
-            var role = new Roles
-                {
-                    RolesId = 1,
-                    NameRole = "Пользователь"
-                };
-
-            // Создаем клеймы
-            var customAuthStateProvider = AuthStateProvider as CustomAuthenticationStateProvider;
-            customAuthStateProvider?.SignIn(users.Email, role.NameRole);
-            authMessage = "Вы успешно вошли в систему!";
-            MemoryCache.Set("Id", users.UsersId);
-            MemoryCache.Set("Roles", role.NameRole);
-
-            switch (role.NameRole)
-            {
-                case "Пользователь":
-                    NavigationManager.NavigateTo("/Main");
-                    break;
-
-                case "Админ":
-                    NavigationManager.NavigateTo("/Main");
-
-                    break;
-            }
-            await localStorage.SetItemAsync("Id", users.UsersId);
-            await localStorage.SetItemAsync("Roles", role.NameRole);
 
 
-        }
-        else
-        {
-            Console.WriteLine("Пользователь не найден или пароль неверный.");
-        }
+
+        UserService.CheckUser(Email,Password);
+        //     var users = new Users
+    //         {
+    //             UsersId = 1,
+    //             Email = "example@email.com",
+    //             Password = "123",
+    //             RoleId = 1 // допустим, 2 - это "Админ" в таблице Roles
+    //         };
+
+        // if (users != null)
+        // {
+
+        //     var role = new Roles
+        //         {
+        //             RolesId = 1,
+        //             NameRole = "Пользователь"
+        //         };
+
+        //     // Создаем клеймы
+        //     var customAuthStateProvider = AuthStateProvider as CustomAuthenticationStateProvider;
+        //     customAuthStateProvider?.SignIn(users.Email, role.NameRole);
+        //     authMessage = "Вы успешно вошли в систему!";
+        //     MemoryCache.Set("Id", users.UsersId);
+        //     MemoryCache.Set("Roles", role.NameRole);
+
+        //     switch (role.NameRole)
+        //     {
+        //         case "Пользователь":
+        //             NavigationManager.NavigateTo("/Main");
+        //             break;
+
+        //         case "Админ":
+        //             NavigationManager.NavigateTo("/Main");
+
+        //             break;
+        //     }
+        //     await localStorage.SetItemAsync("Id", users.UsersId);
+        //     await localStorage.SetItemAsync("Roles", role.NameRole);
+
+
+        // }
+        // else
+        // {
+        //     Console.WriteLine("Пользователь не найден или пароль неверный.");
+        // }
 
         authMessage = "Вы успешно вошли!";
         // StateHasChanged();
