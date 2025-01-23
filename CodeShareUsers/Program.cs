@@ -1,5 +1,7 @@
 
+using CodeShare_Library.Abstractions;
 using CodeShare_Library.Date;
+using CodeShareUsers.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodeShareUsers
@@ -15,9 +17,12 @@ namespace CodeShareUsers
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(); 
+
             builder.Services.AddDbContext<CodeShareDB>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));
+            options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));      
+            builder.Services.AddScoped<IManagentUser, ManagementUser>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
