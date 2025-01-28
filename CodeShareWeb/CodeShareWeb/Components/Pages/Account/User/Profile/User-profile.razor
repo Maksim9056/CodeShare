@@ -1,5 +1,6 @@
 ﻿@page "/User-profile"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
@@ -8,8 +9,8 @@
 <link rel="stylesheet" href="/css/user-profile.css">
 
 <div class="container">
-    <Sidebar />
-<!-- Основной контент -->
+    <Sidebar roles="roles" />
+    <!-- Основной контент -->
 <main class="content">
     <header class="header">
         <h1>Профиль пользователя</h1>
@@ -47,6 +48,20 @@
 </div>
 
 @code {
+    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
 
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
 }
 @* user-profile. *@

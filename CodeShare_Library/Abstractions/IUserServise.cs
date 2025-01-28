@@ -9,7 +9,7 @@ namespace CodeShare_Library.Abstractions
 {
     public interface IUserServise
     {
-        Task CreateUser(Users users);
+        Task<Users> CreateUser(Users users);
         Task UpdateUser(Users users);
         Task DeletyUser(Users users);
 

@@ -10,23 +10,131 @@ body {
     align-items: center;
 }
 
-/* Контейнер */
 .container {
     display: flex;
+    margin: 0;
+    padding: 0;
     width: 100%;
-    height: 100%;
+}
+.content {
+    flex: 1;
+    padding: 40px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: #fff;
+    border-top-left-radius: 20px;
+    padding: 30px;
+    margin-left: 250px; /* Оставляем место для sidebar */
+    padding: 20px;
+    color: #333;
+    flex-direction: column;
 }
 
 /* Sidebar */
+/* Sidebar */
 .sidebar {
-    width: 300px;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: white;
-    padding: 30px 20px;
+    position: fixed; /* Фиксируем sidebar */
+    top: 0;
+    left: 0; /* Убираем любые отступы от левого края */
+    height: 100vh; /* Высота на весь экран */
+    width: 250px; /* Задаем ширину */
+    background: #6a11cb;
+    color: #fff;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Убедитесь, что sidebar выше других элементов */
 }
+    .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+        width: 100%;
+    }
+
+        .sidebar nav ul li {
+            margin: 10px 0;
+        }
+
+            .sidebar nav ul li a {
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 15px;
+                display: block;
+                border-radius: 5px;
+                transition: background 0.3s ease;
+            }
+
+                .sidebar nav ul li a.active {
+                    background: linear-gradient(135deg, #6a11cb, #2575fc);
+                    color: #fff;
+                    font-weight: bold;
+                }
+
+                .sidebar nav ul li a:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                }
+
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+        width: 100%;
+    }
+
+    .sidebar .menu-button {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .sidebar .menu-button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+
+/* Кнопка действия */
+.action {
+    text-align: center;
+}
+
+    .action button {
+        padding: 15px 25px;
+        font-size: 16px;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+    }
+
+        .action button:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.4);
+        }
+
 .logos {
     width: 100px;
     height: auto;

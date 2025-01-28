@@ -1,4 +1,6 @@
+using CodeShare_Library.Abstractions;
 using CodeShare_Library.Date;
+using CodeShare_Library.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeShareCodeSnippets.Controllers
@@ -7,15 +9,43 @@ namespace CodeShareCodeSnippets.Controllers
     [Route("[controller]")]
     public class CodeShareCodeSnippets : ControllerBase
     {
-        private readonly CodeShareDB _Database  ;
+        private readonly ICodeShareCodeSnippets _codeShareCodeSnippets  ;
 
         private readonly ILogger<CodeShareCodeSnippets> _logger;
 
-        public CodeShareCodeSnippets(ILogger<CodeShareCodeSnippets> logger, CodeShareDB Database)
+        public CodeShareCodeSnippets(ILogger<CodeShareCodeSnippets> logger, ICodeShareCodeSnippets codeShareCodeSnippets)
         {
             _logger = logger;
-            _Database = Database;
+            _codeShareCodeSnippets = codeShareCodeSnippets;
         }
+
+        [HttpPost("create")]
+        public async Task<CodeSnippets> CreateCodeSnippets(CodeSnippets codeSnippets)
+        {
+           return await _codeShareCodeSnippets.Create(codeSnippets);
+        }
+
+
+        [HttpPut("edit")]
+        public async Task<CodeSnippets> EditCodeSnippets(CodeSnippets codeSnippets)
+        {
+           return await _codeShareCodeSnippets.Edit(codeSnippets);
+        }
+
+
+        [HttpDelete("delete")]
+        public async Task<CodeSnippets> DeleteCodeSnippets(CodeSnippets codeSnippets)
+        {
+          return   await _codeShareCodeSnippets.Delete(codeSnippets);
+        }
+
+        //[HttpGet]
+        //public async Task<Users> CheckUser([FromQuery] string Email, [FromQuery] string Password)
+        //{
+
+        //    return await _managentUser.CheckUser(Email, Password);
+        //}
+
 
         //[HttpGet(Name = "GetWeatherForecast")]
         //public IEnumerable<WeatherForecast> Get()

@@ -8,16 +8,41 @@ body {
     color: #333;
 }
 
-.container {
+/*.container {
     display: flex;
     height: 100vh;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
+}*/
+
+
+
+.container {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
-/* Боковое меню */
+/* Sidebar */
 .sidebar {
+    position: fixed; /* Фиксируем sidebar */
+    top: 0;
+    left: 0; /* Убираем любые отступы от левого края */
+    height: 100vh; /* Высота на весь экран */
+    width: 250px; /* Задаем ширину */
+    background: #6a11cb;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Убедитесь, что sidebar выше других элементов */
+}
+/* Боковое меню */
+/*.sidebar {
     width: 300px;
     background: linear-gradient(135deg, #6a11cb, #2575fc);
     color: white;
@@ -25,7 +50,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-}
+}*/
 .logos {
     width: 100px;
     height: auto;
@@ -195,4 +220,70 @@ textarea {
 
         .user-info .user-avatar:hover {
             transform: scale(1.1);
+        }
+
+.sidebar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+    .sidebar nav ul li {
+        margin: 10px 0;
+    }
+
+        .sidebar nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+            .sidebar nav ul li a.active {
+                background: linear-gradient(135deg, #6a11cb, #2575fc);
+                color: #fff;
+                font-weight: bold;
+            }
+
+            .sidebar nav ul li a:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+/* Кнопка действия */
+.action {
+    text-align: center;
+}
+
+    .action button {
+        padding: 15px 25px;
+        font-size: 16px;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+    }
+
+        .action button:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.4);
         }

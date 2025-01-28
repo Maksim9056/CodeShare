@@ -34,7 +34,7 @@
             <a href="Reset-password" class="forgot-password">Забыли пароль?</a>
             <div class="button-group">
                 <button type="button" @onclick="Reg" class="register-button">Регистрация</button>
-                <button type="submit" @onclick="Log" class="login-button">Войти</button>
+                <button type="button" @onclick="Log" class="login-button">Войти</button>
             </div>
         </form>
     </div>
@@ -54,8 +54,8 @@
 
 @code
 {
-    public string Email;
-    public string Password;
+    public string Email="";
+    public string Password="";
 
     private string? authMessage;
     private string? surname;
@@ -98,62 +98,90 @@
     //         }
     //         catch
     //         {
-                
+
     //         }
     //     } 
     // }
 
     public async Task Log()
     {
-       var users =   await  UserService.CheckUser(Email,Password);
-
-        //     var users = new Users
-    //         {
-    //             UsersId = 1,
-    //             Email = "example@email.com",
-    //             Password = "123",
-    //             RoleId = 1 // допустим, 2 - это "Админ" в таблице Roles
-    //         };
-
-        if (users != null)
+        try
         {
 
-            // var role = new Roles
-            //     {
-            //         RolesId = 1,
-            //         NameRole = "Пользователь"
-            //     };
-
-            // Создаем клеймы
-            // var customAuthStateProvider = AuthStateProvider as CustomAuthenticationStateProvider;
-            // customAuthStateProvider?.SignIn(users.Email, role.NameRole);
-            authMessage = "Вы успешно вошли в систему!";
-            // MemoryCache.Set("Id", users.UsersId);
-            // MemoryCache.Set("Roles", role.NameRole);
-            // await localStorage.SetItemAsync("Id", users.UsersId);
-            // await localStorage.SetItemAsync("Roles", users.RoleId);
-            switch (users.RoleId)
+            if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password))
             {
-                case 2:
-                    NavigationManager.NavigateTo("/Main");
-                    break;
 
-                case 1:
-                    NavigationManager.NavigateTo("/Account-settings");
 
-                    break;
+
+                var users = await UserService.CheckUser(Email, Password);
+
+                if (users != null)
+                {
+
+                    // var role = new Roles
+                    //     {
+                    //         RolesId = 1,
+                    //         NameRole = "Пользователь"
+                    //     };
+
+                    // Создаем клеймы
+                    // var customAuthStateProvider = AuthStateProvider as CustomAuthenticationStateProvider;
+                    // customAuthStateProvider?.SignIn(users.Email, role.NameRole);
+                    authMessage = "Вы успешно вошли в систему!";
+                    // MemoryCache.Set("Id", users.UsersId);
+                    // MemoryCache.Set("Roles", role.NameRole);
+                    // await localStorage.SetItemAsync("Id", users.UsersId);
+                    // await localStorage.SetItemAsync("Roles", users.RoleId);
+                    switch (users.RoleId)
+                    {
+                        case 2:
+                            NavigationManager.NavigateTo("/Main");
+                            break;
+
+                        case 1:
+                            NavigationManager.NavigateTo("/Account-settings");
+
+                            break;
+                    }
+
+
+
+                }
+                else
+                {
+                    Console.WriteLine("Пользователь не найден или пароль неверный.");
+
+                    authMessage = "Пользователь не найден или пароль неверный или пользователя имя.";
+                    // StateHasChanged();
+                    StateHasChanged();
+                }
             }
-     
+            else
+            {
+                if (string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(Email))
+                {
+                    authMessage = $"Не ввели Email  {Email}  и  Password {Password}.";
 
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(Email))
+                    {
+                        authMessage = "Email не может быть пустым.";
+                    }
 
+                    if (string.IsNullOrEmpty(Password))
+                    {
+                        authMessage = "Пароль не может быть пустым.";
+                    }
+                }
+
+             
+            }
         }
-        else
+        catch(Exception e)
         {
-            Console.WriteLine("Пользователь не найден или пароль неверный.");
-
-            authMessage = "Пользователь не найден или пароль неверный или пользователя имя.";
-            // StateHasChanged();
-            StateHasChanged();
+            
         }
 
 

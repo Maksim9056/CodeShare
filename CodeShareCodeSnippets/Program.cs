@@ -1,5 +1,7 @@
 
+using CodeShare_Library.Abstractions;
 using CodeShare_Library.Date;
+using CodeShare_Library.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodeShareCodeSnippets
@@ -22,6 +24,9 @@ namespace CodeShareCodeSnippets
             options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare1")));
             //builder.Services.AddDbContext<CodeShareDB>(options =>
             //options.UseSqlServer(builder.Configuration.GetConnectionString("CodeShare")));
+            builder.Services.AddScoped<ICodeShareCodeSnippets, CodeShareCodeSnippetsService>();
+
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

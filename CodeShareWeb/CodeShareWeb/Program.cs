@@ -21,12 +21,13 @@ namespace CodeShareWeb
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
-            builder.Services.AddAuthentication("CustomAuthScheme")
-                .AddCookie("CustomAuthScheme", options =>
-                {
-                    options.LoginPath = "/Main"; 
-                    options.AccessDeniedPath = "/access-denied"; 
-                });
+            //builder.Services.AddAuthentication("CustomAuthScheme")
+            //    .AddCookie("CustomAuthScheme", options =>
+            //    {
+            //        options.LoginPath = "/Main"; 
+            //        options.AccessDeniedPath = "/access-denied"; 
+            //    });
+
             builder.Services.AddBlazoredLocalStorage(); // Register Blazored.LocalStorage
             //builder.Services.Configure<UserService>(builder.Configuration.GetSection("UserService"));
             

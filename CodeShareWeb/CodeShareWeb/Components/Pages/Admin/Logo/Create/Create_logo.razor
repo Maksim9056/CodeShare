@@ -1,12 +1,16 @@
 ﻿@page "/Create_logo"
+@using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 <link rel="stylesheet" href="/css/create_logo.css">
-<h3>Create_logo</h3>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Добавление логотипа</title>
+<div class="container"> 
 
+    <Sidebar roles="roles" />
     <div class="main-content">
             <div class="header">
                 <h1 class="content-title">Добавление логотипа</h1>
@@ -54,3 +58,22 @@
             }
         }
     </script>
+</div>
+@code {
+    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+}

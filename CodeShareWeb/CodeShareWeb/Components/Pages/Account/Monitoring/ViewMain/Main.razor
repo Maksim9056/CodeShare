@@ -60,4 +60,19 @@
 </div>
 @code {
     Roles roles = new Roles() { RolesId = 2 ,NameRole=""};
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
 }

@@ -1,5 +1,6 @@
 ﻿@page "/Seting"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
@@ -9,8 +10,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Настройки Темы</title>
 <div class="container">
-    <Sidebar/>   
-<!-- Основной контент -->
+    <Sidebar roles="roles" />
+    <!-- Основной контент -->
 <main class="content">
     <header class="header">
         <h1>Настройки Темы</h1>
@@ -50,6 +51,7 @@
 </div>
 
 @code{
+    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
 
     public void Comments_management()
     {

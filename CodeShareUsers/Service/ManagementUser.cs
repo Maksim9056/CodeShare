@@ -3,6 +3,7 @@ using CodeShare_Library.Date;
 using CodeShare_Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using Serilog;
 
 namespace CodeShareUsers.Service
 {
@@ -20,9 +21,21 @@ namespace CodeShareUsers.Service
       
         public async Task Registration(Users user )
         {
-            await    _CodeShareDB.Users.AddAsync( user );
-            await _CodeShareDB.SaveChangesAsync();
+            try
+            {
 
+
+                await _CodeShareDB.Users.AddAsync(user);
+                await _CodeShareDB.SaveChangesAsync();
+                Log.Warning("Registration User {@User} registered successfully", user);
+
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Exception User {@User} registered successfully", user, ex);
+
+            }
 
         }
 
@@ -38,7 +51,7 @@ namespace CodeShareUsers.Service
             user  = await _CodeShareDB.Users.FirstOrDefaultAsync(u =>u.UsersId ==user.UsersId);
             
             
-             _CodeShareDB.Remove(user);
+             _CodeShareDB.Users.Remove(user);
 
 
              var topic =  await _CodeShareDB.CodeSnippets.Where(u =>u.UserId == user.UsersId).ToListAsync();

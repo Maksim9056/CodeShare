@@ -28,18 +28,20 @@ namespace CodeShare_Library.Service
             _httpClient = new HttpClient();
 
 
-        }
-
-
-        public async Task CreateUser(Users users)
+        } 
+        public async Task<Users> CreateUser(Users users)
         {
             url=$"{UrlUsersApi}/ManagementUser";
             var content = new StringContent(JsonSerializer.Serialize(users), Encoding.UTF8, "application/json");
 
             _response =   await  _httpClient.PostAsync(url, content);
-
-            _response.EnsureSuccessStatusCode();
-
+            if (_response.IsSuccessStatusCode)
+            {
+                 Users Users = await  _response.Content.ReadFromJsonAsync<Users>();
+                return Users;
+            }
+            //_response.EnsureSuccessStatusCode();
+            return new Users(){Email="" };
         }
 
         public async Task UpdateUser(Users users)
@@ -64,10 +66,20 @@ namespace CodeShare_Library.Service
 
         public async Task<Users> CheckUser(string Email, string Password)
         {
-            url = $"{UrlUsersApi}/ManagementUser?Email={Email}&Password={Password}";
-            _httpClient.BaseAddress = new Uri(url);
-            Users Roles_responseMessage = await _httpClient.GetFromJsonAsync<Users>(url);
-            return Roles_responseMessage;
+            try
+            {
+
+
+                url = $"{UrlUsersApi}/ManagementUser?Email={Email}&Password={Password}";
+                //_httpClient.BaseAddress = new Uri(url);
+                Users Roles_responseMessage = await _httpClient.GetFromJsonAsync<Users>(url);
+                return Roles_responseMessage;
+
+            }
+            catch (Exception ex) 
+            {
+                return new Users() { };
+            }
         }
     }
 }

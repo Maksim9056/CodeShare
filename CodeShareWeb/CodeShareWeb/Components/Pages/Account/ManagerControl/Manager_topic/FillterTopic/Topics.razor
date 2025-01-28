@@ -1,5 +1,6 @@
 ﻿@page "/topics"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
@@ -9,8 +10,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CodeShare - Страница тем</title>
 <div class="container">
-    <Sidebar/>
-<h3>Topics</h3>
+    <Sidebar roles="roles" />
+    <h3>Topics</h3>
     <!-- Основной контент -->
         <main class="content">
             <header class="header">
@@ -78,5 +79,20 @@
         }
     </script>
 @code {
+    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
 }

@@ -1,5 +1,6 @@
 ﻿@page "/create-topic"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
@@ -8,8 +9,8 @@
 
 <div class="container">
 
-    <Sidebar/>
-<!-- Основной контент -->
+    <Sidebar roles="roles" />
+    <!-- Основной контент -->
 <main class="content">
     <header class="header">
         <h1>Создание темы</h1>
@@ -22,15 +23,15 @@
 
     <!-- Форма создания темы -->
     <section class="create-topic">
-        <form action="#" method="POST">
+        <form >
             <div class="form-group">
                 <label for="topic-title">Название темы</label>
-                <input type="text" id="topic-title" name="topic-title" placeholder="Введите название темы" required>
+                    <input type="text" @bind="codeSnippets.Title" id="topic-title" name="topic-title" placeholder="Введите название темы" required>
             </div>
 
             <div class="form-group">
                 <label for="programming-language">Язык программирования</label>
-                <select id="programming-language" name="programming-language">
+                    <select id="programming-language" name="programming-language"  @onchange="OnLanguageChanged">
                     <option value="csharp">C#</option>
                     <option value="java">Java</option>
                     <option value="python">Python</option>
@@ -40,7 +41,7 @@
 
             <div class="form-group">
                 <label for="code">Код</label>
-                <textarea id="code" name="code" rows="10" placeholder="Введите ваш код"></textarea>
+                    <textarea id="code" @bind="codeSnippets.Code" name="code" rows="10" placeholder="Введите ваш код"></textarea>
             </div>
 
             <div class="form-buttons">
@@ -53,7 +54,29 @@
 </div>
 
 @code {
+    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    // @bind="codeSnippets.Programming_language"
+    CodeSnippets codeSnippets = new CodeSnippets();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
 
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+    private void OnLanguageChanged(ChangeEventArgs e)
+    {
+        codeSnippets.Programming_language = e.Value.ToString();
+        // Логика, выполняемая при изменении выбора
+        Console.WriteLine($"Выбранный язык: {codeSnippets.Programming_language}");
+    }
         public void Callback()
         {
           NavigationManager.NavigateTo("/topics");

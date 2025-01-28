@@ -1,9 +1,15 @@
 ﻿@page "/Account-settings"
+@using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 <link rel="stylesheet" href="/css/account-settings.css">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="container">
+
+    <Sidebar roles="roles" />
 
       <main class="content">
             <header class="header">
@@ -31,6 +37,7 @@
             </div>
         </section>
       </main>
+</div>
 
     <script>
         function scrollToTitle() {
@@ -39,5 +46,20 @@
         }
     </script>
 @code {
+    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
 }

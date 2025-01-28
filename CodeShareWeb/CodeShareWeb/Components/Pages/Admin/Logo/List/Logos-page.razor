@@ -1,12 +1,13 @@
 ﻿@page "/Logos-page"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @* <meta name="viewport" content="width=device-width, initial-scale=1.0">
  *@<title>Логотипы системы</title>
 <link rel="stylesheet" href="/css/logos-page.css">
 <div class="container">
-    <Sidebar />
+        <Sidebar roles="roles" />
 <div class="main-content">
     <div class="header">
         <h1 class="content-title">Логотип системы</h1>
@@ -60,6 +61,21 @@
     {
         NavigationManager.NavigateTo("/Create_logo");
     }
+    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
     
 }

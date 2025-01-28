@@ -41,8 +41,13 @@
             </div>
             <div class="button-group">
                 <button type="button" @onclick="Calback" class="cancel-button">Отмена</button>
-                <button type="submit" @onclick="Reg" class="register-button">Регистрация</button>
-            </div>
+                <button type="button" @onclick="Reg" class="register-button">Регистрация</button>
+            </div>        
+            @if (!string.IsNullOrEmpty(erorr))
+            {
+                <p>@erorr</p>
+            }
+
         </form>
     </div>
 </div>
@@ -50,6 +55,7 @@
 @code {
     public Users user = new Users() { RoleId =0};
     public Roles Roles= new Roles() { };
+    public string erorr = "";
     protected override async Task OnInitializedAsync()
     {
         try
@@ -79,12 +85,22 @@
         NavigationManager.NavigateTo("/");
     }
 
-    public async void Reg()
+    public async Task Reg()
     {
         user.CreateAt = $"{DateTime.Now}";
         user.UpdatedAt = "";
+        // Users users = new Users { Email = "" };
+        Users users = await IUserServise.CreateUser(user);
+        if (!string.IsNullOrEmpty(users.Email))
+        {
+            NavigationManager.NavigateTo("/");
 
-         await IUserServise.CreateUser(user);
-         NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+          erorr = "Ошибка регистрации";
+
+        }
     }
+    
 }

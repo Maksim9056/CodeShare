@@ -1,18 +1,15 @@
 ﻿@page "/browse-topics"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 <title> Просмотр тем</title>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="/css/browse-topics.css">
-
- 
 <div class="container">
-    <Sidebar/>
-<!-- Основной контент -->
+    <Sidebar roles="roles" />
+    <!-- Основной контент -->
 <main class="content">
     <header class="header">
         <h1>Просмотр тем</h1>
@@ -49,6 +46,22 @@
     </section>
 </main>
 </div>
-@code {
+@code 
+{
+    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
 }

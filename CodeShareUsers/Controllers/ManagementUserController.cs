@@ -1,6 +1,7 @@
 using CodeShare_Library.Abstractions;
 using CodeShare_Library.Models;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace CodeShareUsers.Controllers
 {
@@ -24,10 +25,26 @@ namespace CodeShareUsers.Controllers
         //}
 
         [HttpPost]
-        public async Task Registration(Users user)
+        public async Task<IActionResult> Registration(Users user)
         {
-            await     _managentUser.Registration(user);
+            try
+            {
+
+
+                //Log.Information($"Registration endpoint called with user:{@User}", user);
+
+                await _managentUser.Registration(user);
+                Log.Information("Registration User {@User} registered successfully", user);
+
+                return Ok(user);
+            }catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
+    
+
 
         [HttpGet]
         public async Task<Users> CheckUser([FromQuery]  string Email, [FromQuery] string Password)

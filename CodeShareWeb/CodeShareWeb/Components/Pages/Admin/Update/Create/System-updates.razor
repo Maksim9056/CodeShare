@@ -1,5 +1,6 @@
 ﻿@page "/System-updates"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 <title> Просмотр тем</title>
@@ -15,7 +16,7 @@
 <title>Изменения в системе</title>
 
 <div class="container">
-    <Sidebar />
+    <Sidebar roles="roles" />
     <!-- Основной контент -->
     <main class="content">
         <!-- Информация о пользователе -->
@@ -63,5 +64,21 @@
     });
 </script>
 @code {
+    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
 
 }

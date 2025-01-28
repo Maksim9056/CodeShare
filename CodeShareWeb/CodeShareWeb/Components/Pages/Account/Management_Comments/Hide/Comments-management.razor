@@ -1,5 +1,6 @@
 ﻿@page "/Comments-management"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 <link rel="stylesheet" href="/css/comments-management.css">
@@ -7,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Управление комментариями</title>
 <div class="container">
-    <Sidebar/>
+    <Sidebar roles="roles" />
 <!-- Основной контент -->
 <main class="content">
     <header class="header">
@@ -52,5 +53,20 @@
 </div>
 
 @code {
+    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
 }

@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="/css/review-code.css">
 <div class="container">
 
-    <Sidebar/>
-<!-- Основной контент -->
+    <Sidebar roles="roles" />
+    <!-- Основной контент -->
 <main class="content">
     <header class="header">
         <h1>Проверка кода и оценка</h1>
@@ -242,6 +242,9 @@
 </script>
 @code {
 
+        Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+
+       
     private CodeSnippets snippet = new CodeSnippets
         {
             CodeSnippetsId = 1,

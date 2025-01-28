@@ -51,8 +51,8 @@
     protected override async Task OnInitializedAsync()
     {
         string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photo", "CodeShare.png");
-        var roles = await RolesProvider.GetAlll();
-        Roles = roles.ToList();
+        // var roles = await RolesProvider.GetAlll();
+        // Roles = roles.ToList();
         bytes = File.ReadAllBytes(filePath);
         Console.WriteLine($"Фото загружен {bytes.Length}");
 
