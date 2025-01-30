@@ -2,6 +2,7 @@
 using CodeShare_Library.Date;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CodeShare_Library.Migrations
 {
     [DbContext(typeof(CodeShareDB))]
-    partial class CodeShareDBModelSnapshot : ModelSnapshot
+    [Migration("20250129114430_InitialCreat25")]
+    partial class InitialCreat25
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

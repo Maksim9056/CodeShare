@@ -3,14 +3,29 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CodeShare_Library.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate1 : Migration
+    public partial class InitialCreat25 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Language",
+                columns: table => new
+                {
+                    Id_Programming_language = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Programming_language = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Language", x => x.Id_Programming_language);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Rate",
                 columns: table => new
@@ -97,11 +112,17 @@ namespace CodeShare_Library.Migrations
                     IsAdmin = table.Column<long>(type: "bigint", nullable: false),
                     CreateAt = table.Column<string>(type: "text", nullable: false),
                     UpdateAt = table.Column<string>(type: "text", nullable: false),
-                    Programming_language = table.Column<string>(type: "text", nullable: false)
+                    Programming_language = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CodeSnippets", x => x.CodeSnippetsId);
+                    table.ForeignKey(
+                        name: "FK_CodeSnippets_Language_Programming_language",
+                        column: x => x.Programming_language,
+                        principalTable: "Language",
+                        principalColumn: "Id_Programming_language",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CodeSnippets_Users_UserId",
                         column: x => x.UserId,
@@ -237,9 +258,104 @@ namespace CodeShare_Library.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Language",
+                columns: new[] { "Id_Programming_language", "Programming_language" },
+                values: new object[,]
+                {
+                    { 1L, "C#" },
+                    { 2L, "Python" },
+                    { 3L, "Java" },
+                    { 4L, "Go" },
+                    { 5L, "PHP" },
+                    { 6L, "JavaScript" },
+                    { 7L, "C++" },
+                    { 8L, "C" },
+                    { 9L, "TypeScript" },
+                    { 10L, "Swift" },
+                    { 11L, "Kotlin" },
+                    { 12L, "Rust" },
+                    { 13L, "Ruby" },
+                    { 14L, "Dart" },
+                    { 15L, "Scala" },
+                    { 16L, "Objective-C" },
+                    { 17L, "Perl" },
+                    { 18L, "Lua" },
+                    { 19L, "Haskell" },
+                    { 20L, "Elixir" },
+                    { 21L, "F#" },
+                    { 22L, "R" },
+                    { 23L, "Julia" },
+                    { 24L, "SQL" },
+                    { 25L, "Bash" },
+                    { 26L, "Shell" },
+                    { 27L, "PowerShell" },
+                    { 28L, "MATLAB" },
+                    { 29L, "COBOL" },
+                    { 30L, "Fortran" },
+                    { 31L, "Ada" },
+                    { 32L, "Lisp" },
+                    { 33L, "Scheme" },
+                    { 34L, "Prolog" },
+                    { 35L, "Smalltalk" },
+                    { 36L, "Erlang" },
+                    { 37L, "APL" },
+                    { 38L, "Awk" },
+                    { 39L, "Groovy" },
+                    { 40L, "Tcl" },
+                    { 41L, "Racket" },
+                    { 42L, "ML" },
+                    { 43L, "OCaml" },
+                    { 44L, "Forth" },
+                    { 45L, "Delphi" },
+                    { 46L, "D" },
+                    { 47L, "Crystal" },
+                    { 48L, "FoxPro" },
+                    { 49L, "REXX" },
+                    { 50L, "Clipper" },
+                    { 51L, "PL/SQL" },
+                    { 52L, "T-SQL" },
+                    { 53L, "ABAP" },
+                    { 54L, "XQuery" },
+                    { 55L, "VHDL" },
+                    { 56L, "Verilog" },
+                    { 57L, "ActionScript" },
+                    { 58L, "Modula-2" },
+                    { 59L, "PostScript" },
+                    { 60L, "Eiffel" },
+                    { 61L, "J" },
+                    { 62L, "IDL" },
+                    { 63L, "IDL (CORBA)" },
+                    { 64L, "Logo" },
+                    { 65L, "X10" },
+                    { 66L, "Nim" },
+                    { 67L, "Zig" },
+                    { 68L, "Hack" },
+                    { 69L, "J#" },
+                    { 70L, "VBScript" },
+                    { 71L, "QBasic" },
+                    { 72L, "Fantom" },
+                    { 73L, "RPG" },
+                    { 74L, "Chapel" },
+                    { 75L, "IDL" },
+                    { 76L, "Haxe" },
+                    { 77L, "Transact-SQL" },
+                    { 78L, "Sed" },
+                    { 79L, "Pike" },
+                    { 80L, "IDL (IDL4)" },
+                    { 81L, "OpenCL" },
+                    { 82L, "IDL (Interactive Data Language)" },
+                    { 83L, "IDL (Industrial Design Language)" },
+                    { 84L, "IDL (Interface Definition Language)" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "RolesId", "NameRole" },
-                values: new object[] { 1L, "Admin" });
+                values: new object[,]
+                {
+                    { 1L, "Админ" },
+                    { 2L, "Пользователь" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",
@@ -250,6 +366,11 @@ namespace CodeShare_Library.Migrations
                 name: "IX_Changes_in_the_system_UserId",
                 table: "Changes_in_the_system",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CodeSnippets_Programming_language",
+                table: "CodeSnippets",
+                column: "Programming_language");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CodeSnippets_UserId",
@@ -338,6 +459,9 @@ namespace CodeShare_Library.Migrations
 
             migrationBuilder.DropTable(
                 name: "CodeSnippets");
+
+            migrationBuilder.DropTable(
+                name: "Language");
 
             migrationBuilder.DropTable(
                 name: "Users");

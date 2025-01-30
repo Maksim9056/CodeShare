@@ -23,7 +23,7 @@ namespace CodeShare_Library.Models
         public string CreateAt { get; set; }
         public string UpdateAt { get; set; }
 
-        public string Programming_language { get; set; }
+        public long   Programming_language { get; set; }
 
     }
 }
