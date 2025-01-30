@@ -18,8 +18,9 @@ namespace CodeShare_Library.Date
 
         public DbSet<Users> Users { get; set; }
         public DbSet<CodeSnippets> CodeSnippets { get; set; }
-
         public DbSet<Image> Image { get; set; }
+
+        public DbSet<Language> Language { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<History> History { get; set; }
         public DbSet<Rate> Rate { get; set; }

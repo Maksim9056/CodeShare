@@ -39,7 +39,7 @@ namespace CodeShareUsers.Controllers
                 return Ok(user);
             }catch (Exception ex)
             {
-
+                Log.Error(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

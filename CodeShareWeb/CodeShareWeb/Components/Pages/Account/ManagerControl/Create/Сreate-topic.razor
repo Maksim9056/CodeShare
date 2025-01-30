@@ -1,9 +1,10 @@
 ﻿@page "/create-topic"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
-
+@inject ILanguage ILanguage
 <link rel="stylesheet" href="/css/create-topic.css">
 
 
@@ -11,52 +12,56 @@
 
     <Sidebar roles="roles" />
     <!-- Основной контент -->
-<main class="content">
-    <header class="header">
-        <h1>Создание темы</h1>
-        <div class="user-settings">
-            <span>Имя</span>
-            <div class="avatar"></div>
-            <a href="/User-profile">Настройки</a>
-        </div>
-    </header>
+    <main class="content">
+        <header class="header">
+            <h1>Создание темы</h1>
+            <div class="user-settings">
+                <span>Имя</span>
+                <div class="avatar"></div>
+                <a href="/User-profile">Настройки</a>
+            </div>
+        </header>
 
-    <!-- Форма создания темы -->
-    <section class="create-topic">
-        <form >
-            <div class="form-group">
-                <label for="topic-title">Название темы</label>
+        <!-- Форма создания темы -->
+        <section class="create-topic">
+            <form >
+                <div class="form-group">
+                    <label for="topic-title">Название темы</label>
                     <input type="text" @bind="codeSnippets.Title" id="topic-title" name="topic-title" placeholder="Введите название темы" required>
-            </div>
+                </div>
 
-            <div class="form-group">
-                <label for="programming-language">Язык программирования</label>
+                <div class="form-group">
+                    <label for="programming-language">Язык программирования</label>
                     <select id="programming-language" name="programming-language"  @onchange="OnLanguageChanged">
-                    <option value="csharp">C#</option>
-                    <option value="java">Java</option>
-                    <option value="python">Python</option>
-                    <option value="javascript">JavaScript</option>
-                </select>
-            </div>
+                        @foreach (var s in Languages)
+                        {
+                            <option value="@s.Id_Programming_language">@s.Programming_language</option>
+                          
+                        }
 
-            <div class="form-group">
-                <label for="code">Код</label>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="code">Код</label>
                     <textarea id="code" @bind="codeSnippets.Code" name="code" rows="10" placeholder="Введите ваш код"></textarea>
-            </div>
+                </div>
 
-            <div class="form-buttons">
-                <button type="button" @onclick="Callback" class="cancel-button">Отмена</button>
-                <button type="submit" @onclick="Сreate" class="create-button">Создать</button>
-            </div>
-        </form>
-    </section>
-</main>
+                <div class="form-buttons">
+                    <button type="button" @onclick="Callback" class="cancel-button">Отмена</button>
+                    <button type="submit" @onclick="Сreate" class="create-button">Создать</button>
+                </div>
+            </form>
+        </section>
+    </main>
 </div>
 
 @code {
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
     // @bind="codeSnippets.Programming_language"
     CodeSnippets codeSnippets = new CodeSnippets();
+    public List<Language> Languages = new List<Language>();
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -64,6 +69,7 @@
 
 
             Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+            Languages = await ILanguage.GetAllAsync();
 
         }
         catch (Exception)
@@ -73,7 +79,8 @@
     }
     private void OnLanguageChanged(ChangeEventArgs e)
     {
-        codeSnippets.Programming_language = e.Value.ToString();
+        // = e.Value.ToString();
+        codeSnippets.Programming_language = Convert.ToInt64(e.Value.ToString());
         // Логика, выполняемая при изменении выбора
         Console.WriteLine($"Выбранный язык: {codeSnippets.Programming_language}");
     }

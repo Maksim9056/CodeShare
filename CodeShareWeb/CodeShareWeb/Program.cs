@@ -36,7 +36,11 @@ namespace CodeShareWeb
                 string url = builder.Configuration["Urls:UserService"];
                 return new UserService(url);
             });
-
+            builder.Services.AddScoped<ILanguage, CodeShare_Library.Service.LanguageServise>(provider =>
+            {
+                string url = builder.Configuration["Urls:Code_Share_Language"];
+                return new LanguageServise(url);
+            });
 
 
             builder.Services.AddScoped<IRolesProvider, CodeShare_Library.Service.RolesService>(provider =>
