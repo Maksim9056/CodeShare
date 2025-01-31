@@ -24,7 +24,7 @@
 
         <!-- Форма создания темы -->
         <section class="create-topic">
-            <form >
+            <form>
                 <div class="form-group">
                     <label for="topic-title">Название темы</label>
                     <input type="text" @bind="codeSnippets.Title" id="topic-title" name="topic-title" placeholder="Введите название темы" required>
@@ -32,11 +32,11 @@
 
                 <div class="form-group">
                     <label for="programming-language">Язык программирования</label>
-                    <select id="programming-language" name="programming-language"  @onchange="OnLanguageChanged">
+                    <select id="programming-language" name="programming-language" @onchange="OnLanguageChanged">
                         @foreach (var s in Languages)
                         {
                             <option value="@s.Id_Programming_language">@s.Programming_language</option>
-                          
+
                         }
 
                     </select>
@@ -69,7 +69,7 @@
 
 
             Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
-            Languages = await ILanguage.GetAllAsync();
+
 
         }
         catch (Exception ex)
@@ -77,6 +77,25 @@
             Console.WriteLine(ex.Message);
         }
     }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                Languages = await ILanguage.GetAllAsync();
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+
     private void OnLanguageChanged(ChangeEventArgs e)
     {
         // = e.Value.ToString();
@@ -84,16 +103,16 @@
         // Логика, выполняемая при изменении выбора
         Console.WriteLine($"Выбранный язык: {codeSnippets.Programming_language}");
     }
-        public void Callback()
-        {
-          NavigationManager.NavigateTo("/topics");
-        }
+    public void Callback()
+    {
+        NavigationManager.NavigateTo("/topics");
+    }
 
 
 
-        public void Сreate()
-        {
-         NavigationManager.NavigateTo("/review-code");
-        }
-    
+    public void Сreate()
+    {
+        NavigationManager.NavigateTo("/review-code");
+    }
+
 }
