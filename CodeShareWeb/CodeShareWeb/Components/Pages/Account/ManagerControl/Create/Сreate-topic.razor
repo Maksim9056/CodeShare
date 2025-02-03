@@ -5,6 +5,8 @@
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @inject ILanguage ILanguage
+@inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+
 <link rel="stylesheet" href="/css/create-topic.css">
 
 
@@ -41,6 +43,13 @@
 
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="programming-language">Видимость темы</label>
+                    <select id="programming-language" name="programming-language" @onchange="OnSetingTopicChanged">
+                            <option value="Public">Публичный</option>
+                            <option value="Private">Приватный</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label for="code">Код</label>
@@ -61,6 +70,13 @@
     // @bind="codeSnippets.Programming_language"
     CodeSnippets codeSnippets = new CodeSnippets();
     public List<Language> Languages = new List<Language>();
+
+    Setting Setting = new Setting()
+    {
+     Block = false,
+     Hide = "",
+     Prohibition = false,
+    };
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,6 +111,13 @@
         }
     }
 
+    private void OnSetingTopicChanged(ChangeEventArgs e)
+    {
+        // = e.Value.ToString();
+        Setting.Visibility_Setting = e.Value.ToString();
+        // Логика, выполняемая при изменении выбора
+        Console.WriteLine($"Выбранный доступность темы: {Setting.Visibility_Setting}");
+    }
 
     private void OnLanguageChanged(ChangeEventArgs e)
     {
@@ -103,6 +126,7 @@
         // Логика, выполняемая при изменении выбора
         Console.WriteLine($"Выбранный язык: {codeSnippets.Programming_language}");
     }
+
     public void Callback()
     {
         NavigationManager.NavigateTo("/topics");
@@ -110,8 +134,17 @@
 
 
 
-    public void Сreate()
+    public async Task Сreate()
     {
+        codeSnippets.Description = "";
+        codeSnippets.IsAdmin = 1;
+        codeSnippets.CreateAt = $"{DateTime.UtcNow}";
+        codeSnippets.UpdateAt = "";
+        codeSnippets.UserId = 2;
+        // codeSnippets.IsAdmin;
+        var topic =  await ICodeShareCodeSnippets.Create(codeSnippets);
+
+        // Setting
         NavigationManager.NavigateTo("/review-code");
     }
 

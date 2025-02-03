@@ -1,9 +1,11 @@
 ﻿@page "/topics"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
-
+@inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 <link rel="stylesheet" href="/css/topics.css">
 
 <meta charset="UTF-8">
@@ -32,35 +34,21 @@
                         <label for="latest-comments">Последний комментарий</label>
                     </div>
                 <button class="create-topic-button"><a href="/create-topic">Создать тему</a></button>
-                </div>
-                <div class="topics-list">
-                    <ul>
-                        <!-- Пример темы с последним комментарием -->
-                        <li class="topic" data-latest="true">
-                        <a href="/review-code">
-                            <div class="topic-title">Тема 1</div>
-                                <div class="topic-info">Последний комментарий: 5 минут назад</div>
-                            </a>
-                        </li>
-                        <li class="topic" data-latest="false">
-                        <a href="/review-code">
-                                <div class="topic-title">Тема 2</div>
-                                <div class="topic-info">Комментарий отсутствует</div>
-                            </a>
-                        </li>
-                        <li class="topic" data-latest="true">
-                        <a href="/review-code">
-                                <div class="topic-title">Тема 3</div>
-                                <div class="topic-info">Последний комментарий: 2 часа назад</div>
-                            </a>
-                        </li>
-                        <li class="topic" data-latest="false">
-                        <a href="/review-code">
-                            <div class="topic-title">Тема 4</div>
-                                <div class="topic-info">Комментарий отсутствует</div>
-                            </a>
-                        </li>
-                    </ul>
+            </div>
+            <div class="topics-list">
+                @foreach (var Code in codeSnippets)
+                {
+                    <li class="topic" data-latest="true" @onclick="() => Comments_management(Code.CodeSnippetsId)">
+@*                         <a href="/review-code">
+ *@                           
+ <div class="topic-title"> @Code.Title</div>
+                            <div class="topic-info">@Code.UpdateAt</div>
+
+                      @*   </a> *@
+
+                    </li>
+                }
+
                 </div>
             </section>
         </main>
@@ -80,7 +68,7 @@
     </script>
 @code {
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
-
+    List<CodeSnippets> codeSnippets = new List<CodeSnippets>();
     protected override async Task OnInitializedAsync()
     {
         try
@@ -95,4 +83,53 @@
 
         }
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                codeSnippets = await ICodeShareCodeSnippets.GetAllCodeSnippets(2);
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    public async Task Comments_management( long CodeShare)
+    {
+        await localStorage.SetItemAsync("CodeShareId",CodeShare);
+        NavigationManager.NavigateTo("/review-code");
+    }
+    // <ul>
+    //     <!-- Пример темы с последним комментарием -->
+    //     <li class="topic" data-latest="true">
+    //         <a href="/review-code">
+    //             <div class="topic-title">Тема 1</div>
+    //             <div class="topic-info">Последний комментарий: 5 минут назад</div>
+    //         </a>
+    //     </li>
+    //     <li class="topic" data-latest="false">
+    //         <a href="/review-code">
+    //             <div class="topic-title">Тема 2</div>
+    //             <div class="topic-info">Комментарий отсутствует</div>
+    //         </a>
+    //     </li>
+    //     <li class="topic" data-latest="true">
+    //         <a href="/review-code">
+    //             <div class="topic-title">Тема 3</div>
+    //             <div class="topic-info">Последний комментарий: 2 часа назад</div>
+    //         </a>
+    //     </li>
+    //     <li class="topic" data-latest="false">
+    //         <a href="/review-code">
+    //             <div class="topic-title">Тема 4</div>
+    //             <div class="topic-info">Комментарий отсутствует</div>
+    //         </a>
+    //     </li>
+    // </ul>
 }

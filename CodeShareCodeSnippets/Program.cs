@@ -24,7 +24,7 @@ namespace CodeShareCodeSnippets
             options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare1")));
             //builder.Services.AddDbContext<CodeShareDB>(options =>
             //options.UseSqlServer(builder.Configuration.GetConnectionString("CodeShare")));
-            builder.Services.AddScoped<ICodeShareCodeSnippets, CodeShareCodeSnippetsService>();
+            builder.Services.AddScoped<ICodeShareCodeSnippets,CodeShareCodeSnippets.Services.CodeShareCodeSnippetsService>();
 
             
             var app = builder.Build();

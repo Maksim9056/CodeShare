@@ -1,8 +1,12 @@
 ﻿@page "/review-code"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Проверка кода</title>
@@ -29,7 +33,7 @@
 
             <div class="code-header">
                 <h2>
-                    Код                <span class="language">:C++</span>
+                        Код                <span class="language">:@codeSnippets.Programming_language</span>
                 </h2>
             </div>
             <div class="code-section" id="code-display">
@@ -242,9 +246,9 @@
 </script>
 @code {
 
-        Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    CodeSnippets codeSnippets = new CodeSnippets() { };
 
-       
     private CodeSnippets snippet = new CodeSnippets
         {
             CodeSnippetsId = 1,
@@ -263,16 +267,42 @@
     protected override void OnInitialized()
     {
         // Разбиваем код на строки
-        var lines = snippet.Code.Split('\n');
-        for (int i = 0; i < lines.Length; i++)
-        {
-            CodeLines.Add(new CodeLine
-                {
-                    LineNumber = i + 1,
-                    Content = lines[i]
-                });
-        }
+
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+
+            if (firstRender)
+            {
+
+
+
+                var key = await localStorage.GetItemAsStringAsync("CodeShareId");
+                Console.WriteLine(key);
+                codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
+                //(key);
+                var lines = codeSnippets.Code.Split('\n');
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    CodeLines.Add(new CodeLine
+                        {
+                            LineNumber = i + 1,
+                            Content = lines[i]
+                        });
+                }
+            }
+            StateHasChanged();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+
 
     private void OnLineClick(CodeLine line)
     {

@@ -17,7 +17,7 @@ namespace CodeShareCodeSnippets.Services
         {
             await _CodeShareDB.CodeSnippets.AddAsync(codeSnippets);
             await _CodeShareDB.SaveChangesAsync();
-            return new CodeSnippets() { };
+            return codeSnippets;
         }
 
         public async Task<CodeSnippets> Edit(CodeSnippets codeSnippets)
@@ -42,14 +42,36 @@ namespace CodeShareCodeSnippets.Services
             return new CodeSnippets() { };
         }
 
-        public Task<CodeSnippets> GetCodeSnippets(long Id_user)
+        public async Task<CodeSnippets> GetCodeSnippets(long Id_user)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+
+                var codeSnippet = await _CodeShareDB.CodeSnippets.FirstOrDefaultAsync(u => u.CodeSnippetsId == Id_user);
+
+                return codeSnippet;
+            }
+            catch(Exception ex) 
+            {
+                return new CodeSnippets() { };
+            }
         }
 
         public Task<CodeSnippets> Get_browse_CodeSnippets()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<CodeSnippets>> GetAllCodeSnippets(long Id_user)
+        {
+            var Code = await _CodeShareDB.CodeSnippets.ToListAsync();
+            Parallel.ForEach(Code, codeShare =>
+            {
+                codeShare.Code = "" ;
+
+            });
+            return Code;
         }
     }
 }

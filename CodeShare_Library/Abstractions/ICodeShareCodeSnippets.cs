@@ -16,6 +16,8 @@ namespace CodeShare_Library.Abstractions
 
         Task<CodeSnippets> GetCodeSnippets(long Id_user);
 
+        Task<List<CodeSnippets>> GetAllCodeSnippets(long Id_user);
+
         Task<CodeSnippets> Get_browse_CodeSnippets();
 
     }

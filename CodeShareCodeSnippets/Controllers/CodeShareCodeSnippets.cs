@@ -39,6 +39,20 @@ namespace CodeShareCodeSnippets.Controllers
           return   await _codeShareCodeSnippets.Delete(codeSnippets);
         }
 
+
+
+        [HttpGet("getall/get{codeSnippets}")]
+        public async Task<IActionResult> GetSnippetsAll(long codeSnippets)
+        {
+            return Ok( await _codeShareCodeSnippets.GetAllCodeSnippets(codeSnippets));
+        }
+
+        [HttpGet("get{codeSnippets}")]
+        public async Task<IActionResult> GetSnippets(long codeSnippets)
+        {
+            return Ok(await _codeShareCodeSnippets.GetCodeSnippets(codeSnippets));
+        }
+
         //[HttpGet]
         //public async Task<Users> CheckUser([FromQuery] string Email, [FromQuery] string Password)
         //{
