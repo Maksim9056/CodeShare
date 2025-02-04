@@ -21,11 +21,13 @@ namespace CodeShareUsers
                       path: "logs\\structured-.json",
                     rollingInterval: RollingInterval.Day,
                     restrictedToMinimumLevel: LogEventLevel.Debug).CreateLogger();
-            //.WriteTo.File(
+            /// Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().
+            //WriteTo.File(
             //   formatter: new JsonFormatter(),       // Самое важное — формат JSON
-            //   outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss}] [{Level:u3}] {Message:lj}{NewLine}{Exception}"
+            //   outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss}] [{Level:u3}] {Message:lj}{NewLine}{Exception}",
 
-            //   path: "logs\\structured-.json",                     path: "logs/log-.txt",
+            //              path: "logs/log-.txt", rollingInterval: RollingInterval.Day, 
+            //              restrictedToMinimumLevel: LogEventLevel.Debug).CreateLogger();
 
             try
             {

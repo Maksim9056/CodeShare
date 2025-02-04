@@ -47,6 +47,7 @@ namespace CodeShare_Library.Service
             }
             catch (Exception ex)
             {
+
                 Console.WriteLine(ex.Message);
                 return new CodeSnippets() { UserId=0};
 
