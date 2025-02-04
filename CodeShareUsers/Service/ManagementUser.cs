@@ -64,10 +64,23 @@ namespace CodeShareUsers.Service
 
         }
 
-        public async Task GetUser(long Id)
+        public async Task<Users> GetUser(long Id)
         {
+            try
+            {
 
 
+                var user = await _CodeShareDB.Users.FirstOrDefaultAsync(u => u.UsersId == Id);
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Exception User {@User} registered successfully", ex);
+                return new Users() { };
+
+
+            }
         }
 
         public async Task<Users> CheckUser(string Email, string Password)

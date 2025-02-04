@@ -26,9 +26,8 @@ namespace CodeShare_Library.Service
           
             UrlUsersApi = urlUsersApi;
             _httpClient = new HttpClient();
-
-
         } 
+
         public async Task<Users> CreateUser(Users users)
         {
             url=$"{UrlUsersApi}/ManagementUser";
@@ -58,9 +57,36 @@ namespace CodeShare_Library.Service
 
         }
 
-        public async Task GetUser(long Id)
+        public async Task<Users> GetUser(long Id)
         {
-            url = $"{UrlUsersApi}/ManagementUser";
+            try
+            {
+
+                url = $"{UrlUsersApi}/ManagementUser/users/Id{Id}";
+                HttpClient httpClient = new HttpClient();
+
+                if (httpClient.BaseAddress == null)
+                {
+
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                //_httpClient.BaseAddress = new Uri(url);
+                Users Users_responseMessage = await httpClient.GetFromJsonAsync<Users>(url);
+
+                return Users_responseMessage;
+
+
+            }
+            catch (Exception ex)
+            {
+                return new Users() { };
+            }
 
         }
 

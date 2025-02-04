@@ -135,6 +135,8 @@
                     switch (users.RoleId)
                     {
                         case 2:
+                            await localStorage.SetItemAsync("CodeUserId", users.UsersId);
+
                             NavigationManager.NavigateTo("/Main");
                             break;
 

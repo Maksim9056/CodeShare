@@ -7,6 +7,8 @@
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject ILanguage ILanguage
+@inject IUserServise UserService
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,9 +45,13 @@
                 <button @onclick="Comments_management">Настройки темы</button>
 
                 <div class="code-header">
+
+                    @if (language !=null)
+                    {
                     <h2>
-                        Код                <span class="language">:@codeSnippets.Programming_language</span>
+                            Код  <span class="language">:@language.Programming_language</span>
                     </h2>
+                    }
                 </div>
                 <div class="code-section" id="code-display">
                     @foreach (var line in CodeLines)
@@ -66,8 +72,8 @@
                 <h3>Оставьте комментарий</h3>
                 <form  method="POST">
                     <div class="form-group">
-                        <label for="selected-range">Выбранный диапазон:@GetSelectedRange()</label>
-                        <input type="text" id="selected-range" readonly placeholder="Нажмите на линии, чтобы выбрать диапозон" />
+                        <label for="selected-range">Выбранный диапазон :</label>
+                        <input type="text" value="@GetSelectedRange()" id="selected-range" readonly placeholder="Нажмите на линии, чтобы выбрать диапозон" />
                     </div>
 
                     <div class="form-group">
@@ -86,7 +92,7 @@
 
                     <div class="form-buttons">
                         <button type="submit" onclick="submitComment" class="save-button">Сохранить</button>
-                        <button type="button"  class="cancel-button">Отменить выбранный диапазон</button>
+                        <button type="button" class="cancel-button" @onclick="GetSelected">Отменить выбранный диапазон</button>
                     </div>
                 </form>
             </div>
@@ -257,9 +263,10 @@
     }
 </script>
 @code {
-
+    Language language = null;
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
     CodeSnippets codeSnippets = new CodeSnippets() { };
+    Users users = new Users() { };
     private CodeLine? firstSelectedLine = null;
     private CodeLine? lastSelectedLine = null;
     private HashSet<int> SelectedLines = new();
@@ -293,11 +300,15 @@
             {
 
 
-
+                var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                Log.Information($"Получили{users.UsersName} значение теме" +  users.UsersId );
+                
                 var key = await localStorage.GetItemAsStringAsync("CodeShareId");
-                Log.Information("Получили значение теме"+key);
                 Console.WriteLine(key);
+                Log.Information($"Пользователь{users.UsersName}  CodeShareId  {codeSnippets.CodeSnippetsId}    {codeSnippets.Title} {codeSnippets.Programming_language}");
                 codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
+
                 //(key);
                 var lines = codeSnippets.Code.Split('\n');
                 for (int i = 0; i < lines.Length; i++)
@@ -308,6 +319,11 @@
                             Content = lines[i]
                         });
                 }
+                language = new Language();
+                language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
+                Log.Information($"Пользователь{users.UsersName}  CodeShareId {codeSnippets.CodeSnippetsId}   {codeSnippets.Title} {language.Programming_language}");
+
+
             }
             StateHasChanged();
         }
@@ -347,13 +363,24 @@
 
         Console.WriteLine($"Выбран диапазон: {GetSelectedRange()}");
     }
-        // Здесь можно реализовать дополнительные действия (например, редактирование строки)
+    // Здесь можно реализовать дополнительные действия (например, редактирование строки)
     private string GetSelectedRange()
     {
         if (firstSelectedLine == null || lastSelectedLine == null)
             return "Ничего не выбрано";
 
         return $"{Math.Min(firstSelectedLine.LineNumber, lastSelectedLine.LineNumber)} - {Math.Max(firstSelectedLine.LineNumber, lastSelectedLine.LineNumber)}";
+    }
+    public void GetSelected()
+    {
+        // firstSelectedLine.LineNumber = ;
+        if (firstSelectedLine != null)
+        {
+            firstSelectedLine = null;
+            lastSelectedLine = null;
+            SelectedLines = new();
+        }
+      
     }
 
     private class CodeLine

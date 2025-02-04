@@ -52,6 +52,13 @@ namespace CodeShareUsers.Controllers
 
             return await _managentUser.CheckUser(Email, Password);
         }
+
+        [HttpGet("users/Id{userId}", Name = "GetByIdAsync")]
+        public async Task<Users> GetUsersId(long userId)
+        {
+
+            return await _managentUser.GetUser(userId);
+        }
         //public async  Task Update(Users user)
         //{
 

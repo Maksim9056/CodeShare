@@ -74,9 +74,22 @@ namespace CodeShare_Library.Service
 
         public async Task<Language> GetByIdAsync(long id)
         {
-            url = $"{UrlRolesApi}/CodeShareRoles/roles/all{id}";
-            _httpClient.BaseAddress = new Uri(url);
-            Language Roles_responseMessage = await _httpClient.GetFromJsonAsync<Language>(url);
+            HttpClient httpClient = new HttpClient();
+                url = $"{UrlRolesApi}/Language/language/Id{id}";
+
+            if (httpClient.BaseAddress == null)
+            {
+
+                httpClient.BaseAddress = new Uri(url);
+
+            }
+            else
+            {
+                httpClient.BaseAddress = new Uri(url);
+
+            }
+            //_httpClient.BaseAddress = new Uri(url);
+            Language Roles_responseMessage = await httpClient.GetFromJsonAsync<Language>(url);
 
             return Roles_responseMessage;
 
