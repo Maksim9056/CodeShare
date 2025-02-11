@@ -1,6 +1,11 @@
 
+using CodeShare_Library.Abstractions;
 using CodeShare_Library.Date;
+using CodeShareComment.Service;
 using Microsoft.EntityFrameworkCore;
+using Serilog.Events;
+using Serilog.Formatting.Json;
+using Serilog;
 
 namespace CodeShareComment
 {
@@ -9,7 +14,15 @@ namespace CodeShareComment
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            // Configure Serilog
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File(
+                     formatter: new JsonFormatter(),
+                      path: "logs\\structured-.json",
+                    rollingInterval: RollingInterval.Day,
+                    restrictedToMinimumLevel: LogEventLevel.Debug).CreateLogger();
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -18,6 +31,7 @@ namespace CodeShareComment
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<CodeShareDB>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));
+            builder.Services.AddScoped<ICommentService, CommentService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

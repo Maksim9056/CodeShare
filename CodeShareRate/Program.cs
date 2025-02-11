@@ -1,5 +1,7 @@
 
+using CodeShare_Library.Abstractions;
 using CodeShare_Library.Date;
+using CodeShareRate.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodeShareRate
@@ -18,6 +20,7 @@ namespace CodeShareRate
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<CodeShareDB>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));
+            builder.Services.AddScoped<IRateService, RateService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

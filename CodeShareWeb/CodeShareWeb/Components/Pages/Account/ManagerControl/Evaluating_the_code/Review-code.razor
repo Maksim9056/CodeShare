@@ -9,7 +9,8 @@
 @inject ICodeShareCodeSnippets ICodeShareCodeSnippets
 @inject ILanguage ILanguage
 @inject IUserServise UserService
-
+@inject ICommentService ICommentService
+@inject IRateService IRateService
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Проверка кода</title>
@@ -77,21 +78,23 @@
                     </div>
 
                     <div class="form-group">
-                        <textarea id="comment" name="comment" rows="4" placeholder="Напишите свой комментарий здесь..."></textarea>
+                        <textarea id="comment" @bind="Comment_Text" name="comment" rows="4" placeholder="Напишите свой комментарий здесь..."></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="rating">Оцените этот код:</label>
-                        <select id="rating" name="rating">
-                            <option value="excellent">Отлично</option>
-                            <option value="good">Хорошо</option>
-                            <option value="average">Средне</option>
-                            <option value="bad">Плохо</option>
-                        </select>
+                        Rate
+                        <select id="rating" name="rating" @onchange="OnLanguageChanged">
+                           @foreach (var line in Rate)
+                           {
+                                <option value="@line.RateId">@line.Name_Rate</option>
+                           
+                           }
+                                </select>
                     </div>
 
                     <div class="form-buttons">
-                        <button type="submit" onclick="submitComment" class="save-button">Сохранить</button>
+                        <button type="button" @onclick="Create_Comment" class="save-button">Сохранить</button>
                         <button type="button" class="cancel-button" @onclick="GetSelected">Отменить выбранный диапазон</button>
                     </div>
                 </form>
@@ -124,145 +127,33 @@
             <div class="comments">
                 <h3>Комментарии</h3>
                 <ul class="comments-list">
-                    <li>Комментарий 1...</li>
-                    <li>Комментарий 2...</li>
-                    <li>Комментарий 3...</li>
+                    @foreach (var comment in Comments)
+                    {
+                        <li>@comment.Comment_Text</li>
+                        <li>@comment.Selected_Range</li>
+                        <li>@comment.UserId</li>
+                        <li>@comment.CreateAt</li>
+
+                    }
                 </ul>
+                <button @onclick="LoadMoreComments" >
+                    @(isLoading ? "Загрузка..." : hasMore ? "Показать ещё" : "Больше комментариев нет")
+                </button>
             </div>
         </section>
     </main>
 </div>
 
-<script>
-    let startLine = null;
-    let endLine = null;
-    let comments = [];
-
-    function loadCommentsFromFile() {
-    fetch('comments.json')
-    .then(response => response.json())
-    .then(data => {
-    comments = data;
-    displayComments();
-    })
-    .catch(error => console.error('Error loading comments:', error));
-    }
-
-    document.querySelectorAll('.code-line').forEach(line => {
-    line.addEventListener('click', function () {
-    const lineNumber = parseInt(this.getAttribute('data-line'));
-
-    if (startLine === null) {
-    startLine = lineNumber;
-    this.classList.add('selected');
-    } else if (endLine === null) {
-    endLine = lineNumber;
-    highlightRange();
-    } else {
-    resetSelection();
-    startLine = lineNumber;
-    this.classList.add('selected');
-    }
-    updateSelectedRange();
-    });
-    });
-
-    function highlightRange() {
-    if (startLine !== null && endLine !== null) {
-    const start = Math.min(startLine, endLine);
-    const end = Math.max(startLine, endLine);
-
-    document.querySelectorAll('.code-line').forEach(line => {
-    const lineNumber = parseInt(line.getAttribute('data-line'));
-    if (lineNumber >= start && lineNumber <= end) {
-    line.classList.add('selected');
-    } else {
-    line.classList.remove('selected');
-    }
-    });
-    }
-    }
-
-    function resetSelection() {
-    startLine = null;
-    endLine = null;
-    document.querySelectorAll('.code-line').forEach(line => {
-    line.classList.remove('selected');
-    });
-    }
-
-    function updateSelectedRange() {
-    const rangeInput = document.getElementById('selected-range');
-    if (startLine !== null && endLine !== null) {
-    rangeInput.value = `${Math.min(startLine, endLine)} - ${Math.max(startLine, endLine)}`;
-    } else if (startLine !== null) {
-    rangeInput.value = `Line ${startLine}`;
-    } else {
-    rangeInput.value = '';
-    }
-    }
-
-    function cancelSelection() {
-    resetSelection();
-    document.getElementById('selected-range').value = '';
-    alert('Selection has been canceled.');
-    }
-
-    function submitComment() {
-    const range = document.getElementById('selected-range').value;
-    const comment = document.querySelector('.comment-box').value;
-    const rating = document.getElementById('rating').value;
-
-    if (!range) {
-    alert('Please select a range of lines to comment on.');
-    return;
-    }
-
-    const newComment = {
-    range: range,
-    comment: comment,
-    rating: rating
-    };
-
-    comments.push(newComment);
-    saveCommentsToFile();
-    displayComments();
-
-    alert(`Comment submitted for range: ${range}\nComment: ${comment}\nRating: ${rating}`);
-    resetSelection();
-    document.querySelector('.comment-box').value = '';
-    }
-
-    function displayComments() {
-    const commentsDisplay = document.getElementById('comments-display');
-    commentsDisplay.innerHTML = '<h2>Коментарии</h2>';
-    comments.forEach(comment => {
-    const commentItem = document.createElement('div');
-    commentItem.className = 'comment-item';
-    commentItem.innerHTML = `<strong>Range:</strong> ${comment.range}<br><strong>Коментарий:</strong> ${comment.comment}<br><strong>Рейтинг:</strong> ${comment.rating}`;
-    commentsDisplay.appendChild(commentItem);
-    });
-    }
-    function saveCommentsToFile() {
-    fetch('save-comments', {
-    method: 'POST',
-    headers: {
-    'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(comments)
-    })
-    .then(response => {
-    if (!response.ok) {
-    throw new Error('Failed to save comments');
-    }
-    console.log('Comments saved successfully');
-    })
-    .catch(error => {
-    console.error('Error saving comments:', error);
-    });
-    }
-</script>
 @code {
+
+
+    // <h3>Комментарии</h3>
+    // <ul class="comments-list">
+    //     <li>Комментарий 1...</li>
+    //     <li>Комментарий 2...</li>
+    //     <li>Комментарий 3...</li>
+    // </ul>
+    public string Comment_Text { get; set; }
     Language language = null;
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
     CodeSnippets codeSnippets = new CodeSnippets() { };
@@ -282,13 +173,29 @@
             UpdateAt = "2025-01-05",
             Programming_language = 1
     };
-
+    public List<Comment> Comments = new List<Comment>();
+    public Comment Comment = new Comment() { };
     private List<CodeLine> CodeLines { get; set; } = new();
+    Rate Rates = new Rate() {RateId=0 };
+    private List<Rate> Rate { get; set; } = new();
+    private int skip = 0;
+    private const int take = 5;
+    private bool isLoading = false;
+    private bool hasMore = true;
+    HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
 
     protected override void OnInitialized()
     {
         // Разбиваем код на строки
 
+    }
+
+    private void OnLanguageChanged(ChangeEventArgs e)
+    {
+        // = e.Value.ToString();
+        Rates.RateId = Convert.ToInt64(e.Value.ToString());
+        // Логика, выполняемая при изменении выбора
+        Console.WriteLine($"Выбранный язык: {codeSnippets.Programming_language}");
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -303,7 +210,7 @@
                 var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
                 var users = await UserService.GetUser(Convert.ToInt64(keyUser));
                 Log.Information($"Получили{users.UsersName} значение теме" +  users.UsersId );
-                
+
                 var key = await localStorage.GetItemAsStringAsync("CodeShareId");
                 Console.WriteLine(key);
                 Log.Information($"Пользователь{users.UsersName}  CodeShareId  {codeSnippets.CodeSnippetsId}    {codeSnippets.Title} {codeSnippets.Programming_language}");
@@ -322,16 +229,70 @@
                 language = new Language();
                 language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
                 Log.Information($"Пользователь{users.UsersName}  CodeShareId {codeSnippets.CodeSnippetsId}   {codeSnippets.Title} {language.Programming_language}");
-
-
+                Comment.UserId = users.UsersId;
+                Comment.SnippetsId = codeSnippets.CodeSnippetsId;
+                Rate = await  IRateService.GetListRates();
+                // ICommentService.GetListComment(key);
+             await   LoadMoreComments();
             }
             StateHasChanged();
+
         }
         catch(Exception ex)
         {
             Log.Error(ex.Message);
             Console.WriteLine(ex.Message);
         }
+
+    }
+    private async Task LoadMoreComments()
+    {
+        if (isLoading) return;
+        isLoading = true;
+        // var newComments = await ICommentService.GetListComment(codeSnippets.CodeSnippetsId, skip, take, loadedIds);
+        // if (newComments != null && newComments.Any())
+        // {
+
+        //     skip += take;
+        //     var comment = newComments.Where(comment => !loadedIds.Contains(comment.CommentId)).ToList();
+
+
+        //    Parallel.ForEach(comment, comment_new =>
+        //    {
+        //         Comments.Add(comment_new);
+
+        //        loadedIds.Add(comment_new.CommentId);
+
+        //    });
+          
+        // }
+        // else
+        // {
+        //     hasMore = false;
+        // }
+        var newComments = await ICommentService.GetListComment(codeSnippets.CodeSnippetsId, skip, take, loadedIds);
+
+        if (newComments != null && newComments.Any())
+        {
+            var comment = newComments.Where(comment => !loadedIds.Contains(comment.CommentId)).ToList();
+
+            if (comment.Any()) // Увеличиваем skip только если добавили новые комментарии
+            {
+                skip += take;
+            }
+
+            foreach (var comment_new in comment)
+            {
+                Comments.Add(comment_new);
+                loadedIds.Add(comment_new.CommentId);
+            }
+        }
+        else
+        {
+            hasMore = false;
+        }
+
+        isLoading = false;
 
     }
 
@@ -380,7 +341,20 @@
             lastSelectedLine = null;
             SelectedLines = new();
         }
-      
+
+    }
+
+    public async Task Create_Comment()
+    {
+        Comment.CreateAt = $"{DateTime.Now}";
+        Comment.Selected_Range = GetSelectedRange();
+        // Comment.Name_Comment
+        Comment.RatingId = Rates.RateId;
+        Comment.Comment_Text = Comment_Text;
+        Comment.CommentId = 0;
+        Comment.Name_Comment = Comment_Text;
+        var comment = await ICommentService.AddComment(Comment);
+
     }
 
     private class CodeLine

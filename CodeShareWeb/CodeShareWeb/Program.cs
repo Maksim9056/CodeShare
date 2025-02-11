@@ -44,6 +44,11 @@ namespace CodeShareWeb
                         restrictedToMinimumLevel: LogEventLevel.Debug).CreateLogger();
                 builder.Services.AddBlazoredLocalStorage(); // Register Blazored.LocalStorage
                                                             //builder.Services.Configure<UserService>(builder.Configuration.GetSection("UserService"));
+                builder.Services.AddScoped<ICommentService, CommentService>(provider =>
+                {
+                    string url = builder.Configuration["Urls:CommentService"];
+                    return new CommentService(url);
+                });
 
                 builder.Services.AddScoped<IUserServise, CodeShare_Library.Service.UserService>(provider =>
                 {
@@ -60,6 +65,13 @@ namespace CodeShareWeb
                     string url = builder.Configuration["Urls:CodeShareCodeSnippets"];
                     return new CodeShareCodeSnippetsService(url);
                 });
+
+                builder.Services.AddScoped<IRateService, CodeShare_Library.Service.RateService>(provider =>
+                {
+                    string url = builder.Configuration["Urls:RateService"];
+                    return new RateService(url);
+                });
+
 
 
 

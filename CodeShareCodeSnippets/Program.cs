@@ -3,6 +3,9 @@ using CodeShare_Library.Abstractions;
 using CodeShare_Library.Date;
 using CodeShare_Library.Service;
 using Microsoft.EntityFrameworkCore;
+using Serilog.Events;
+using Serilog.Formatting.Json;
+using Serilog;
 
 namespace CodeShareCodeSnippets
 {
@@ -11,7 +14,15 @@ namespace CodeShareCodeSnippets
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            // Configure Serilog
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File(
+                     formatter: new JsonFormatter(),
+                      path: "logs\\structured-.json",
+                    rollingInterval: RollingInterval.Day,
+                    restrictedToMinimumLevel: LogEventLevel.Debug).CreateLogger();
             // Add services to the container.
 
             builder.Services.AddControllers();

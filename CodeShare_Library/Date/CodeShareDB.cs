@@ -150,7 +150,14 @@ namespace CodeShare_Library.Date
 
                     }
                 );
+                modelBuilder.Entity<Rate>().HasData(
+                       new Rate { RateId = 1 , Name_Rate ="Плохо" },
+                       new Rate { RateId = 2, Name_Rate = "Средне" },
+                       new Rate { RateId = 3, Name_Rate = "Хорошо" },
+                       new Rate { RateId = 4, Name_Rate = "Отлично" }
 
+                    );
+                 
                 modelBuilder.Entity<Language>().HasData(
     new Language { Id_Programming_language = 1, Programming_language = "C#" },
     new Language { Id_Programming_language = 2, Programming_language = "Python" },
