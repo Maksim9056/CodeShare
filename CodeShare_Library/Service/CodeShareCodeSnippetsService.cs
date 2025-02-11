@@ -93,6 +93,43 @@ namespace CodeShare_Library.Service
             }
         }
 
+
+        public async Task<List<CodeSnippets>> GetAllCodeSnippets(int take, HashSet<long> loadedIds)
+        {
+            try
+            {
+
+
+                List<CodeSnippets> CodeSnippets_responseMessage = new List<CodeSnippets>();
+                HttpClient httpClient = new HttpClient();
+                url = $"{UrlCodeSnippetsApi}/CodeShareCodeSnippets/getall/get/{take}";
+                if (httpClient.BaseAddress == null)
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                var responseMessage = await httpClient.PutAsJsonAsync(url, loadedIds);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var CodeSnippets = await responseMessage.Content.ReadFromJsonAsync<List<CodeSnippets>>();
+                    CodeSnippets_responseMessage = CodeSnippets.ToList();
+                }
+                //_httpClient.BaseAddress = null;
+                return CodeSnippets_responseMessage;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<CodeSnippets>();
+            }
+        }
+
         public async Task<CodeSnippets> GetCodeSnippets(long Id_user)
         {
             try

@@ -2,6 +2,7 @@
 using CodeShare_Library.Date;
 using CodeShare_Library.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace CodeShareCodeSnippets.Services
 {
@@ -72,6 +73,32 @@ namespace CodeShareCodeSnippets.Services
 
             });
             return Code;
+        }
+
+        //public async Task<List<CodeSnippets>> GetAllCodeSnippets(HashSet<long> loaded, int take = 5)
+        //{
+        //    var Code = await _CodeShareDB.CodeSnippets.ToListAsync();
+        //    Parallel.ForEach(Code, codeShare =>
+        //    {
+        //        codeShare.Code = "";
+
+        //    });
+        //    return Code;
+        //}
+
+        public async Task<List<CodeSnippets>> GetAllCodeSnippets(int take, HashSet<long> loadedIds)
+        {
+            try
+            {
+                var Code = await _CodeShareDB.CodeSnippets.Where(coment =>  !loadedIds.Any(us => us == coment.CodeSnippetsId)).Take(take).ToListAsync();
+                Log.Information("{@CodeSnippet}  successfully", Code);
+                return Code;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return  new List<CodeSnippets>();
+            }
         }
     }
 }

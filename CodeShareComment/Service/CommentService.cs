@@ -58,7 +58,7 @@ namespace CodeShareComment.Service
             {
                 //List < Comment > comments = new List<Comment>();
                 //// Исключаем загруженные Id
-                //var Comment = await _CodeShareDB.Comment.Where(coment => coment.SnippetsId == Id_Topic).ToListAsync();
+                var Comment = await _CodeShareDB.Comment.Where(coment => coment.SnippetsId == Id_Topic && !loadedIds.Any(us => us == coment.CommentId)).Take(take).ToListAsync();
 
                 //if (loadedIds.Count() > 0)
                 //{
@@ -79,16 +79,16 @@ namespace CodeShareComment.Service
                 //    .ToListAsync();
                 //    comments = Commenr;
                 //}
-                var query = _CodeShareDB.Comment
-               .Where(comment => comment.SnippetsId == Id_Topic && !loadedIds.Contains(comment.CommentId)) // Исключаем загруженные
-               .OrderByDescending(c => c.CreateAt) // Сортируем от новых к старым
-               .Skip(skip) // Пропускаем уже загруженные
-               .Take(take); // Берем только нужное количество
-
-                var comments = await query.ToListAsync();
+               // var query = _CodeShareDB.Comment
+               //.Where(comment => comment.SnippetsId == Id_Topic && !loadedIds.Contains(comment.CommentId)) // Исключаем загруженные
+               //.OrderByDescending(c => c.CreateAt) // Сортируем от новых к старым
+               //.Skip(skip) // Пропускаем уже загруженные
+               //.Take(take); // Берем только нужное количество
+               // //!selectedProducts.Any(sp => sp.Id == p.Id)).Take(count).ToList()
+               // var comments = await query.ToListAsync();
                 Log.Information($"GetList  Comment Topic" + " {@long} registered successfully", Id_Topic);
 
-                return comments;
+                return Comment;
 
             }
             catch (Exception ex)

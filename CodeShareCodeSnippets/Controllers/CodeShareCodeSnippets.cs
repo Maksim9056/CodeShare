@@ -47,6 +47,13 @@ namespace CodeShareCodeSnippets.Controllers
             return Ok( await _codeShareCodeSnippets.GetAllCodeSnippets(codeSnippets));
         }
 
+
+        [HttpPut("getall/get/{take}")]
+        public async Task<IActionResult> GetSnippetsAll([FromBody] HashSet<long> loaded,int take = 5)
+        {
+            return Ok(await _codeShareCodeSnippets.GetAllCodeSnippets(take,loaded));
+        }
+
         [HttpGet("get{codeSnippets}")]
         public async Task<IActionResult> GetSnippets(long codeSnippets)
         {

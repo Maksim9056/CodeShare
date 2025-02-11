@@ -1,7 +1,16 @@
 ﻿@page "/browse-topics"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
+@using Serilog
 @rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject ILanguage ILanguage
+@inject IUserServise UserService
+@inject ICommentService ICommentService
+@inject IRateService IRateService
 @inject NavigationManager NavigationManager
 <title> Просмотр тем</title>
 <meta charset="UTF-8">
@@ -28,7 +37,17 @@
 
     <!-- Список тем -->
     <section class="topics-list">
-        <div class="topic-item">
+
+            @foreach (var CodeSnippets in CodeSnippetsViewS)
+            {
+                <div class="topic-item">
+                    <span class="topic-title">@CodeSnippets.Title</span>
+                    <span class="topic-language">@CodeSnippets.Programming_language.Programming_language</span>
+                    <button class="go-to-button" @onclick="() => Comments_management(CodeSnippets.CodeSnippetsId)">Перейти</button>
+                </div>
+            }
+
+       @*      <div class="topic-item">
             <span class="topic-title">Тема 1</span>
             <span class="topic-language">C++</span>
             <button class="go-to-button">Перейти</button>
@@ -42,13 +61,18 @@
             <span class="topic-title">Тема 3</span>
             <span class="topic-language">Java</span>
             <button class="go-to-button">Перейти</button>
-        </div>
+        </div> *@
+
+            <button @onclick="Find">
+                @(isLoading ? "Загрузка..." : hasMore ? "Показать ещё" : "Больше комментариев нет")
+            </button>
     </section>
 </main>
 </div>
 @code 
 {
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    public List<CodeSnippets> CodeSnippets = new List<CodeSnippets>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,4 +88,130 @@
 
         }
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+
+            if (firstRender)
+            {
+
+                // var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                // var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                // Log.Information($"Получили{users.UsersName} значение теме" + users.UsersId);
+
+                // var key = await localStorage.GetItemAsStringAsync("CodeShareId");
+                // Console.WriteLine(key);
+                // Log.Information($"Пользователь{users.UsersName}  CodeShareId  {codeSnippets.CodeSnippetsId}    {codeSnippets.Title} {codeSnippets.Programming_language}");
+                // codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
+
+                // //(key);
+                // var lines = codeSnippets.Code.Split('\n');
+                // for (int i = 0; i < lines.Length; i++)
+                // {
+                //     CodeLines.Add(new CodeLine
+                //         {
+                //             LineNumber = i + 1,
+                //             Content = lines[i]
+                //         });
+                // }
+                // language = new Language();
+                // language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
+                // Log.Information($"Пользователь{users.UsersName}  CodeShareId {codeSnippets.CodeSnippetsId}   {codeSnippets.Title} {language.Programming_language}");
+                // Comment.UserId = users.UsersId;
+                // Comment.SnippetsId = codeSnippets.CodeSnippetsId;
+                // Rate = await IRateService.GetListRates();
+                // // ICommentService.GetListComment(key);
+                // await LoadMoreComments();
+                await   Find();
+            }
+            StateHasChanged();
+
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+    private int take = 5;
+    private bool isLoading = false;
+    private bool hasMore = true;
+    HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
+    public List<CodeSnippetsView> CodeSnippetsViewS = new List<CodeSnippetsView>();
+
+    public async Task Find()
+    {
+        try
+        {
+            if (isLoading) return;
+            isLoading = true;
+
+            // var newComments = await ICommentService.GetListComment(codeSnippets.CodeSnippetsId, skip, take, loadedIds);
+            var _new_CodeSnippets = await ICodeShareCodeSnippets.GetAllCodeSnippets(take, loadedIds);
+
+            if (_new_CodeSnippets != null && _new_CodeSnippets.Any())
+            {
+
+                foreach (var CodeSnippets_new in _new_CodeSnippets)
+                {
+                    var language = new Language();
+                    language = await ILanguage.GetByIdAsync(CodeSnippets_new.Programming_language);
+                    CodeSnippetsView codeSnippetsView = new CodeSnippetsView(CodeSnippets_new, language);
+                    CodeSnippetsViewS.Add(codeSnippetsView);
+                    // CodeSnippets.Add(CodeSnippets_new);
+                    loadedIds.Add(CodeSnippets_new.CodeSnippetsId);
+                }
+            }
+            else
+            {
+                hasMore = false;
+            }
+
+            isLoading = false;
+        }
+        catch(Exception e)
+        {
+            Log.Error(e.Message);
+        }
+
+    }
+    public async Task Comments_management(long CodeShare)
+    {
+        await localStorage.SetItemAsync("CodeShareId", CodeShare);
+        NavigationManager.NavigateTo("/review-code");
+    }
+    public class CodeSnippetsView
+    {
+
+        public long CodeSnippetsId { get; set; }
+
+        public string Title { get; set; }
+        public string Code { get; set; }
+
+        public long UserId { get; set; }
+        public string Description { get; set; }
+
+        public long IsAdmin { get; set; }
+
+        public string CreateAt { get; set; }
+        public string UpdateAt { get; set; }
+
+        public Language Programming_language { get; set; }
+
+        public CodeSnippetsView(CodeSnippets CodeSnippets, Language language)
+        {
+            CodeSnippetsId = CodeSnippets.CodeSnippetsId;
+            Title = CodeSnippets.Title;
+            Code = CodeSnippets.Code;
+
+            UserId = CodeSnippets.UserId;
+            Programming_language = language;
+        }
+
+    }
+
+
 }

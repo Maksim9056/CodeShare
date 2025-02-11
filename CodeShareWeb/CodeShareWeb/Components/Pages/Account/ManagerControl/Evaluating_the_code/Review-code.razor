@@ -174,12 +174,13 @@
             Programming_language = 1
     };
     public List<Comment> Comments = new List<Comment>();
+
     public Comment Comment = new Comment() { };
     private List<CodeLine> CodeLines { get; set; } = new();
     Rate Rates = new Rate() {RateId=0 };
     private List<Rate> Rate { get; set; } = new();
     private int skip = 0;
-    private const int take = 5;
+    private  int take = 5;
     private bool isLoading = false;
     private bool hasMore = true;
     HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
@@ -233,7 +234,7 @@
                 Comment.SnippetsId = codeSnippets.CodeSnippetsId;
                 Rate = await  IRateService.GetListRates();
                 // ICommentService.GetListComment(key);
-             await   LoadMoreComments();
+                await   LoadMoreComments();
             }
             StateHasChanged();
 
@@ -264,7 +265,7 @@
         //        loadedIds.Add(comment_new.CommentId);
 
         //    });
-          
+
         // }
         // else
         // {
@@ -274,14 +275,14 @@
 
         if (newComments != null && newComments.Any())
         {
-            var comment = newComments.Where(comment => !loadedIds.Contains(comment.CommentId)).ToList();
+            // var comment = newComments.Where(comment => !loadedIds.Contains(comment.CommentId)).ToList();
 
-            if (comment.Any()) // Увеличиваем skip только если добавили новые комментарии
-            {
-                skip += take;
-            }
-
-            foreach (var comment_new in comment)
+            // if (comment.Any()) // Увеличиваем skip только если добавили новые комментарии
+            // {
+            //     skip += take;
+            // }
+            // take = take  ;
+            foreach (var comment_new in newComments)
             {
                 Comments.Add(comment_new);
                 loadedIds.Add(comment_new.CommentId);
@@ -366,8 +367,6 @@
     {
         NavigationManager.NavigateTo("/Seting");
     }
-
-
 
 }
 @* <div class="code-line" data-line="1"><span class="line-number">1</span> int main() {</div>
