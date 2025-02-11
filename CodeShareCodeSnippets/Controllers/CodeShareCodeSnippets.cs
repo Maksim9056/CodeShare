@@ -33,8 +33,8 @@ namespace CodeShareCodeSnippets.Controllers
         }
 
 
-        [HttpDelete("delete")]
-        public async Task<CodeSnippets> DeleteCodeSnippets(CodeSnippets codeSnippets)
+        [HttpDelete("delete/{codeSnippets}")]
+        public async Task<CodeSnippets> DeleteCodeSnippets(long codeSnippets)
         {
           return   await _codeShareCodeSnippets.Delete(codeSnippets);
         }

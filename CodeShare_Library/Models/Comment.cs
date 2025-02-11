@@ -23,5 +23,6 @@ namespace CodeShare_Library.Models
 
         public string CreateAt { get; set; }
         public string Comment_Text { get; set; }
+        public bool IsHidden { get; set; } = false;
     }
 }

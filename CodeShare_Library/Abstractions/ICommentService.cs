@@ -12,6 +12,8 @@ namespace CodeShare_Library.Abstractions
         public Task<Comment> AddComment(Comment add_comment);
 
         public Task<Comment> GetComment(long Id_Topic);
+        public Task<Comment> EditComment(Comment comment);
+
 
         public Task<List<Comment>> GetListComment(long Id_Topic, int skip, int take, HashSet<long> loadedIds);
 

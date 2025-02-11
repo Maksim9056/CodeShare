@@ -29,11 +29,11 @@ namespace CodeShareComment.Controllers
         }
 
 
-        //[HttpPut("edit")]
-        //public async Task<CodeSnippets> EditCodeSnippets(CodeSnippets codeSnippets)
-        //{
-        //    return await _commentService.Edit(codeSnippets);
-        //}
+        [HttpPut("edit")]
+        public async Task<Comment> EditCodeSnippets(Comment codeSnippets)
+        {
+            return await _commentService.EditComment(codeSnippets);
+        }
 
 
         //[HttpDelete("delete")]

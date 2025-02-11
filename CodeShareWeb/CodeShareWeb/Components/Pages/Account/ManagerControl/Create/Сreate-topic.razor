@@ -58,7 +58,7 @@
 
                 <div class="form-buttons">
                     <button type="button" @onclick="Callback" class="cancel-button">Отмена</button>
-                    <button type="submit" @onclick="Сreate" class="create-button">Создать</button>
+                    <button type="button" @onclick="Сreate" class="create-button">Создать</button>
                 </div>
             </form>
         </section>
@@ -136,7 +136,7 @@
 
     public async Task Сreate()
     {
-        codeSnippets.Description = "";
+        codeSnippets.Description = Setting.Visibility_Setting;
         codeSnippets.IsAdmin = 1;
         codeSnippets.CreateAt = $"{DateTime.UtcNow}";
         codeSnippets.UpdateAt = "";

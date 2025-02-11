@@ -12,7 +12,7 @@ namespace CodeShare_Library.Abstractions
         Task<CodeSnippets> Create(CodeSnippets codeSnippets);
         Task<CodeSnippets> Edit(CodeSnippets codeSnippets);
 
-        Task<CodeSnippets> Delete(CodeSnippets codeSnippets);
+        Task<CodeSnippets> Delete(long codeSnippets);
 
         Task<CodeSnippets> GetCodeSnippets(long Id_user);
 

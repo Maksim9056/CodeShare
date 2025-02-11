@@ -3,6 +3,7 @@ using CodeShare_Library.Date;
 using CodeShare_Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Collections.Generic;
 
 namespace CodeShareCodeSnippets.Services
 {
@@ -18,6 +19,10 @@ namespace CodeShareCodeSnippets.Services
         {
             await _CodeShareDB.CodeSnippets.AddAsync(codeSnippets);
             await _CodeShareDB.SaveChangesAsync();
+            Setting setting = new Setting() { SettingId = 0, SnippetId = codeSnippets.CodeSnippetsId, Visibility_Setting = codeSnippets.Description, Block = false, Hide = "", Prohibition = false };
+            await _CodeShareDB.Setting.AddAsync(setting);
+            await _CodeShareDB.SaveChangesAsync();
+
             return codeSnippets;
         }
 
@@ -30,11 +35,11 @@ namespace CodeShareCodeSnippets.Services
             return new CodeSnippets() { };
         }
 
-        public async Task<CodeSnippets> Delete(CodeSnippets codeSnippets)
+        public async Task<CodeSnippets> Delete(long codeSnippets)
         {
-            var codeSnippet = await _CodeShareDB.CodeSnippets.FirstOrDefaultAsync(u => u.CodeSnippetsId == codeSnippets.CodeSnippetsId);
+            var codeSnippet = await _CodeShareDB.CodeSnippets.FirstOrDefaultAsync(u => u.CodeSnippetsId == codeSnippets);
 
-
+          
             _CodeShareDB.CodeSnippets.Remove(codeSnippet);
 
 
@@ -90,9 +95,24 @@ namespace CodeShareCodeSnippets.Services
         {
             try
             {
-                var Code = await _CodeShareDB.CodeSnippets.Where(coment =>  !loadedIds.Any(us => us == coment.CodeSnippetsId)).Take(take).ToListAsync();
+                var Code = await _CodeShareDB.CodeSnippets.Where(coment =>!loadedIds.Any(us => us == coment.CodeSnippetsId)).Take(take).ToListAsync();
+                List < CodeSnippets > Filter = new List<CodeSnippets >();
+                foreach (var code in Code)
+                {
+                    var setting = await _CodeShareDB.Setting.FirstOrDefaultAsync(U => U.SnippetId == code.CodeSnippetsId);
+
+                    if(setting.Visibility_Setting == "Private")
+                    {
+
+                    }
+                    else
+                    {
+                        Filter.Add(code);
+                    }
+                }
+                Code.Clear();
                 Log.Information("{@CodeSnippet}  successfully", Code);
-                return Code;
+                return Filter;
             }
             catch (Exception ex)
             {

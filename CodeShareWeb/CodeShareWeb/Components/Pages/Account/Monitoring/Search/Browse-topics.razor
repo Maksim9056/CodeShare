@@ -42,7 +42,7 @@
             {
                 <div class="topic-item">
                     <span class="topic-title">@CodeSnippets.Title</span>
-                    <span class="topic-language">@CodeSnippets.Programming_language.Programming_language</span>
+                    <span class="topic-language"> @Distant @CodeSnippets.Programming_language.Programming_language</span>
                     <button class="go-to-button" @onclick="() => Comments_management(CodeSnippets.CodeSnippetsId)">Перейти</button>
                 </div>
             }
@@ -64,13 +64,14 @@
         </div> *@
 
             <button @onclick="Find">
-                @(isLoading ? "Загрузка..." : hasMore ? "Показать ещё" : "Больше комментариев нет")
+                @(isLoading ? "Загрузка..." : hasMore ? "Показать ещё" : "Больше тем нет")
             </button>
     </section>
 </main>
 </div>
 @code 
 {
+    string Distant ="\n:";
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
     public List<CodeSnippets> CodeSnippets = new List<CodeSnippets>();
 
@@ -157,6 +158,7 @@
 
                 foreach (var CodeSnippets_new in _new_CodeSnippets)
                 {
+                    
                     var language = new Language();
                     language = await ILanguage.GetByIdAsync(CodeSnippets_new.Programming_language);
                     CodeSnippetsView codeSnippetsView = new CodeSnippetsView(CodeSnippets_new, language);

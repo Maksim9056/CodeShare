@@ -41,6 +41,10 @@
         </header>
         <!-- Код и инструменты -->
         <section class="code-review">
+            @if (DELETE == false)
+            {
+                
+            
 
             <div class="code-container">
                 <button @onclick="Comments_management">Настройки темы</button>
@@ -139,13 +143,18 @@
                 <button @onclick="LoadMoreComments" >
                     @(isLoading ? "Загрузка..." : hasMore ? "Показать ещё" : "Больше комментариев нет")
                 </button>
-            </div>
+                </div>
+            }
+            else
+            {
+                <p>Тема  удалили и коментарии!Перейди на другую тему.</p>
+            }
         </section>
     </main>
 </div>
 
 @code {
-
+    public bool DELETE = false;
 
     // <h3>Комментарии</h3>
     // <ul class="comments-list">
@@ -217,24 +226,33 @@
                 Log.Information($"Пользователь{users.UsersName}  CodeShareId  {codeSnippets.CodeSnippetsId}    {codeSnippets.Title} {codeSnippets.Programming_language}");
                 codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
 
-                //(key);
-                var lines = codeSnippets.Code.Split('\n');
-                for (int i = 0; i < lines.Length; i++)
+                if (codeSnippets.Title != null)
                 {
-                    CodeLines.Add(new CodeLine
-                        {
-                            LineNumber = i + 1,
-                            Content = lines[i]
-                        });
+
+
+                    //(key);
+                    var lines = codeSnippets.Code.Split('\n');
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        CodeLines.Add(new CodeLine
+                            {
+                                LineNumber = i + 1,
+                                Content = lines[i]
+                            });
+                    }
+                    language = new Language();
+                    language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
+                    Log.Information($"Пользователь{users.UsersName}  CodeShareId {codeSnippets.CodeSnippetsId}   {codeSnippets.Title} {language.Programming_language}");
+                    Comment.UserId = users.UsersId;
+                    Comment.SnippetsId = codeSnippets.CodeSnippetsId;
+                    Rate = await IRateService.GetListRates();
+                    // ICommentService.GetListComment(key);
+                    await LoadMoreComments();
                 }
-                language = new Language();
-                language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
-                Log.Information($"Пользователь{users.UsersName}  CodeShareId {codeSnippets.CodeSnippetsId}   {codeSnippets.Title} {language.Programming_language}");
-                Comment.UserId = users.UsersId;
-                Comment.SnippetsId = codeSnippets.CodeSnippetsId;
-                Rate = await  IRateService.GetListRates();
-                // ICommentService.GetListComment(key);
-                await   LoadMoreComments();
+                else
+                {
+                    DELETE = true;
+                }
             }
             StateHasChanged();
 
@@ -282,11 +300,39 @@
             //     skip += take;
             // }
             // take = take  ;
-            foreach (var comment_new in newComments)
+            var filteredComments = newComments.Where(c => !c.IsHidden).ToList();
+
+            foreach (var comment_new in filteredComments)
             {
-                Comments.Add(comment_new);
-                loadedIds.Add(comment_new.CommentId);
+                if (comment_new.IsHidden == true)
+                {
+                    newComments.Remove(comment_new);
+                }
+                else
+                {
+
+
+                    Comments.Add(comment_new);
+                    loadedIds.Add(comment_new.CommentId);
+                }
             }
+
+            newComments.Clear();
+            filteredComments.Clear();
+            // foreach (var comment_new in newComments)
+            // {
+            //     if (comment_new.IsHidden == true)
+            //     {
+            //         // newComments.Remove(comment_new);
+            //     }
+            //     else
+            //     {
+
+
+            //         Comments.Add(comment_new);
+            //         loadedIds.Add(comment_new.CommentId);
+            //     }
+            // }
         }
         else
         {

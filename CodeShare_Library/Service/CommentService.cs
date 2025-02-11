@@ -122,5 +122,41 @@ namespace CodeShare_Library.Service
                 return new List<Comment>();
             }
         }
+
+        public async Task<Comment> EditComment(Comment comment)
+        {
+            try
+            {
+                Comment Comment_responseMessage = new Comment();
+                HttpClient httpClient = new HttpClient();
+                url = $"{UrlCommentServiceApi}/Comment/edit";
+                if (httpClient.BaseAddress == null)
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                var responseMessage = await httpClient.PutAsJsonAsync(url, comment);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var comments = await responseMessage.Content.ReadFromJsonAsync<Comment>();
+                    Comment_responseMessage = comments;
+                }
+
+                //List<Comment> Roles_responseMessage = await httpClient.GetFromJsonAsync<List<Comment>>(url, loadedIds);
+                //_httpClient.BaseAddress = null;
+                return Comment_responseMessage;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new Comment();
+            }
+        }
     }
 }

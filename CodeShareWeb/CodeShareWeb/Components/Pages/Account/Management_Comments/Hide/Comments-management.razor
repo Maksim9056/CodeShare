@@ -1,7 +1,15 @@
 ﻿@page "/Comments-management"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
+@using Serilog
 @rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject ILanguage ILanguage
+@inject ICommentService ICommentService
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject NavigationManager NavigationManager
 <link rel="stylesheet" href="/css/comments-management.css">
 <meta charset="UTF-8">
@@ -27,22 +35,29 @@
             <button class="button hide-all">Скрывать</button>
         </div>
 
-        <ul class="comments-list">
-            <li class="comment">
-                Комментарий 1
-                <button class="button hide-comment">Скрыть</button>
-                <button class="button show-comment">Показывать</button>
-            </li>
-            <li class="comment">
-                Комментарий 2
-                <button class="button hide-comment">Скрыть</button>
-                <button class="button show-comment">Показывать</button>
-            </li>
-            <li class="comment">
-                Комментарий 3
-                <button class="button hide-comment">Скрыть</button>
-                <button class="button show-comment">Показывать</button>
-            </li>
+            <ul class="comments-list">
+
+
+                @foreach (var comment in Comments)
+                {
+                    <li class="comment">
+                        <div class="comment-body">
+                            <p>@comment.Comment_Text</p>
+                            <p>@comment.Selected_Range</p>
+                            <p>@comment.UserId</p>
+                            <p>@comment.CreateAt</p>
+                        </div>
+                        <div class="comment-actions">
+                            <button class="button hide-comment" @onclick ="() =>Hide(comment)">Скрыть</button>
+                            <button class="button show-comment" @onclick="() =>Show(comment)">Показывать</button>
+                        </div>
+                    </li>
+                }
+
+                <button @onclick="LoadMoreComments">
+                    @(isLoading ? "Загрузка..." : hasMore ? "Показать ещё" : "Больше комментариев нет")
+                </button>
+         
         </ul>
 
         <div class="save">
@@ -53,8 +68,17 @@
 </div>
 
 @code {
-    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    string Distant = "\n:";
 
+    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    private int skip = 0;
+    private int take = 5;
+    private bool isLoading = false;
+    private bool hasMore = true;
+    HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
+    public List<Comment> Comments = new List<Comment>();
+    CodeSnippets codeSnippets = new CodeSnippets();
+    Language language = new Language();
     protected override async Task OnInitializedAsync()
     {
         try
@@ -67,6 +91,86 @@
         catch (Exception)
         {
 
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                var key = await localStorage.GetItemAsStringAsync("CodeShareId");
+                Console.WriteLine(key);
+                codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
+                language = new Language();
+                language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
+                await   LoadMoreComments();
+            }
+            StateHasChanged();
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+
+    private async Task LoadMoreComments()
+    {
+        if (isLoading) return;
+        isLoading = true;
+        var newComments = await ICommentService.GetListComment(codeSnippets.CodeSnippetsId, skip, take, loadedIds);
+
+        if (newComments != null && newComments.Any())
+        {
+
+            foreach (var comment_new in newComments)
+            {
+                Comments.Add(comment_new);
+                loadedIds.Add(comment_new.CommentId);
+            }
+        }
+        else
+        {
+            hasMore = false;
+        }
+
+        isLoading = false;
+    } 
+
+    public async Task Cancal()
+    {
+        NavigationManager.NavigateTo("/review-code");
+    }
+    public async Task Show(Comment comment)
+    {
+        try
+        {
+            comment.IsHidden = false;
+
+            var code = await ICommentService.EditComment(comment);
+            // NavigationManager.NavigateTo("/review-code");
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+            Console.WriteLine(e.Message);
+        }
+    }
+    public async Task Hide(Comment comment)
+    {
+        try
+        {
+            comment.IsHidden = true;
+            var code = await ICommentService.EditComment(comment);
+            // NavigationManager.NavigateTo("/review-code");
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+            Console.WriteLine(e.Message);
         }
     }
 }

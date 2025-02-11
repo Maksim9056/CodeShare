@@ -54,9 +54,33 @@ namespace CodeShare_Library.Service
             }
         }
 
-        public async Task<CodeSnippets> Delete(CodeSnippets codeSnippets)
+        public async Task<CodeSnippets> Delete(long codeSnippets)
         {
-            return new CodeSnippets();
+            try
+            {
+
+                HttpClient httpClient = new HttpClient();
+
+                url = $"{UrlCodeSnippetsApi}/CodeShareCodeSnippets/delete/{codeSnippets}";
+                if (httpClient.BaseAddress == null)
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                CodeSnippets delete_responseMessage = await httpClient.DeleteFromJsonAsync<CodeSnippets>(url);
+                //_httpClient.BaseAddress = null;
+                return delete_responseMessage;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new CodeSnippets();
+            }
         }
 
         public async Task<CodeSnippets> Edit(CodeSnippets codeSnippets)

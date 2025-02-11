@@ -1,0 +1,133 @@
+﻿@page "/topicdelete"
+@using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
+@using CodeShare_Library.Models
+@using Serilog
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject ILanguage ILanguage
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+<link rel="stylesheet" href="/css/confirm-delete.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="container">
+    <Sidebar roles="roles" />
+    <!-- Основной контент -->
+    <main class="content">      
+            <!-- Раздел с темами -->
+        <div class="confirmation-box">
+            <p>@codeSnippets.Title</p>
+            <p>@language.Programming_language</p>
+
+            <p class="confirmation-text">
+                Точно уверены удалить?<br>
+                Темы и комментарии удалятся, все данные оставленные.
+            </p>
+            <div class="button-group">
+                <button class="cancel-button" @onclick="Cancal">Отмена</button>
+                <button class="delete-button" @onclick ="Delete">Удалить</button>
+            </div>
+        </div>
+        </main>
+    </div>
+
+    <script>
+        // Функция фильтрации тем по последнему комментарию
+        function filterTopics() {
+            const checkbox = document.getElementById('latest-comments');
+            const topics = document.querySelectorAll('.topic');
+
+            topics.forEach(topic => {
+                const isLatest = topic.getAttribute('data-latest') === 'true';
+                topic.style.display = checkbox.checked && !isLatest ? 'none' : 'block';
+            });
+        }
+    </script>
+@code {
+
+    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    CodeSnippets codeSnippets = new CodeSnippets();
+    Language language = new Language();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            Console.WriteLine($"OnInitialized вызван в {DateTime.Now}");
+
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                var key = await localStorage.GetItemAsStringAsync("CodeShareId");
+                Console.WriteLine(key);
+                codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
+                language = new Language();
+                language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    public async Task Cancal()
+    {
+        NavigationManager.NavigateTo("/review-code");
+    }
+    public async Task Delete()
+    {
+        try
+        {
+
+            var  code =  await ICodeShareCodeSnippets.Delete(codeSnippets.CodeSnippetsId);
+            NavigationManager.NavigateTo("/review-code");
+        }
+        catch(Exception e)
+        {
+            Log.Error(e.Message);
+            Console.WriteLine(e.Message);
+        }
+    }
+    // <ul>
+    //     <!-- Пример темы с последним комментарием -->
+    //     <li class="topic" data-latest="true">
+    //         <a href="/review-code">
+    //             <div class="topic-title">Тема 1</div>
+    //             <div class="topic-info">Последний комментарий: 5 минут назад</div>
+    //         </a>
+    //     </li>
+    //     <li class="topic" data-latest="false">
+    //         <a href="/review-code">
+    //             <div class="topic-title">Тема 2</div>
+    //             <div class="topic-info">Комментарий отсутствует</div>
+    //         </a>
+    //     </li>
+    //     <li class="topic" data-latest="true">
+    //         <a href="/review-code">
+    //             <div class="topic-title">Тема 3</div>
+    //             <div class="topic-info">Последний комментарий: 2 часа назад</div>
+    //         </a>
+    //     </li>
+    //     <li class="topic" data-latest="false">
+    //         <a href="/review-code">
+    //             <div class="topic-title">Тема 4</div>
+    //             <div class="topic-info">Комментарий отсутствует</div>
+    //         </a>
+    //     </li>
+    // </ul>
+}

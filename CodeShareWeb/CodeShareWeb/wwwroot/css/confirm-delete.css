@@ -1,0 +1,421 @@
+/* Общие стили */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #f4f4f4; /* Более мягкий фон */
+    color: #333;
+}
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed; /* Фиксируем sidebar */
+    top: 0;
+    left: 0; /* Убираем любые отступы от левого края */
+    height: 100vh; /* Высота на весь экран */
+    width: 250px; /* Задаем ширину */
+    background: #6a11cb;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Убедитесь, что sidebar выше других элементов */
+}
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
+
+.sidebar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menu-button {
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
+
+.menu-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.menu-button.active {
+    background: #fff;
+    color: #6a11cb;
+    font-weight: bold;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+    .sidebar nav ul li {
+        margin: 10px 0;
+    }
+
+        .sidebar nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+            .sidebar nav ul li a.active {
+                background: linear-gradient(135deg, #6a11cb, #2575fc);
+                color: #fff;
+                font-weight: bold;
+            }
+
+            .sidebar nav ul li a:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+
+/* Основной контейнер */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-left: 50px; /* Оставляем место для sidebar */
+}
+
+/* Карточка подтверждения */
+.confirmation-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px; /* Увеличен радиус для округлённых краёв */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* Более заметная тень */
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    animation: fadeIn 0.3s ease-in-out; /* Анимация появления */
+}
+
+/* Анимация */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Текст подтверждения */
+.confirmation-text {
+    font-size: 20px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    color: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Кнопки */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Общие стили кнопок */
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+}
+
+/* Кнопка "Отмена" */
+.cancel-button {
+    background: linear-gradient(135deg, #e0e0e0, #bdbdbd); /* Градиент серого */
+    color: #333;
+    flex: 1;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-button:hover {
+    background: linear-gradient(135deg, #d6d6d6, #a7a7a7); /* Светлее при наведении */
+    transform: scale(1.05); /* Легкое увеличение */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Увеличение тени */
+}
+
+.cancel-button:active {
+    transform: scale(0.95); /* Уменьшение при клике */
+}
+
+/* Кнопка "Удалить" */
+.delete-button {
+    background: linear-gradient(135deg, #f44336, #d32f2f); /* Красный градиент */
+    color: #fff;
+    flex: 1;
+    margin-left: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.delete-button:hover {
+    background: linear-gradient(135deg, #e53935, #c62828); /* Ярче при наведении */
+    transform: scale(1.05); /* Легкое увеличение */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Увеличение тени */
+}
+
+.delete-button:active {
+    transform: scale(0.95); /* Уменьшение при клике */
+}
+
+/* Текст и кнопки внутри карточки */
+.confirmation-box > * {
+    margin: 0 auto;
+}
+
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.save-button {
+    background-color: #6a11cb;
+    color: #fff;
+}
+
+    .save-button:hover {
+        background-color: #2575fc;
+    }
+
+.edit-button {
+    background-color: #ddd;
+    color: #333;
+}
+
+    .edit-button:hover {
+        background-color: #bbb;
+    }
+
+.sidebar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+    .sidebar nav ul li {
+        margin: 10px 0;
+    }
+
+        .sidebar nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+            .sidebar nav ul li a.active {
+                background: linear-gradient(135deg, #6a11cb, #2575fc);
+                color: #fff;
+                font-weight: bold;
+            }
+
+            .sidebar nav ul li a:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+/* Кнопка действия */
+.action {
+    text-align: center;
+}
+
+    .action button {
+        padding: 15px 25px;
+        font-size: 16px;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+    }
+
+        .action button:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.4);
+        }
+
+/* Информация о пользователе */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-name {
+    font-size: 16px;
+    color: #333;
+}
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #ddd;
+    border-radius: 50%;
+    border: 2px solid #6a11cb;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+    .user-avatar:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgba(106, 17, 203, 0.5);
+    }
+.user-settings {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .user-settings .avatar {
+        width: 40px;
+        height: 40px;
+        background: #ddd;
+        border-radius: 50%;
+    }
+
+    .user-settings a {
+        text-decoration: none;
+        color: #6a11cb;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+        .user-settings a:hover {
+            color: #2575fc;
+        }
+
+/* Форма */
+.form-section {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+    .sidebar nav ul li {
+        margin: 10px 0;
+    }
+
+        .sidebar nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+            .sidebar nav ul li a.active {
+                background: linear-gradient(135deg, #6a11cb, #2575fc);
+                color: #fff;
+                font-weight: bold;
+            }
+
+            .sidebar nav ul li a:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+/* Кнопка действия */
+.action {
+    text-align: center;
+}
+
+    .action button {
+        padding: 15px 25px;
+        font-size: 16px;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+    }
+
+        .action button:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.4);
+        }

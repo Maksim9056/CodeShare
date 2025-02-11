@@ -136,12 +136,14 @@
                     {
                         case 2:
                             await localStorage.SetItemAsync("CodeUserId", users.UsersId);
-
+                            await localStorage.SetItemAsync("CodeUserRoleId", users.RoleId);
                             NavigationManager.NavigateTo("/Main");
                             break;
 
                         case 1:
                             NavigationManager.NavigateTo("/Account-settings");
+                            await localStorage.SetItemAsync("CodeUserAdminId", users.UsersId);
+                            await localStorage.SetItemAsync("CodeUserRoleId", users.RoleId);
 
                             break;
                     }

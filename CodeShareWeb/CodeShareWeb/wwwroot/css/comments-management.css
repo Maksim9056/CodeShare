@@ -155,7 +155,34 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; /* Позволяет элементам переноситься */
 }
+
+.comment-body {
+    flex: 1 1 60%;
+}
+
+.comment-actions {
+    flex: 1 1 30%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Адаптивность для экранов менее 768px */
+@media (max-width: 768px) {
+    .comment {
+        flex-direction: column; /* Переключаем на вертикальное расположение */
+        align-items: flex-start;
+    }
+
+    .comment-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+}
+
 
 .button {
     padding: 8px 12px;

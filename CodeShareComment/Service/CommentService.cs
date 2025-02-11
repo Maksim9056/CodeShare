@@ -34,6 +34,29 @@ namespace CodeShareComment.Service
             }
         }
 
+        public async  Task<Comment> EditComment(Comment comment)
+        {
+            try
+            {
+                Comment Comment = await _CodeShareDB.Comment.FirstOrDefaultAsync(coment => coment.SnippetsId == comment.SnippetsId  && coment .CommentId == comment.CommentId);
+                Comment.IsHidden = comment.IsHidden;
+
+                //_CodeShareDB.Comment.Update(comment);
+
+                await _CodeShareDB.SaveChangesAsync();
+
+                Log.Information($"Get Comment Topic{Comment.SnippetsId} Rating {Comment.RatingId}" + " {@Comment} registered successfully", Comment);
+
+                return Comment;
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message + $"GetComment Comment Topic{comment.SnippetsId} Rating");
+                return new Comment();
+            }
+        }
+
         public async Task<Comment> GetComment(long Id_Topic)
         {
             try
