@@ -2,12 +2,15 @@
 @using CodeShareWeb.Components.Layout
 @using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
+@using CodeShare_Library.Service
 @using Serilog
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject ICodeShareCodeSnippets ICodeShareCodeSnippets
 @inject ILanguage ILanguage
+@inject CodeShare_Library.Abstractions.ISettingService ISettingService
+
 @inject IUserServise UserService
 @inject ICommentService ICommentService
 @inject IRateService IRateService
@@ -72,6 +75,11 @@
 
             </div>
 
+        @if (setting.Block == false)
+        {
+                    
+                
+                    
             <!-- Форма комментариев -->
             <div class="comments-section">
                 <h3>Оставьте комментарий</h3>
@@ -130,13 +138,18 @@
             <!-- Комментарии -->
             <div class="comments">
                 <h3>Комментарии</h3>
-                <ul class="comments-list">
-                    @foreach (var comment in Comments)
+                        <ul class="comments-list">
+                            @foreach (var comment in Comments)
                     {
-                        <li>@comment.Comment_Text</li>
-                        <li>@comment.Selected_Range</li>
-                        <li>@comment.UserId</li>
-                        <li>@comment.CreateAt</li>
+
+                                   
+
+                      <div class="comment-body">
+                                    <p>@comment.Comment_Text</p>
+                                    <p>@comment.Selected_Range</p>
+                                    <p>@comment.UserId</p>
+                                    <p>@comment.CreateAt</p>
+                      </div>
 
                     }
                 </ul>
@@ -148,6 +161,11 @@
             else
             {
                 <p>Тема  удалили и коментарии!Перейди на другую тему.</p>
+            }
+            }
+            else
+            {
+                <p>Тема коментарии отключены.</p>
             }
         </section>
     </main>
@@ -193,7 +211,7 @@
     private bool isLoading = false;
     private bool hasMore = true;
     HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
-
+    public Setting setting = new Setting();
     protected override void OnInitialized()
     {
         // Разбиваем код на строки
@@ -239,15 +257,21 @@
                                 LineNumber = i + 1,
                                 Content = lines[i]
                             });
+                    } 
+                    setting = await ISettingService.Get(codeSnippets.CodeSnippetsId);
+                    if (setting.Block == false)
+                    {
+
+
+                        language = new Language();
+                        language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
+                        Log.Information($"Пользователь{users.UsersName}  CodeShareId {codeSnippets.CodeSnippetsId}   {codeSnippets.Title} {language.Programming_language}");
+                        Comment.UserId = users.UsersId;
+                        Comment.SnippetsId = codeSnippets.CodeSnippetsId;
+                        Rate = await IRateService.GetListRates();
+                        // ICommentService.GetListComment(key);
+                        await LoadMoreComments();
                     }
-                    language = new Language();
-                    language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
-                    Log.Information($"Пользователь{users.UsersName}  CodeShareId {codeSnippets.CodeSnippetsId}   {codeSnippets.Title} {language.Programming_language}");
-                    Comment.UserId = users.UsersId;
-                    Comment.SnippetsId = codeSnippets.CodeSnippetsId;
-                    Rate = await IRateService.GetListRates();
-                    // ICommentService.GetListComment(key);
-                    await LoadMoreComments();
                 }
                 else
                 {

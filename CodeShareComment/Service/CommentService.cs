@@ -10,8 +10,8 @@ namespace CodeShareComment.Service
     public class CommentService : ICommentService
     {
 
-        public readonly CodeShareDB codeShareDB;
-        public CodeShareDB _CodeShareDB;
+        public readonly CodeShareDB _CodeShareDB;
+        //public CodeShareDB _CodeShareDB;
         public CommentService(CodeShareDB codeShareDB)
         {
             _CodeShareDB = codeShareDB;

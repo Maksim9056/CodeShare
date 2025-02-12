@@ -72,7 +72,11 @@ namespace CodeShareWeb
                     return new RateService(url);
                 });
 
-
+                builder.Services.AddScoped<ISettingService, CodeShare_Library.Service.SettingService>(provider =>
+                {
+                    string url = builder.Configuration["Urls:SettingService"];
+                    return new SettingService(url);
+                });
 
 
 

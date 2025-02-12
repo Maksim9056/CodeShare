@@ -12,6 +12,46 @@
     padding: 0;
     width: 100%;
 }
+/* Управление комментариями */
+.comments-management {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .comments-management h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+.comments-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.comment {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Позволяет элементам переноситься */
+}
+
+.comment-body {
+    flex: 1 1 60%;
+}
+
+.comment-actions {
+    flex: 1 1 30%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
 
 /* Sidebar */
 .sidebar {
@@ -36,48 +76,49 @@
     background-size: contain;
     height: 100px;
 }
-    .sidebar .logo {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 30px;
-        text-align: center;
-        padding: 10px;
-        border: 2px solid #fff;
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+
+.sidebar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+    .sidebar nav ul li {
+        margin: 10px 0;
     }
 
-    .sidebar nav ul {
-        list-style: none;
-        padding: 0;
-        width: 100%;
-    }
-
-        .sidebar nav ul li {
-            margin: 10px 0;
+        .sidebar nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s ease;
         }
 
-            .sidebar nav ul li a {
-                color: #fff;
-                text-decoration: none;
-                padding: 10px 15px;
-                display: block;
-                border-radius: 5px;
-                transition: background 0.3s ease;
+            .sidebar nav ul li a.active {
+                background: rgba(255, 255, 255, 0.2);
+                font-weight: bold;
             }
 
-                .sidebar nav ul li a.active {
-                    background: rgba(255, 255, 255, 0.2);
-                    font-weight: bold;
-                }
-
-                .sidebar nav ul li a:hover {
-                    background: rgba(255, 255, 255, 0.1);
-                }
+            .sidebar nav ul li a:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
 
 /* Main content */
 .content {
@@ -142,9 +183,6 @@
         background-color: #444;
     }
 
-.comments-section {
-    margin-top: 20px;
-}
 
 textarea, select, input {
     width: 100%;

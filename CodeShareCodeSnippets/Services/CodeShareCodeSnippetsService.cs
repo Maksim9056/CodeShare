@@ -9,8 +9,8 @@ namespace CodeShareCodeSnippets.Services
 {
     public class CodeShareCodeSnippetsService : ICodeShareCodeSnippets
     {
-        public readonly CodeShareDB codeShareDB;
-        public CodeShareDB _CodeShareDB;
+        public readonly CodeShareDB _CodeShareDB;
+        //public CodeShareDB _CodeShareDB;
         public CodeShareCodeSnippetsService(CodeShareDB codeShareDB)
         {
             _CodeShareDB = codeShareDB;

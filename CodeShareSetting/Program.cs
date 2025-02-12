@@ -1,4 +1,5 @@
 
+using CodeShare_Library.Abstractions;
 using CodeShare_Library.Date;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,9 @@ namespace CodeShareSetting
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<CodeShareDB>(options =>
            options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));
+
+
+            builder.Services.AddScoped<ISettingService,Service.SettingService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

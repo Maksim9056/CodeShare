@@ -1,8 +1,14 @@
 ﻿@page "/Seting"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
+@using Serilog
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@inject ISettingService ISettingService
+@inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <link rel="stylesheet" href="/css/settings.css">
 
@@ -23,19 +29,23 @@
     </header>
 
     <section class="settings">
-        <h2>Настройки доступа</h2>
-        <div class="visibility">
-            <h3>Видимость темы</h3>
-            <button class="button private">Приватное</button>
-            <button class="button public">Публичное</button>
-        </div>
+        @if (DELETE == false)
+            {
 
-        <div class="comments-settings">
-            <h3>Настройки для комментариев</h3>
+
+                <h2>Настройки доступа</h2>
+                <div class="visibility">
+                    <h3>Видимость темы</h3>
+                    <button class="button private" @onclick="Private">Приватное</button>
+                    <button class="button public" @onclick="Public" >Публичное</button>
+                </div>
+
+                <div class="comments-settings">
+                    <h3>Настройки для комментариев</h3>
                 <button class="button hide" @onclick="Comments_management">Скрывать</button>
                 <button class="button block" @onclick="Block_Comments_management">Заблокировать  </button>
-            <button class="button ban">Запретить</button>
-            <button class="button allow">Разрешить</button>
+                    <button class="button ban" @onclick="Private_Commetr">Запретить </button>
+            <button class="button allow" @onclick="permission_Commetr" >Разрешить</button>
         </div>
 
         <div class="actions">
@@ -45,14 +55,52 @@
 
         <div class="save">
             <button @onclick="Save" class="button save">Сохранить</button>
-        </div>
+                </div>
+            }
+            else
+            {
+                <p>Тема  удалили !Перейди на другую тему.</p>
+            }
+
     </section>
 </main>
 </div>
 
 @code{
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    CodeSnippets codeSnippets = new CodeSnippets();
+    public bool DELETE = false;
+    CodeShare_Library.Models.Setting Setings = new CodeShare_Library.Models.Setting();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
 
+            if (firstRender)
+            {
+                var key = await localStorage.GetItemAsStringAsync("CodeShareId");
+                Console.WriteLine(key);
+
+                codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
+
+                if (codeSnippets.Title != null)
+                {
+                    Setings = await ISettingService.Get(codeSnippets.CodeSnippetsId);
+                }
+
+                else
+                {
+                    DELETE = true;
+                }
+
+            }
+        }
+        catch(Exception ex)
+        {
+            Log.Error(ex.Message);
+
+        }
+    }
     public void Comments_management()
     {
         NavigationManager.NavigateTo("/Comments-management");
@@ -67,6 +115,65 @@
     {
         // NavigationManager.NavigateTo("/Comments-management");
     }
+
+    public async Task Public()
+    {
+        try
+        {
+            Setings.Visibility_Setting = "Public";
+
+            Setings = await ISettingService.Update(Setings);
+            // NavigationManager.NavigateTo("/Comments-management");
+        }
+        catch
+        {
+
+        }
+    }
+    public async Task permission_Commetr()
+    {
+        try
+        {
+            Setings.Block = false;
+
+            Setings = await ISettingService.Update(Setings);
+            // NavigationManager.NavigateTo("/Comments-management");
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+    public async Task Private_Commetr()
+    {
+        try
+        {
+            Setings.Block = true;
+
+            Setings = await ISettingService.Update(Setings);
+            // NavigationManager.NavigateTo("/Comments-management");
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+ 
+    public async Task Private()
+    {
+        try
+        {
+            Setings.Visibility_Setting = "Private";
+
+            Setings = await ISettingService.Update(Setings);
+            // NavigationManager.NavigateTo("/Comments-management");
+        }
+        catch(Exception)
+        {
+            
+        }
+    }
+
 
 
     public async Task Delete()
