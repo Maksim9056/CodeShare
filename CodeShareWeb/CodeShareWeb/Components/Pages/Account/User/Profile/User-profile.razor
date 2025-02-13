@@ -1,8 +1,19 @@
 ﻿@page "/User-profile"
 @using CodeShareWeb.Components.Layout
+@using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
+@using Microsoft.AspNetCore.Authorization
+@using Serilog
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject ILanguage ILanguage
+@inject CodeShare_Library.Abstractions.ISettingService ISettingService
+@inject IUserServise UserService
+@inject ICommentService ICommentService
+@inject IRateService IRateService
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Профиль пользователя</title>
@@ -11,44 +22,47 @@
 <div class="container">
     <Sidebar roles="roles" />
     <!-- Основной контент -->
-<main class="content">
-    <header class="header">
-        <h1>Профиль пользователя</h1>
-        <div class="user-settings">
-            <span>Имя</span>
-            <div class="avatar"></div>
-            <a href="/User-profile">Настройки</a>
-        </div>
-    </header>
+    <main class="content">
+        <header class="header">
+            <h1>Профиль пользователя</h1>
+            <div class="user-settings">
+                <span>Имя</span>
+                <div class="avatar"></div>
+                <a href="/User-profile">Настройки</a>
+            </div>
+        </header>
 
-    <section class="profile-section">
-        <div class="profile-container">
-            <!-- Левая часть: Фото и данные -->
-            <div class="profile-card">
-                <div class="profile-photo">
-                    Фото
+        <section class="profile-section">
+            <div class="profile-container">
+                <!-- Левая часть: Фото и данные -->
+                <div class="profile-card">
+                    <div class="profile-photo">
+                        Фото
+                    </div>
+                    <div class="profile-info">
+                        <input type="text" placeholder="Имя" @bind="@Users.UsersName">
+                        <input type="text" placeholder="Телефон" @bind="@Users.Phone">
+                        <input type="email" placeholder="Почта" @bind="@Users.Email">
+                        <input type="password" placeholder="Пароль" @bind="@Users.Password">
+                    </div>
                 </div>
-                <div class="profile-info">
-                    <input type="text" placeholder="Имя">
-                    <input type="text" placeholder="Телефон">
-                    <input type="email" placeholder="Почта">
-                    <input type="password" placeholder="Пароль">
+
+                <!-- Правая часть: Кнопки -->
+                <div class="profile-actions">
+                    <button class="edit">Редактировать</button>
+                    <button class="apply" @onclick="Save">Применить</button>
+                    <button class="delete">Удалить</button>
                 </div>
             </div>
-
-            <!-- Правая часть: Кнопки -->
-            <div class="profile-actions">
-                <button class="edit">Редактировать</button>
-                <button class="apply">Применить</button>
-                <button class="delete">Удалить</button>
-            </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 </div>
 
 @code {
-    Roles roles = new Roles() { RolesId = 2, NameRole = "" };
+    Roles roles;
+    Users Users = new Users() { };
+
+    public List<CodeSnippets> CodeSnippets = new List<CodeSnippets>();
     protected override async Task OnInitializedAsync()
     {
         try
@@ -63,5 +77,40 @@
 
         }
     }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+
+            if (firstRender)
+            {
+                var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                Log.Information($"Получили{users.UsersName} значение теме" + users.UsersId);
+                // CodeSnippets = await ICodeShareCodeSnippets.GetAllCodeSnippets(users.UsersId);
+
+                Users = users;
+                roles = new Roles() { RolesId = Users.RoleId, NameRole = "" };
+
+            }
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+        }
+    }
+
+    public async Task Save()
+    {
+        try
+        {
+            Users = await UserService.UpdateUser(Users);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+        }
+
+    }
 }
-@* user-profile. *@

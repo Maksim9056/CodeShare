@@ -1,5 +1,6 @@
 using CodeShare_Library.Abstractions;
 using CodeShare_Library.Models;
+using CodeShare_Library.Service;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -43,8 +44,25 @@ namespace CodeShareUsers.Controllers
                 return BadRequest(ex.Message);
             }
         }
-    
 
+
+        [HttpPut("edit")]
+        public async Task<IActionResult> EditCodeSnippets(Users Users)
+        {
+            try
+            {
+
+
+
+                Users = await _managentUser.Update(Users);
+                return Ok(Users);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return BadRequest(new Users());
+            }
+        }
 
         [HttpGet]
         public async Task<Users> CheckUser([FromQuery]  string Email, [FromQuery] string Password)

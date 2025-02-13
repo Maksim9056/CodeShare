@@ -32,10 +32,22 @@ namespace CodeShare_Library.Service
 
 
                 url = $"{UrlCodeSnippetsApi}/CodeShareCodeSnippets/create";
-                _httpClient.BaseAddress = new Uri(url);
+                //_httpClient.BaseAddress = new Uri(url);
+                HttpClient httpClient = new HttpClient();
+
+                if (httpClient.BaseAddress == null)
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
                 var content = new StringContent(JsonSerializer.Serialize(codeSnippets), Encoding.UTF8, "application/json");
 
-                var _response = await _httpClient.PostAsync(url, content);
+                var _response = await httpClient.PostAsync(url, content);
 
                 //_response = await _httpClient.PostAsync(url, content);
                 if (_response.IsSuccessStatusCode)

@@ -11,7 +11,7 @@ namespace CodeShare_Library.Abstractions
     {
        Task Registration(Users user);
 
-       Task Update(Users user);
+       Task<Users> Update(Users user);
 
         Task Delete(Users user);
 

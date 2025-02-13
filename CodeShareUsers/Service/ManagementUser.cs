@@ -39,11 +39,32 @@ namespace CodeShareUsers.Service
 
         }
 
-        public async Task Update(Users user)
+        public async Task<Users> Update(Users user)
         {
-             _CodeShareDB.Users.Update(user);
-             await  _CodeShareDB.SaveChangesAsync();
+            try
+            {
 
+
+                var users = await _CodeShareDB.Users.FirstOrDefaultAsync(u => u.UsersId == user.UsersId);
+
+                users.UsersName = user.UsersName;
+                users.UsersId = user.UsersId;
+                users.RoleId = user.RoleId;
+                users.Email = user.Email;
+                users.Password = user.Password;
+                users.Phone = user.Phone;
+                users.CreateAt = user.CreateAt;
+                users.UpdatedAt = user.UpdatedAt;
+
+                //_CodeShareDB.Users.Update(user);
+                await _CodeShareDB.SaveChangesAsync();
+                return users;
+            }
+            catch(Exception ex) 
+            {
+                Log.Error($"{ex.Message}", user);
+                return new Users();
+            }
         }
 
         public async Task Delete(Users user)        

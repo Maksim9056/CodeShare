@@ -1,18 +1,11 @@
-﻿using Azure;
-using CodeShare_Library.Abstractions;
+﻿using CodeShare_Library.Abstractions;
 using CodeShare_Library.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace CodeShare_Library.Service
-{       
+{
 
     public class UserService : IUserServise
     {
@@ -43,10 +36,38 @@ namespace CodeShare_Library.Service
             return new Users(){Email="" };
         }
 
-        public async Task UpdateUser(Users users)
+        public async Task<Users> UpdateUser(Users users)
         {
-             url = $"{UrlUsersApi}/ManagementUser";
+            try
+            {
+                
+                url = $"{UrlUsersApi}/ManagementUser/edit";
+                HttpClient httpClient = new HttpClient();
+                if (httpClient.BaseAddress == null)
+                {
+                    httpClient.BaseAddress = new Uri(url);
 
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                var responseMessage = await httpClient.PutAsJsonAsync(url, users);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var User_Answer = await responseMessage.Content.ReadFromJsonAsync<Users>();
+                    users = User_Answer;
+                }
+
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                return new Users() { };
+            }
         }
 
 

@@ -1,22 +1,33 @@
 ﻿@page "/Main"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
 @using Microsoft.AspNetCore.Authorization
+@using Serilog
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject ILanguage ILanguage
+@inject CodeShare_Library.Abstractions.ISettingService ISettingService
 
+@inject IUserServise UserService
+@inject ICommentService ICommentService
+@inject IRateService IRateService
+<meta charset="UTF-8">
 <!-- Подключение стилистики -->
 <link rel="stylesheet" href="/css/main.css" />
 
 <div class="container">
-    <Sidebar roles="roles" />
 
+    <Sidebar roles="roles" />
+    
 
     <main class="content">
         <header class="header">
             <h1>Главная страница</h1>
             <div class="user-settings">
-                <span>Имя</span>
+                <span>@Users.UsersName</span>
                 <div class="avatar"></div>
                 <a href="/User-profile">Настройки</a>
             </div>
@@ -26,7 +37,7 @@
         <section class="stats">
             <div class="stat-box">
                 <p>Количество тем</p>
-                <a href="#">Создано: <strong>42</strong></a>
+                <a >Создано: <strong>@CodeSnippets.Count</strong></a>
             </div>
             <div class="activity-chart">
                 <p>График активности</p>
@@ -59,7 +70,10 @@
     </main>
 </div>
 @code {
-    Roles roles = new Roles() { RolesId = 2 ,NameRole=""};
+    Roles roles;
+    Users Users = new Users() { };
+
+    public List<CodeSnippets> CodeSnippets = new List<CodeSnippets>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,4 +89,28 @@
 
         }
     }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+
+            if (firstRender)
+            {
+                var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                Log.Information($"Получили{users.UsersName} значение теме" + users.UsersId);
+                CodeSnippets = await ICodeShareCodeSnippets.GetAllCodeSnippets(users.UsersId);
+
+                Users = users;
+
+                roles = new Roles() { RolesId = Users.RoleId, NameRole = "" };
+            }
+            StateHasChanged();
+        }
+        catch (Exception e )
+        {
+            Log.Error(e.Message);
+        }
+    }
+    
 }
