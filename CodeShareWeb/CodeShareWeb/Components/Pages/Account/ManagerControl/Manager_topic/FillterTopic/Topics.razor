@@ -5,6 +5,7 @@
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject IUserServise UserService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 <link rel="stylesheet" href="/css/topics.css">
 
@@ -90,8 +91,9 @@
         {
             if (firstRender)
             {
-                
-                codeSnippets = await ICodeShareCodeSnippets.GetAllCodeSnippets(2);
+                var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                codeSnippets = await ICodeShareCodeSnippets.GetAllCodeSnippets(users.UsersId);
                 StateHasChanged();
             }
         }

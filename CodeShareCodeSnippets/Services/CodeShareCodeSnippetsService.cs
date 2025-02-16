@@ -71,7 +71,7 @@ namespace CodeShareCodeSnippets.Services
 
         public async Task<List<CodeSnippets>> GetAllCodeSnippets(long Id_user)
         {
-            var Code = await _CodeShareDB.CodeSnippets.ToListAsync();
+            var Code = await _CodeShareDB.CodeSnippets.Where(U=>U.UserId == Id_user).ToListAsync();
             Parallel.ForEach(Code, codeShare =>
             {
                 codeShare.Code = "" ;
