@@ -27,6 +27,21 @@ namespace CodeShareUsers.Service
 
                 await _CodeShareDB.Users.AddAsync(user);
                 await _CodeShareDB.SaveChangesAsync();
+
+
+                var Image = await  File.ReadAllBytesAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Users.png"));
+                //Image image = new Image() { UserId =user.UsersId,CreateAt =$"{DateTime.Now}",ImageDate=Convert.ToBase64String(Image) };
+
+
+                var image = new Image
+                {
+                    UserId = user.UsersId,
+                    ImageDate  = Convert.ToBase64String(Image),
+                    CreateAt = DateTime.Now.ToString(),
+                };
+                await _CodeShareDB.Image.AddAsync(image);
+                await _CodeShareDB.SaveChangesAsync();
+
                 Log.Warning("Registration User {@User} registered successfully", user);
 
 

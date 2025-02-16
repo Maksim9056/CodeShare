@@ -14,9 +14,9 @@ namespace CodeShare_Library.Models
 
         public string ImageDate { get; set; }
 
-        public long  LogotypeId { get; set; }
+        public long? LogotypeId { get; set; }
 
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
 
         public string CreateAt { get; set; }
 
