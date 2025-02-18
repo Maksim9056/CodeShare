@@ -11,7 +11,7 @@ namespace CodeShare_Library.Abstractions
     {
         Task<Users> CreateUser(Users users);
         Task<Users> UpdateUser(Users users);
-        Task DeletyUser(Users users);
+        Task<Users> DeletyUser(Users users);
 
         Task<Users> GetUser(long Id);
 

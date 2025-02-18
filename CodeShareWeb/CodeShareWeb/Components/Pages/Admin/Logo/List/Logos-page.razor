@@ -1,68 +1,187 @@
 ﻿@page "/Logos-page"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
+@using Serilog
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@inject IFilesService IFilesService
+@inject ILogotype ILogotype
 @* <meta name="viewport" content="width=device-width, initial-scale=1.0">
  *@<title>Логотипы системы</title>
 <link rel="stylesheet" href="/css/logos-page.css">
-<div class="container">
-        <Sidebar roles="roles" />
-<div class="main-content">
-    <div class="header">
-        <h1 class="content-title">Логотип системы</h1>
-        <div class="user">
-            <span>Имя</span>
-            <div class="user-avatar"></div>
-            <button class="add-button">Добавить</button>
-        </div>
+<!-- Верхняя панель (header) -->
+<div class="top-bar">
+    <div class="top-bar-left">
+        <h1 class="content-title">Логотипы системы</h1>
     </div>
 
+    <div class="top-bar-right">
+        <button class="add-button" @onclick="AddNewLogo">Добавить логотип</button>
+        <div class="user-avatar"></div>
+    </div>
+</div>
 
-    <!-- Logos List -->
+ <Sidebar roles="roles" />
+<!-- Основной контент -->
+<div class="content">
+    @if (view_Logotypes.Count > 1)
+    {
+        
+    
     <div class="logos-list">
         <table class="logos-table">
             <thead>
                 <tr>
                     <th>Название</th>
-                    <th>Фотография</th>
-                    <th>Использовать</th>
-                    <th>Не используется</th>
-                    <th>Сейчас</th>
-                    <th>Удалить</th>
+                    <th>Фото</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Active Logo Row -->
-                <tr class="active-logo">
-                    <td>Пример 1</td>
-                    <td><img src="Logo.png" alt="Пример"></td>
-                    <td><button class="table-button use">Использовать</button></td>
-                    <td><button class="table-button not-used">Не используется</button></td>
-                    <td><button class="table-button current">Сейчас</button></td>
-                    <td><button class="table-button delete">Удалить</button></td>
-                </tr>
-                <!-- Other Logos -->
-                <tr>
-                    <td>Пример 2</td>
-                    <td><img src="example2.png" alt="Пример"></td>
-                    <td><button class="table-button use">Использовать</button></td>
-                    <td><button class="table-button not-used">Не используется</button></td>
-                    <td><button class="table-button current">Сейчас</button></td>
-                    <td><button class="table-button delete">Удалить</button></td>
-                </tr>
+                
+                @foreach (var logo in view_Logotypes)
+                {
+                    <tr class="@(logo.Active ? "active-logo" : "")">
+                        <td>@logo.Name_Logotype</td>
+                        <td>
+                            <div class="image-container">
+                                @* Если есть ImageUrl, используем его, иначе берем байты *@
+                                @if (!string.IsNullOrEmpty(logo.ImageId))
+                                {
+                                    <img src="data:image/png;base64,@logo.ImageId" alt="Аватар пользователя" class="logosy" />
+
+                                }
+                            
+                                else
+                                {
+                                    <span>Нет изображения</span>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            @if (logo.Realtime)
+                            {
+                                <span>Текущий</span>
+                            }
+                            else
+                            {
+                                <span>Не используется</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!logo.Realtime)
+                            {
+                                <button class="table-button use" @onclick="() => SetCurrentLogo(logo)">Использовать</button>
+                            }
+                            <button class="table-button delete" @onclick="() => DeleteLogo(logo)">Удалить</button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
-</div>
+    }
 </div>
 @code{
+
+    // @*   @if (!logo.Realtime)
+    //                         {
+    //                             <button class="table-button use" @onclick="() => SetCurrentLogo(logo)">Использовать</button>
+    //                         }
+    //                         <button class="table-button delete" @onclick="() => DeleteLogo(logo)">Удалить</button> *@
+    // @*                                     <img src="@logo.ImageUrl" alt="@logo.Title" />
+
+    //                               else if (logo.ImageBytes != null && logo.ImageBytes.Length > 0)
+    //                             {
+    //                                 <img src="data:image/png;base64,@Convert.ToBase64String(logo.ImageBytes)" alt="@logo.Title" />
+    //                             } *@
     public void Create_logo()
     {
         NavigationManager.NavigateTo("/Create_logo");
     }
-    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
 
+    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
+    // // Примерная модель логотипа
+    // public class LogoItem
+    // {
+    //     public string Title { get; set; }
+    //     public string ImageUrl { get; set; }    // Хранение URL
+    //     public byte[] ImageBytes { get; set; }  // Хранение картинки в байтах
+    //     public bool IsActive { get; set; }
+    // }
+
+    // // Список логотипов (в реальном проекте - может быть загружен из БД или API)
+    // private List<LogoItem> Logos = new()
+    // {
+    //     new LogoItem { Title = "Логотип 1", ImageUrl = "images/logo1.png", IsActive = true },
+    //     new LogoItem { Title = "Логотип 2", ImageUrl = "images/logo2.png", IsActive = false },
+    //     // Пример хранения картинки в байтах:
+    //     new LogoItem
+    //     {
+    //         Title = "Байтовый логотип",
+    //         ImageBytes = new byte[] { /* ...здесь ваши реальные байты... */ },
+    //         IsActive = false
+    //     }
+    // };
+
+
+    private void AddNewLogo()
+    {
+        NavigationManager.NavigateTo("/Create_logo");
+        // Логика добавления нового логотипа
+        // Например, можно открыть форму для загрузки изображения из файла.
+    }
+
+    public async Task DeleteLogo(View_Logotype view_Logotype)
+    {
+        try
+        {
+         await Task.Delay(100);
+        }
+
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+        }
+    }
+
+    public async Task SetCurrentLogo(View_Logotype var)
+    {
+        try
+        {
+
+            
+            Logotype logotype = new Logotype() { ImageId = var.Image, Active = true,
+                Inactive = var.Inactive, LogotypeId = var.LogotypeId,
+                Name_Logotype = var.Name_Logotype,
+                Realtime = true};
+
+          var Log = await  ILogotype.Update(logotype, true);
+
+        }
+        catch(Exception e)
+        {
+            Log.Error(e.Message);
+        }
+    }
+    // private void SetCurrentLogo(LogoItem logo)
+    // {        NavigationManager.NavigateTo("/Create_logo");
+
+    //     // Сбросить флаг IsActive у всех
+    //     foreach (var l in Logos)
+    //         l.IsActive = false;
+
+    //     // Установить флаг у выбранного
+    //     logo.IsActive = true;
+    // }
+
+    // private void DeleteLogo(LogoItem logo)
+    // {
+    //     // Удалить логотип из списка
+    //     Logos.Remove(logo);
+    // }
     protected override async Task OnInitializedAsync()
     {
         try
@@ -77,5 +196,76 @@
 
         }
     }
-    
+    HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
+    private int take = 5;
+
+    private List<Logotype> Logotypes = new List<Logotype>();
+    private List<Image> Image = new List<Image>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+
+            if (firstRender)
+            {
+                await  Load();
+            }
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+
+        }
+    }
+
+    List<View_Logotype> view_Logotypes = new List<View_Logotype>();
+    public async Task Load()
+    {
+        try
+        {
+            var logotypes = await ILogotype.GetList(take, loadedIds);
+
+            foreach (var logotype in logotypes)
+            {
+                // Logotypes.Add(logotype);
+                var image = await IFilesService.GetLogotype(logotype.LogotypeId);
+
+                View_Logotype view_Logotype = new View_Logotype() 
+                { Active = logotype.Active, Inactive = logotype.Inactive, 
+                    Name_Logotype = logotype.Name_Logotype,
+                    Realtime = logotype.Realtime, 
+                    LogotypeId = logotype.LogotypeId,
+                    ImageId = image.ImageDate ,
+                        Image = image.ImageId
+                };
+
+                view_Logotypes.Add(view_Logotype);
+                // Image.Add(image);
+                loadedIds.Add(logotype.LogotypeId);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+
+        }
+    }
+
+
+    public class View_Logotype()
+    {
+        public long LogotypeId { get; set; }
+
+        public string Name_Logotype { get; set; }
+
+        public string  ImageId { get; set; }
+        public long Image { get; set; }
+
+        public bool Active { get; set; }
+
+        public bool Inactive { get; set; }
+        public bool Realtime { get; set; }
+    }
 }

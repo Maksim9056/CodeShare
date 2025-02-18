@@ -7,9 +7,11 @@
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 @inject ICodeShareCodeSnippets ICodeShareCodeSnippets
 @inject ILanguage ILanguage
 @inject CodeShare_Library.Abstractions.ISettingService ISettingService
+@inject IFilesService IFilesService
 
 @inject IUserServise UserService
 @inject ICommentService ICommentService
@@ -26,11 +28,20 @@
     <main class="content">
         <header class="header">
             <h1>Главная страница</h1>
-            <div class="user-settings">
-                <span>@Users.UsersName</span>
-                <div class="avatar"></div>
+            @if (Users.UsersName != null)
+            {
+
+
+                <div class="user-settings">
+                    <span>@Users.UsersName</span>
+                        <div class="logo">
+
+                        <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
+                    </div>
+
                 <a href="/User-profile">Настройки</a>
             </div>
+            }
         </header>
 
         <!-- Блок статистики -->
@@ -72,6 +83,7 @@
 @code {
     Roles roles;
     Users Users = new Users() { };
+    Image Image = new Image() { };
 
     public List<CodeSnippets> CodeSnippets = new List<CodeSnippets>();
 
@@ -104,6 +116,8 @@
                 Users = users;
 
                 roles = new Roles() { RolesId = Users.RoleId, NameRole = "" };
+
+                Image = await IFilesService.Get(Users);
             }
             StateHasChanged();
         }

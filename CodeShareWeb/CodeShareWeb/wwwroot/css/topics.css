@@ -17,7 +17,11 @@ body {
     width: 100%;
 }
 
-
+.logosy {
+    width: 30px;
+    background-size: contain;
+    height: 30px;
+}
 /* Боковое меню */
 
 /* Боковое меню */

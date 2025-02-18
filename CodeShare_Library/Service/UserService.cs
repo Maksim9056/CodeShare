@@ -71,11 +71,39 @@ namespace CodeShare_Library.Service
         }
 
 
-        public async Task DeletyUser(Users users)
+        public async Task<Users> DeletyUser(Users users)
         {
-            url = $"{UrlUsersApi}/ManagementUser";
+            try
+            {
+
+                url = $"{UrlUsersApi}/ManagementUser/delete{users.UsersId}";
+                HttpClient httpClient = new HttpClient();
+                if (httpClient.BaseAddress == null)
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+
+                var responseMessage = await httpClient.DeleteAsync(url);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var User_Answer = await responseMessage.Content.ReadFromJsonAsync<Users>();
+                    users = User_Answer;
+                }
 
 
+                return users;
+            }
+            catch (Exception ex)
+            {
+                return new Users() { };
+            }
         }
 
         public async Task<Users> GetUser(long Id)

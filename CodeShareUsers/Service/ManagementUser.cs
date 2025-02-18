@@ -82,22 +82,26 @@ namespace CodeShareUsers.Service
             }
         }
 
-        public async Task Delete(Users user)        
+        public async Task<Users> Delete(Users user)
         {
-            user  = await _CodeShareDB.Users.FirstOrDefaultAsync(u =>u.UsersId ==user.UsersId);
-            
-            
-             _CodeShareDB.Users.Remove(user);
-
-
-             var topic =  await _CodeShareDB.CodeSnippets.Where(u =>u.UserId == user.UsersId).ToListAsync();
-            foreach (var i in topic)
+            try
             {
-                Console.WriteLine($"{i.Title} {i.CodeSnippetsId} {i.UserId} {i.Programming_language} {i.Code}");
-            
-            } 
-            await _CodeShareDB.SaveChangesAsync();
 
+                user = await _CodeShareDB.Users.FirstOrDefaultAsync(u => u.UsersId == user.UsersId);
+
+
+                _CodeShareDB.Users.Remove(user);
+
+
+
+                await _CodeShareDB.SaveChangesAsync();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message}", user);
+                return new Users();
+            }
         }
 
         public async Task<Users> GetUser(long Id)

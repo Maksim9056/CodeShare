@@ -7,6 +7,8 @@
 @inject NavigationManager NavigationManager
 @inject ISettingService ISettingService
 @inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject IFilesService IFilesService
+@inject IUserServise UserService
 
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
@@ -21,11 +23,16 @@
 <main class="content">
     <header class="header">
         <h1>Настройки Темы</h1>
-        <div class="user-settings">
-            <span>Имя</span>
-            <div class="avatar"></div>
-            <a href="#">Настройки</a>
+            @if (Users.UsersName != null)
+            {
+                <div class="user-settings">
+                    <span>@Users.UsersName</span>
+                <div class="logo">
+
+                    <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
+                </div>              <a href="#">Настройки</a>
         </div>
+            }
     </header>
 
     <section class="settings">
@@ -71,6 +78,9 @@
     CodeSnippets codeSnippets = new CodeSnippets();
     public bool DELETE = false;
     CodeShare_Library.Models.Setting Setings = new CodeShare_Library.Models.Setting();
+    Image Image = new Image() { };
+    Users Users = new Users() { };
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try
@@ -87,11 +97,14 @@
                 {
                     Setings = await ISettingService.Get(codeSnippets.CodeSnippetsId);
                 }
-
                 else
                 {
                     DELETE = true;
                 }
+
+                var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                Image = await IFilesService.Get(users);
 
             }
         }

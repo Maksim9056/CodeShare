@@ -1,44 +1,56 @@
 ﻿@page "/Create_logo"
 @using CodeShareWeb.Components.Layout
+@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
+@using Serilog
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@inject IFilesService IFilesService
+@inject ILogotype ILogotype
+
 <link rel="stylesheet" href="/css/create_logo.css">
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Добавление логотипа</title>
-<div class="container"> 
+<div class="container">
 
     <Sidebar roles="roles" />
+
     <div class="main-content">
-            <div class="header">
-                <h1 class="content-title">Добавление логотипа</h1>
-                <div class="user">
-                    <span>Имя</span>
-                    <div class="user-avatar"></div>
+        <div class="header">
+            <h1 class="content-title">Добавление логотипа</h1>
+            <div class="user">
+                <span>Имя</span>
+                <div class="user-avatar"></div>
+            </div>
+        </div>
+
+        <form class="logo-form">
+            <div class="form-group">
+                <label for="logo-name">Название логотипа</label>
+                <input type="text" id="logo-name" @bind="logotype.Name_Logotype" placeholder="Введите название логотипа">
+            </div>
+
+            <div class="form-group">
+                <label for="logo-preview">Фотография логотипа</label>
+                <div class="preview-container" id="preview-container">
+                    @if (!string.IsNullOrEmpty(image?.ImageDate))
+                    {
+                        <img src="data:image/png;base64,@image.ImageDate" alt="Предпросмотр логотипа" class="logos" />
+                    }
+                    <InputFile OnChange="@HandleFileSelected" />
                 </div>
             </div>
 
-            <form class="logo-form">
-                <div class="form-group">
-                    <label for="logo-name">Название логотипа</label>
-                    <input type="text" id="logo-name" placeholder="Введите название логотипа">
-                </div>
-                <div class="form-group">
-                    <label for="logo-preview">Фотография логотипа</label>
-                    <div class="preview-container" id="preview-container">
-                        <p>Предпросмотр логотипа</p>
-                    </div>
-                    <input type="file" id="logo-preview" accept="image/*" onchange="showPreview(event)">
-                </div>
-                <div class="buttons">
-                    <button type="button" class="button cancel-button">Отмена</button>
-                    <button type="submit" class="button upload-button">Сохранить</button>
-                </div>
-            </form>
-        </div>
+            <div class="buttons">
+                <button type="button" class="button cancel-button">Отмена</button>
+                <button type="button" class="button upload-button" @onclick="Save">Сохранить</button>
+            </div>
+        </form>
+    </div>
 
+</div>
     <script>
         function showPreview(event) {
             const file = event.target.files[0];
@@ -58,10 +70,11 @@
             }
         }
     </script>
-</div>
-@code {
-    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
 
+@code {
+    Logotype logotype = new Logotype() { Name_Logotype =""};
+    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
+    Image image = new Image();
     protected override async Task OnInitializedAsync()
     {
         try
@@ -74,6 +87,61 @@
         catch (Exception)
         {
 
+        }
+    }
+
+    public async Task Save()
+    {
+        try
+        {
+            logotype.Realtime = false;
+            logotype.Active = false;
+
+            logotype = await ILogotype.Create(logotype);
+            if (logotype.LogotypeId > 0)
+            {
+                image.LogotypeId = logotype.LogotypeId;
+
+                var images = await IFilesService.Update(image);
+                if (images != null)
+                {
+                    image = images;
+                }
+
+                NavigationManager.NavigateTo("/Logos-page");
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+
+        }
+    }
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        try
+        {
+
+            var file = e.File;
+            using var memoryStream = new MemoryStream();
+
+            // Считываем весь файл без ограничений
+            await file.OpenReadStream(long.MaxValue).CopyToAsync(memoryStream);
+
+            image.ImageDate = Convert.ToBase64String(memoryStream.ToArray()); 
+            image.CreateAt = $"{DateTime.Now}";
+
+            image = await IFilesService.Create(image);
+            logotype.ImageId = image.ImageId;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+
+            Console.WriteLine(ex.Message);
         }
     }
 }

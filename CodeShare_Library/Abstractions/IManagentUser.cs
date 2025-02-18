@@ -13,7 +13,7 @@ namespace CodeShare_Library.Abstractions
 
        Task<Users> Update(Users user);
 
-        Task Delete(Users user);
+        Task<Users> Delete(Users user);
 
 
         Task<Users> GetUser(long Id);

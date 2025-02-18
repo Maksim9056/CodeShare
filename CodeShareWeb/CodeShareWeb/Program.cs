@@ -34,6 +34,7 @@ namespace CodeShareWeb
                 //        options.LoginPath = "/Main"; 
                 //        options.AccessDeniedPath = "/access-denied"; 
                 //    });
+
                 Log.Logger = new LoggerConfiguration()
                     .MinimumLevel.Debug()
                     .WriteTo.Console()
@@ -42,6 +43,7 @@ namespace CodeShareWeb
                           path: "logs\\structured-.json",
                         rollingInterval: RollingInterval.Day,
                         restrictedToMinimumLevel: LogEventLevel.Debug).CreateLogger();
+
                 builder.Services.AddBlazoredLocalStorage(); // Register Blazored.LocalStorage
                                                             //builder.Services.Configure<UserService>(builder.Configuration.GetSection("UserService"));
                 builder.Services.AddScoped<ICommentService, CommentService>(provider =>
@@ -55,11 +57,13 @@ namespace CodeShareWeb
                     string url = builder.Configuration["Urls:UserService"];
                     return new UserService(url);
                 });
+
                 builder.Services.AddScoped<ILanguage, CodeShare_Library.Service.LanguageServise>(provider =>
                 {
                     string url = builder.Configuration["Urls:Code_Share_Language"];
                     return new LanguageServise(url);
                 });
+
                 builder.Services.AddScoped<ICodeShareCodeSnippets, CodeShare_Library.Service.CodeShareCodeSnippetsService>(provider =>
                 {
                     string url = builder.Configuration["Urls:CodeShareCodeSnippets"];
@@ -71,14 +75,23 @@ namespace CodeShareWeb
                     string url = builder.Configuration["Urls:RateService"];
                     return new RateService(url);
                 });
-
+                builder.Services.AddScoped<ILogotype, CodeShare_Library.Service.LogotypeService>(provider =>
+                {
+                    string url = builder.Configuration["Urls:LogotypeService"];
+                    return new LogotypeService(url);
+                });
                 builder.Services.AddScoped<ISettingService, CodeShare_Library.Service.SettingService>(provider =>
                 {
                     string url = builder.Configuration["Urls:SettingService"];
                     return new SettingService(url);
                 });
+                //builder.Services.AddScoped<IFilesService, FilesService>();
 
-
+                builder.Services.AddScoped<IFilesService, CodeShare_Library.Service.FilesService>(provider =>
+                {
+                    string url = builder.Configuration["Urls:FilesService"];
+                    return new FilesService(url);
+                });
 
                 builder.Services.AddScoped<IRolesProvider, CodeShare_Library.Service.RolesService>(provider =>
                 {

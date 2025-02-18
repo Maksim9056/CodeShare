@@ -8,6 +8,8 @@
 @inject ICodeShareCodeSnippets ICodeShareCodeSnippets
 @inject ILanguage ILanguage
 @inject ICommentService ICommentService
+@inject IUserServise UserService
+@inject IFilesService IFilesService
 
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject NavigationManager NavigationManager
@@ -21,11 +23,17 @@
 <main class="content">
     <header class="header">
         <h1>Управление комментариями</h1>
-        <div class="user-settings">
-            <span>Имя</span>
-            <div class="avatar"></div>
-            <a href="/User-profile">Настройки</a>
-        </div>
+            @if (Users.UsersName != null)
+            {
+
+
+                <div class="user-settings">
+                    <span>Имя</span>
+                    <div class="logo">
+
+                        <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
+                    </div>             <a href="/User-profile">Настройки</a>
+        </div>}
     </header>
 
     <section class="comments-management">
@@ -79,6 +87,8 @@
     public List<Comment> Comments = new List<Comment>();
     CodeSnippets codeSnippets = new CodeSnippets();
     Language language = new Language();
+    Users Users = new Users() { };
+    Image Image = new Image() { };
     protected override async Task OnInitializedAsync()
     {
         try
@@ -105,6 +115,10 @@
                 codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
                 language = new Language();
                 language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
+                var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                Users = users;
+                Image = await IFilesService.Get(Users);
                 await   LoadMoreComments();
             }
             StateHasChanged();

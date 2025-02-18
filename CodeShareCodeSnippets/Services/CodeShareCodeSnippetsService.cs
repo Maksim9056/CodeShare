@@ -17,13 +17,23 @@ namespace CodeShareCodeSnippets.Services
         }
         public async Task<CodeSnippets> Create(CodeSnippets  codeSnippets)
         {
-            await _CodeShareDB.CodeSnippets.AddAsync(codeSnippets);
-            await _CodeShareDB.SaveChangesAsync();
-            Setting setting = new Setting() { SettingId = 0, SnippetId = codeSnippets.CodeSnippetsId, Visibility_Setting = codeSnippets.Description, Block = false, Hide = "", Prohibition = false };
-            await _CodeShareDB.Setting.AddAsync(setting);
-            await _CodeShareDB.SaveChangesAsync();
+            try
+            {
 
-            return codeSnippets;
+
+                await _CodeShareDB.CodeSnippets.AddAsync(codeSnippets);
+                await _CodeShareDB.SaveChangesAsync();
+                Setting setting = new Setting() { SettingId = 0, SnippetId = codeSnippets.CodeSnippetsId, Visibility_Setting = codeSnippets.Description, Block = false, Hide = "", Prohibition = false };
+                await _CodeShareDB.Setting.AddAsync(setting);
+                await _CodeShareDB.SaveChangesAsync();
+
+                return codeSnippets;
+            }
+            catch(Exception e)
+            {
+                Log.Error(e.Message);
+                return new CodeSnippets();
+            }
         }
 
         public async Task<CodeSnippets> Edit(CodeSnippets codeSnippets)

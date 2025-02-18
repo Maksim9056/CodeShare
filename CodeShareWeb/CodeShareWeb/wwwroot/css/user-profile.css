@@ -15,7 +15,11 @@ body {
     padding: 0;
     width: 100%;
 }
-
+.logosy {
+    width: 30px;
+    background-size: contain;
+    height: 30px;
+}
 /* Sidebar */
 .sidebar {
     position: fixed; /* Фиксируем sidebar */

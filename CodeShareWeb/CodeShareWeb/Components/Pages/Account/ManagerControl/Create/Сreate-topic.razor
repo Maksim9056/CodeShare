@@ -6,7 +6,10 @@
 @inject NavigationManager NavigationManager
 @inject ILanguage ILanguage
 @inject ICodeShareCodeSnippets ICodeShareCodeSnippets
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IFilesService IFilesService
 
+@inject IUserServise UserService
 <link rel="stylesheet" href="/css/create-topic.css">
 
 
@@ -16,12 +19,20 @@
     <!-- Основной контент -->
     <main class="content">
         <header class="header">
-            <h1>Создание темы</h1>
-            <div class="user-settings">
-                <span>Имя</span>
-                <div class="avatar"></div>
+            @if (Users.UsersName != null)
+            {
+
+
+                <h1>Создание темы</h1>
+                <div class="user-settings">
+                    <span>@Users.UsersName</span>
+                <div class="logo">
+
+                    <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
+                </div>
                 <a href="/User-profile">Настройки</a>
             </div>
+            }
         </header>
 
         <!-- Форма создания темы -->
@@ -77,7 +88,8 @@
      Hide = "",
      Prohibition = false,
     };
-
+    Users Users = new Users() { };
+    Image Image = new Image() { };
     protected override async Task OnInitializedAsync()
     {
         try
@@ -102,6 +114,11 @@
             if (firstRender)
             {
                 Languages = await ILanguage.GetAllAsync();
+                var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                Users = users;
+                Image = await IFilesService.Get(Users);
+
                 StateHasChanged();
             }
         }
@@ -136,16 +153,21 @@
 
     public async Task Сreate()
     {
-        codeSnippets.Description = Setting.Visibility_Setting;
-        codeSnippets.IsAdmin = 1;
-        codeSnippets.CreateAt = $"{DateTime.UtcNow}";
-        codeSnippets.UpdateAt = "";
-        codeSnippets.UserId = 2;
-        // codeSnippets.IsAdmin;
-        var topic =  await ICodeShareCodeSnippets.Create(codeSnippets);
+        if (Users.Email != null)
+        {
 
-        // Setting
-        NavigationManager.NavigateTo("/review-code");
+
+            codeSnippets.Description = Setting.Visibility_Setting;
+            codeSnippets.IsAdmin = 1;
+            codeSnippets.CreateAt = $"{DateTime.UtcNow}";
+            codeSnippets.UpdateAt = "";
+            codeSnippets.UserId = Users.UsersId;
+            // codeSnippets.IsAdmin;
+            var topic = await ICodeShareCodeSnippets.Create(codeSnippets);
+
+            // Setting
+            NavigationManager.NavigateTo("/review-code");
+        }
     }
 
 }

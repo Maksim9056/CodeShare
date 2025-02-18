@@ -11,6 +11,8 @@
 @inject IUserServise UserService
 @inject ICommentService ICommentService
 @inject IRateService IRateService
+@inject IFilesService IFilesService
+
 @inject NavigationManager NavigationManager
 <title> Просмотр тем</title>
 <meta charset="UTF-8">
@@ -21,12 +23,19 @@
     <!-- Основной контент -->
 <main class="content">
     <header class="header">
-        <h1>Просмотр тем</h1>
-        <div class="user-settings">
-            <span>Имя</span>
-            <div class="avatar"></div>
-            <a href="/User-profile">Настройки</a>
-        </div>
+            @if (Users.UsersName != null)
+            {
+
+
+                <h1>Просмотр тем</h1>
+                <div class="user-settings">
+                    <span>@Users.UsersName</span>
+                <div class="logo">
+
+                    <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
+                </div>
+                <a href="/User-profile">Настройки</a>
+        </div>}
     </header>
 
     <!-- Поиск -->
@@ -74,6 +83,8 @@
     string Distant ="\n:";
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
     public List<CodeSnippets> CodeSnippets = new List<CodeSnippets>();
+    Image Image = new Image() { };
+    Users Users = new Users() { };
 
     protected override async Task OnInitializedAsync()
     {
@@ -98,10 +109,10 @@
             if (firstRender)
             {
 
-                // var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
-                // var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                var users = await UserService.GetUser(Convert.ToInt64(keyUser));
                 // Log.Information($"Получили{users.UsersName} значение теме" + users.UsersId);
-
+                Users = users;
                 // var key = await localStorage.GetItemAsStringAsync("CodeShareId");
                 // Console.WriteLine(key);
                 // Log.Information($"Пользователь{users.UsersName}  CodeShareId  {codeSnippets.CodeSnippetsId}    {codeSnippets.Title} {codeSnippets.Programming_language}");
@@ -125,7 +136,10 @@
                 // Rate = await IRateService.GetListRates();
                 // // ICommentService.GetListComment(key);
                 // await LoadMoreComments();
+                Image = await IFilesService.Get(users);
+
                 await   Find();
+
             }
             StateHasChanged();
 

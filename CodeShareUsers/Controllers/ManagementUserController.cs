@@ -64,6 +64,24 @@ namespace CodeShareUsers.Controllers
             }
         }
 
+        [HttpDelete("delete{Users}")]
+        public async Task<IActionResult> DeleteCodeSnippets(long Users)
+        {
+            try
+            {
+
+                Users users = new Users() { UsersId= Users };
+
+                users = await _managentUser.Delete(users);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return BadRequest(new Users());
+            }
+        }
+
         [HttpGet]
         public async Task<Users> CheckUser([FromQuery]  string Email, [FromQuery] string Password)
         {

@@ -1,6 +1,5 @@
 ﻿@page "/User-profile"
 @using CodeShareWeb.Components.Layout
-@using CodeShareWeb.Components.Layout
 @using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
 @using Microsoft.AspNetCore.Authorization
@@ -14,6 +13,7 @@
 @inject IUserServise UserService
 @inject ICommentService ICommentService
 @inject IRateService IRateService
+@inject IFilesService IFilesService
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Профиль пользователя</title>
@@ -24,20 +24,27 @@
     <!-- Основной контент -->
     <main class="content">
         <header class="header">
-            <h1>Профиль пользователя</h1>
-            <div class="user-settings">
-                <span>Имя</span>
-                <div class="avatar"></div>
-                <a href="/User-profile">Настройки</a>
-            </div>
+                @if (Users.UsersName != null)
+            {
+                <h1>Профиль пользователя</h1>
+                <div class="user-settings">
+                    <span>@Users.UsersName</span>
+                    <div class="logo">
+
+                        <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
+                    </div>
+                    <a href="/User-profile">Настройки</a>
+            </div>}
         </header>
 
         <section class="profile-section">
             <div class="profile-container">
                 <!-- Левая часть: Фото и данные -->
                 <div class="profile-card">
-                    <div class="profile-photo">
-                        Фото
+                    <div class="logo">
+                        <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logos" />
+                        <InputFile OnChange="@HandleFileSelected" />
+
                     </div>
                     <div class="profile-info">
                         <input type="text" placeholder="Имя" @bind="@Users.UsersName">
@@ -51,7 +58,7 @@
                 <div class="profile-actions">
                     <button class="edit">Редактировать</button>
                     <button class="apply" @onclick="Save">Применить</button>
-                    <button class="delete">Удалить</button>
+                    <button class="delete" @onclick="Delete">Удалить</button>
                 </div>
             </div>
         </section>
@@ -61,6 +68,7 @@
 @code {
     Roles roles;
     Users Users = new Users() { };
+    Image Image = new Image() { };
 
     public List<CodeSnippets> CodeSnippets = new List<CodeSnippets>();
     protected override async Task OnInitializedAsync()
@@ -90,6 +98,8 @@
                 // CodeSnippets = await ICodeShareCodeSnippets.GetAllCodeSnippets(users.UsersId);
 
                 Users = users;
+                Image = await IFilesService.Get(Users);
+
                 roles = new Roles() { RolesId = Users.RoleId, NameRole = "" };
 
             }
@@ -106,6 +116,40 @@
         try
         {
             Users = await UserService.UpdateUser(Users);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+        }
+
+    }
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        try
+        {
+
+            var file = e.File;
+            using var memoryStream = new MemoryStream();
+
+            // Считываем весь файл без ограничений
+            await file.OpenReadStream(long.MaxValue).CopyToAsync(memoryStream);
+
+            Image.ImageDate =  Convert.ToBase64String( memoryStream.ToArray()); // Записываем в свойство            IFilesService.Update(Image);
+       
+            Image = await IFilesService.Update(Image);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    public async Task Delete()
+    {
+        try
+        {
+            Users = await UserService.DeletyUser(Users);
         }
         catch (Exception e)
         {

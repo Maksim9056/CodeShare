@@ -6,7 +6,9 @@
 @inject NavigationManager NavigationManager
 @inject ICodeShareCodeSnippets ICodeShareCodeSnippets
 @inject IUserServise UserService
+@inject IFilesService IFilesService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 <link rel="stylesheet" href="/css/topics.css">
 
 <meta charset="UTF-8">
@@ -16,60 +18,64 @@
     <Sidebar roles="roles" />
     <h3>Topics</h3>
     <!-- Основной контент -->
-        <main class="content">
-            <header class="header">
-                <h1>Страница тем</h1>
-                <div class="user-settings">
-                    <span>Имя</span>
-                    <div class="avatar"></div>
-                 <a href="/User-profile">Настройки</a>
-                </div>
-            </header>
+    <main class="content">
+        <header class="header">
+            <h1>Страница тем</h1>
+            <div class="user-settings">
+                <span>Имя</span>
+                <div class="logo">
 
-            <!-- Раздел с темами -->
-            <section class="topics">
-                <div class="topics-header">
-                    <h2>Темы</h2>
-                    <div class="filter">
-                        <input type="checkbox" id="latest-comments" onclick="filterTopics()">
-                        <label for="latest-comments">Последний комментарий</label>
-                    </div>
+                    <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
+                </div>                 <a href="/User-profile">Настройки</a>
+            </div>
+        </header>
+
+        <!-- Раздел с темами -->
+        <section class="topics">
+            <div class="topics-header">
+                <h2>Темы</h2>
+                <div class="filter">
+                    <input type="checkbox" id="latest-comments" onclick="filterTopics()">
+                    <label for="latest-comments">Последний комментарий</label>
+                </div>
                 <button class="create-topic-button"><a href="/create-topic">Создать тему</a></button>
             </div>
             <div class="topics-list">
                 @foreach (var Code in codeSnippets)
                 {
                     <li class="topic" data-latest="true" @onclick="() => Comments_management(Code.CodeSnippetsId)">
-@*                         <a href="/review-code">
- *@                           
- <div class="topic-title"> @Code.Title</div>
-                            <div class="topic-info">@Code.UpdateAt</div>
+                        @*                         <a href="/review-code">
+                    *@
+                        <div class="topic-title"> @Code.Title</div>
+                        <div class="topic-info">@Code.UpdateAt</div>
 
-                      @*   </a> *@
+                        @*   </a> *@
 
                     </li>
                 }
 
-                </div>
-            </section>
-        </main>
-    </div>
+            </div>
+        </section>
+    </main>
+</div>
 
-    <script>
-        // Функция фильтрации тем по последнему комментарию
-        function filterTopics() {
-            const checkbox = document.getElementById('latest-comments');
-            const topics = document.querySelectorAll('.topic');
+<script>
+    // Функция фильтрации тем по последнему комментарию
+    function filterTopics() {
+        const checkbox = document.getElementById('latest-comments');
+        const topics = document.querySelectorAll('.topic');
 
-            topics.forEach(topic => {
-                const isLatest = topic.getAttribute('data-latest') === 'true';
-                topic.style.display = checkbox.checked && !isLatest ? 'none' : 'block';
-            });
-        }
-    </script>
+        topics.forEach(topic => {
+            const isLatest = topic.getAttribute('data-latest') === 'true';
+            topic.style.display = checkbox.checked && !isLatest ? 'none' : 'block';
+        });
+    }
+</script>
 @code {
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
     List<CodeSnippets> codeSnippets = new List<CodeSnippets>();
+    Image Image = new Image() { };
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -94,6 +100,8 @@
                 var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
                 var users = await UserService.GetUser(Convert.ToInt64(keyUser));
                 codeSnippets = await ICodeShareCodeSnippets.GetAllCodeSnippets(users.UsersId);
+                Image = await IFilesService.Get(users);
+
                 StateHasChanged();
             }
         }
@@ -103,9 +111,9 @@
         }
     }
 
-    public async Task Comments_management( long CodeShare)
+    public async Task Comments_management(long CodeShare)
     {
-        await localStorage.SetItemAsync("CodeShareId",CodeShare);
+        await localStorage.SetItemAsync("CodeShareId", CodeShare);
         NavigationManager.NavigateTo("/review-code");
     }
     // <ul>

@@ -1,5 +1,7 @@
 
+using CodeShare_Library.Abstractions;
 using CodeShare_Library.Date;
+using CodeShareLogotype.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodeShareLogotype
@@ -18,6 +20,8 @@ namespace CodeShareLogotype
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<CodeShareDB>(options =>
            options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));
+            builder.Services.AddScoped<ILogotype, LogotypeService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

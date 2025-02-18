@@ -13,6 +13,8 @@
 
 @inject IUserServise UserService
 @inject ICommentService ICommentService
+@inject IFilesService IFilesService
+
 @inject IRateService IRateService
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,13 +36,19 @@
     <!-- Основной контент -->
     <main class="content">
         <header class="header">
-            <h1>Проверка кода и оценка</h1>
-            <div class="user-settings">
-                <span>Имя</span>
-                <div class="avatar"></div>
-                <a href="/User-profile">Настройки</a>
-            </div>
+            @if (Users.UsersName != null)
+            {
 
+
+                <h1>Проверка кода и оценка</h1>
+                <div class="user-settings">
+                    <span>@Users.UsersName</span>
+                <div class="logo">
+
+                    <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
+                </div>                <a href="/User-profile">Настройки</a>
+            </div>
+            }
         </header>
         <!-- Код и инструменты -->
         <section class="code-review">
@@ -212,6 +220,9 @@
     private bool hasMore = true;
     HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
     public Setting setting = new Setting();
+    Image Image = new Image() { };
+    Users Users = new Users() { };
+
     protected override void OnInitialized()
     {
         // Разбиваем код на строки
@@ -237,10 +248,13 @@
 
                 var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
                 var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                Users = users;
                 Log.Information($"Получили{users.UsersName} значение теме" +  users.UsersId );
+                Image = await IFilesService.Get(users);
 
                 var key = await localStorage.GetItemAsStringAsync("CodeShareId");
                 Console.WriteLine(key);
+
                 Log.Information($"Пользователь{users.UsersName}  CodeShareId  {codeSnippets.CodeSnippetsId}    {codeSnippets.Title} {codeSnippets.Programming_language}");
                 codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
 

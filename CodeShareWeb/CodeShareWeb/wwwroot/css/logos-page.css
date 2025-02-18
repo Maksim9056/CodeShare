@@ -1,63 +1,94 @@
-﻿/* Общие стили */
+﻿/* =============== БАЗОВЫЕ СТИЛИ =============== */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(180deg, #4E82F5, #6B3FA0);
+    /* Светлый спокойный фон */
+    background: #f0f0f0;
     color: #333;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    min-height: 100vh;
 }
 
+/* Можно обернуть всё в контейнер, если нужно */
+/* 
 .container {
     display: flex;
-    margin: 0;
-    padding: 0;
     width: 100%;
+    height: auto; 
 }
-.content {
-    flex: 1;
-    padding: 40px;
-    background-color: #fff;
+*/
+
+/* =============== ШАПКА (TOP BAR) =============== */
+
+.top-bar {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    position: relative;
-    flex: 1;
-    display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    background: #fff;
-    border-top-left-radius: 20px;
-    padding: 30px;
-    margin-left: 250px; /* Оставляем место для sidebar */
-    padding: 20px;
-    color: #333;
-    flex-direction: column;
+    background-color: #6B3FA0;
+    padding: 10px 20px;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Sidebar */
-/* Sidebar */
+.top-bar-left,
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.content-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-image: url('Logo.png'); /* Заглушка, поменяйте под себя */
+    background-size: cover;
+    background-position: center;
+}
+
+.add-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background: #6B3FA0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .add-button:hover {
+        background: #59328A;
+    }
+
+/* =============== БОКОВАЯ ПАНЕЛЬ (SIDEBAR) =============== */
+
 .sidebar {
-    position: fixed; /* Фиксируем sidebar */
+    position: fixed;
     top: 0;
-    left: 0; /* Убираем любые отступы от левого края */
-    height: 100vh; /* Высота на весь экран */
-    width: 250px; /* Задаем ширину */
-    background: #6a11cb;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background: #6a11cb; /* можно заменить на #6B3FA0, если нужно единообразие */
     color: #fff;
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 10; /* Убедитесь, что sidebar выше других элементов */
+    z-index: 10;
 }
+
     .sidebar nav ul {
         list-style: none;
         padding: 0;
+        margin: 0;
         width: 100%;
     }
 
@@ -84,13 +115,7 @@ body {
                     background: rgba(255, 255, 255, 0.1);
                 }
 
-
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-        width: 100%;
-    }
-
+    /* Кнопка-демо в сайдбаре (если нужна) */
     .sidebar .menu-button {
         width: 100%;
         padding: 15px;
@@ -111,29 +136,37 @@ body {
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-
-/* Кнопка действия */
-.action {
-    text-align: center;
+/* Для мобильных экранов прячем sidebar */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
 }
 
-    .action button {
-        padding: 15px 25px;
-        font-size: 16px;
-        background: linear-gradient(135deg, #6a11cb, #2575fc);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background 0.3s ease, transform 0.2s ease;
-        box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
-    }
+/* =============== ОСНОВНОЙ КОНТЕНТ =============== */
 
-        .action button:hover {
-            background: linear-gradient(135deg, #2575fc, #6a11cb);
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.4);
-        }
+.content {
+    margin-left: 250px; /* Оставляем место под sidebar */
+    padding: 20px;
+    background-color: #fff;
+    min-height: 100vh;
+    box-sizing: border-box;
+    /* Закругление и тень (по желанию) */
+    border-top-left-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* =============== ТАБЛИЦА ЛОГОТИПОВ =============== */
+
+.logos-list {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
 
 .logos {
     width: 100px;
@@ -141,129 +174,13 @@ body {
     background-size: contain;
     height: 100px;
 }
-
-/* Sidebar скрывается на мобильных устройствах */
-@media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
-}
-
-
-.menu-item {
-    padding: 15px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2)
-}
-
-    .menu-item.active {
-        background: linear-gradient(135deg, #6a11cb, #2575fc);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .menu-item:hover {
-        background: rgba(255, 255, 255, 0.3);
-        transform: scale(1.05);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    }
-
-.menu-button {
-    background: linear-gradient(90deg, #6B3FA0, #4E82F5);
-    color: #fff;
-    font-weight: bold;
-    font-size: 18px;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-    .menu-button.active {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transform: scale(1.1);
-    }
-
-/* Main Content */
-.main-content {
-    flex: 1; /* Это позволяет занять всю оставшуюся часть */
-    padding: 40px;
-    background: #fff;
-    border-radius: 0 12px 12px 0; /* Убираем закругление сверху */
-    margin: 0; /* Убираем отступы */
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Заголовок */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-}
-
-.content-title {
-    font-size: 32px;
-    font-weight: bold;
-    color: #6B3FA0;
-    margin: 0;
-}
-
-.user {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.user-avatar {
-    width: 40px;
-    height: 40px;
-    background: #E0E0E0;
-    border: 2px solid #6B3FA0;
-    border-radius: 50%;
-}
-
-.add-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background: #6B3FA0;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-    .add-button:hover {
-        background: #59328A;
-    }
-
-/* Logos List */
-.logos-list {
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 100%; /* Устанавливаем на всю ширину */
-}
-
 .logos-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-    .logos-table th, .logos-table td {
+    .logos-table th,
+    .logos-table td {
         padding: 12px;
         text-align: center;
         border-bottom: 1px solid #f0f0f0;
@@ -272,11 +189,16 @@ body {
     .logos-table th {
         background: #f7f7f7;
         color: #333;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
     }
 
-/* Active Logo Row */
+        .logos-table th:nth-child(2),
+        .logos-table td:nth-child(2) {
+            width: 200px; /* Ширина столбца для фото */
+        }
+
+/* Активация строки (текущий логотип) */
 .active-logo {
     background-color: #e8f5e9;
     border-left: 4px solid #4caf50;
@@ -286,8 +208,8 @@ body {
         font-weight: bold;
     }
 
-/* Table Buttons */
-/* Эффект увеличения при наведении */
+/* =============== КНОПКИ В ТАБЛИЦЕ =============== */
+
 .table-button {
     padding: 10px 20px;
     border: none;
@@ -295,23 +217,12 @@ body {
     font-size: 14px;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 5px 0; /* Разделение кнопок */
 }
-
 
     .table-button.use {
         background: #2196f3;
         color: #fff;
-    }
-
-    .table-button.not-used {
-        background: #ff9800;
-        color: #fff;
-    }
-
-    .table-button.current {
-        background: #4caf50;
-        color: #fff;
-        font-weight: bold;
     }
 
     .table-button.delete {
@@ -319,58 +230,50 @@ body {
         color: #fff;
     }
 
-    /* Эффект увеличения при наведении */
     .table-button:hover {
-        transform: scale(1.1); /* Увеличение на 10% */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Добавление тени */
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
+/* =============== ИЗОБРАЖЕНИЯ =============== */
+
 .image-container {
-    width: 150px; /* или нужная ширина */
+    width: 150px;
     height: auto;
     text-align: center;
 }
 
-img {
-    max-width: 100%;
-    height: auto;
-}
+    .image-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px; /* Небольшое скругление */
+    }
 
-.logos-table th:nth-child(2), .logos-table td:nth-child(2) {
-    width: 200px; /* Ширина для фото */
-}
-
-.user-avatar {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #6B3FA0;
-    border-radius: 50%;
-    background-image: url('Logo.png');
-    background-size: cover;
-    background-position: center;
-}
+/* =============== АДАПТИВНОСТЬ (МОБИЛЬНАЯ ВЕРСИЯ) =============== */
 
 @media (max-width: 768px) {
-    .sidebar {
-        display: none; /* Скрыть боковую панель */
+    /* Убираем sidebar, контент на всю ширину */
+    .content {
+        margin-left: 0;
+        border-top-left-radius: 0;
     }
 
-    .main-content {
-        margin: 0; /* Убрать отступы */
-        padding: 10px; /* Добавить меньше отступов */
+    .logos-table th,
+    .logos-table td {
+        font-size: 12px; /* уменьшенный шрифт */
     }
 
-    .logos-table th, .logos-table td {
-        font-size: 12px; /* Уменьшить шрифт для компактности */
-    }
-
-    .user-avatar {
-        width: 30px;
-        height: 30px;
+    .image-container {
+        width: 100px;
     }
 
     .add-button {
         font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .table-button {
+        font-size: 12px;
         padding: 8px 12px;
     }
 }
