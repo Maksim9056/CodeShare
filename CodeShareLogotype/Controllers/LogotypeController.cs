@@ -27,6 +27,12 @@ namespace CodeShareLogotype.Controllers
             return Ok(comment);
         }
 
+        [HttpGet("get/logotypeactive")]
+        public async Task<IActionResult> Get_logotype_Active_All()
+        {
+           
+            return Ok(await ILogotype.Get());
+        }
         [HttpPut("getall/get/{take}")]
         public async Task<IActionResult> GetSnippetsAll([FromBody] HashSet<long> loaded, int take = 5)
         {

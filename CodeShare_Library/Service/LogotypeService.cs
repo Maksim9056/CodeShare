@@ -171,5 +171,34 @@ namespace CodeShare_Library.Service
                 return logotype;
             }
         }
+        public async Task<Logotype> Get()
+        {
+            try
+            {
+
+                HttpClient httpClient = new HttpClient();
+                
+
+                url = $"{UrlLogotypeServiceApi}/Logotype/get/logotypeactive";
+                if (httpClient.BaseAddress == null)
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                Logotype Logotype_responseMessage = await httpClient.GetFromJsonAsync<Logotype>(url);
+                //_httpClient.BaseAddress = null;
+                return Logotype_responseMessage;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new Logotype();
+            }
+        }
     }
 }

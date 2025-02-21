@@ -14,6 +14,7 @@ namespace CodeShare_Library.Abstractions
         Task<Logotype> Update(Logotype logotype);
         Task<Logotype> Update(Logotype logotype,bool Real);
 
+        Task<Logotype> Get();
 
         Task<Logotype> Delete(Logotype logotype);
 

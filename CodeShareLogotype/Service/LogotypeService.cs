@@ -44,7 +44,21 @@ namespace CodeShareLogotype.Service
             throw new NotImplementedException();
         }
 
-        public async Task<List<Logotype>> GetList(int take, HashSet<long> loadedIds)
+        public async Task<Logotype> Get()
+        {
+            try
+            {
+                var logotypy = await _CodeShareDB.Logotype.FirstOrDefaultAsync(u => u.Active == true && u.Realtime == true);
+                return logotypy;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message + $"GetComment Comment Topic Rating");
+                return new Logotype();
+            }
+        }
+
+            public async Task<List<Logotype>> GetList(int take, HashSet<long> loadedIds)
         {
             try
             {

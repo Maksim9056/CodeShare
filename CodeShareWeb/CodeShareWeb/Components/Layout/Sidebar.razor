@@ -1,12 +1,18 @@
 ﻿@using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
 @inject IRolesProvider RolesProvider
-
+@inject ILogotype ILogotype
+@inject IFilesService IFilesService
 <style>
 
 
 </style>
 <aside class="sidebar">
+
+    @if (bytes !=null)
+    {
+        
+    
     <div class="logo">
         <img src="data:image/png;base64,@(Convert.ToBase64String(bytes))" alt="Логотип" class="logos">
 
@@ -38,6 +44,7 @@
         </nav>
 
     }
+    }
 </aside>
 @code {
 
@@ -50,11 +57,21 @@
 
     protected override async Task OnInitializedAsync()
     {
-        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photo", "CodeShare.png");
-        // var roles = await RolesProvider.GetAlll();
-        // Roles = roles.ToList();
-        bytes = File.ReadAllBytes(filePath);
-        Console.WriteLine($"Фото загружен {bytes.Length}");
+        // string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photo", "CodeShare.png");
+        // // var roles = await RolesProvider.GetAlll();
+        // // Roles = roles.ToList();
+        Logotype logotype =  await ILogotype.Get();
+        if (logotype.LogotypeId > 0)
+        {
+        
+            var Logotype_Image = await IFilesService.GetLogotype(logotype.LogotypeId);
+
+            bytes =Convert.FromBase64String(Logotype_Image.ImageDate);
+
+
+            Console.WriteLine($"Фото загружен {Logotype_Image.ImageDate.Length}");
+        }
+    
 
         Console.WriteLine("Sidebar загружен");
     }
