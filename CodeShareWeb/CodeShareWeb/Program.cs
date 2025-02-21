@@ -99,6 +99,14 @@ namespace CodeShareWeb
                     return new RolesService(url);
                 });
 
+      
+                builder.Services.AddScoped<IChanges_in_the_system, Changes_in_the_system_Service>(provider =>
+                {
+                    string url = builder.Configuration["Urls:Changes_in_the_systemService"];
+                    return new Changes_in_the_system_Service(url);
+                });
+
+
 
 
                 //builder.Services.AddScoped<UserService>();

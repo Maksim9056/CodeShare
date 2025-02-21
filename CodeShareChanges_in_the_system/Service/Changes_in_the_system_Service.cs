@@ -10,11 +10,11 @@ namespace CodeShareChanges_in_the_system.Service
     {
         public readonly CodeShareDB _CodeShareDB;
 
-        public Changes_in_the_system_Service (CodeShareDB codeShareDB)
+        public Changes_in_the_system_Service(CodeShareDB codeShareDB)
         {
             _CodeShareDB = codeShareDB;
         }
-      
+
 
         public async Task<Changes_in_the_system> Create(Changes_in_the_system changes_In_The_System)
         {
@@ -40,7 +40,7 @@ namespace CodeShareChanges_in_the_system.Service
             {
                 //List < Comment > comments = new List<Comment>();
                 //// Исключаем загруженные Id
-                var changes_In_The_Systems = await _CodeShareDB.Changes_in_the_system.Where(coment =>  !loadedIds.Any(us => us == coment.Changes_in_the_systemId)).Take(take).ToListAsync();
+                var changes_In_The_Systems = await _CodeShareDB.Changes_in_the_system.Where(coment => !loadedIds.Any(us => us == coment.Changes_in_the_systemId)).Take(take).ToListAsync();
 
                 Log.Information($"GetList  Comment Topic" + " {@Changes_in_the_system} registered successfully", changes_In_The_Systems);
 

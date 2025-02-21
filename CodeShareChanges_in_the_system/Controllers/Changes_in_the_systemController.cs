@@ -8,12 +8,12 @@ namespace CodeShareChanges_in_the_system.Controllers
     [Route("[controller]")]
     public class Changes_in_the_systemController : ControllerBase
     {
-    
+
         private readonly ILogger<Changes_in_the_systemController> _logger;
-        
+
         private readonly IChanges_in_the_system IChanges_in_the_system;
 
-        public Changes_in_the_systemController(ILogger<Changes_in_the_systemController> logger,IChanges_in_the_system changes_In_The_System)
+        public Changes_in_the_systemController(ILogger<Changes_in_the_systemController> logger, IChanges_in_the_system changes_In_The_System)
         {
             _logger = logger;
             IChanges_in_the_system = changes_In_The_System;
