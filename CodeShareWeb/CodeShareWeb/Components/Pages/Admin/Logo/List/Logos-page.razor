@@ -196,12 +196,12 @@
 
         }
     }
-    HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
-    private int take = 5;
+ 
 
     private List<Logotype> Logotypes = new List<Logotype>();
     private List<Image> Image = new List<Image>();
-
+    HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
+    private int take = 5;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try

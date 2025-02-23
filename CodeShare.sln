@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareSetting", "CodeSha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShareGateway", "CodeShareGateway\CodeShareGateway.csproj", "{2CF04C3F-BB82-47B3-BFAF-6720AE85FE44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShare_Language", "CodeShare_Language\CodeShare_Language.csproj", "{571D7DFD-1D73-4768-81E0-E2EF66406BB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShare_Language", "CodeShare_Language\CodeShare_Language.csproj", "{571D7DFD-1D73-4768-81E0-E2EF66406BB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShareTest", "CodeShareTest\CodeShareTest.csproj", "{9C8E86B2-60F1-4E6B-A1F8-39E4BF3EE178}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{571D7DFD-1D73-4768-81E0-E2EF66406BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{571D7DFD-1D73-4768-81E0-E2EF66406BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{571D7DFD-1D73-4768-81E0-E2EF66406BB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C8E86B2-60F1-4E6B-A1F8-39E4BF3EE178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C8E86B2-60F1-4E6B-A1F8-39E4BF3EE178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C8E86B2-60F1-4E6B-A1F8-39E4BF3EE178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C8E86B2-60F1-4E6B-A1F8-39E4BF3EE178}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

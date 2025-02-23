@@ -53,12 +53,6 @@ namespace CodeShare_Library.Date
                 .WithMany()
                 .HasForeignKey(u => u.Programming_language)
                 .OnDelete(DeleteBehavior.Restrict);
-                // CodeSnippets <-> Users
-                //modelBuilder.Entity<CodeSnippets>()
-                //    .HasOne<Language>()
-                //    .WithMany()
-                //    .HasForeignKey(cs => cs.Id_Programming_language)
-                //    .OnDelete(DeleteBehavior.Cascade);
 
                 // Changes_in_the_system <-> Users
                 modelBuilder.Entity<Changes_in_the_system>()

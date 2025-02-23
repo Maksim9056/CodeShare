@@ -1,8 +1,10 @@
 ﻿@page "/System-updates"
 @using CodeShareWeb.Components.Layout
 @using CodeShare_Library.Models
+@using Serilog
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@inject CodeShare_Library.Abstractions.IChanges_in_the_system IChanges_in_the_system
 <title> Просмотр тем</title>
 
 <meta charset="UTF-8">
@@ -37,19 +39,19 @@
         <!-- Поля ввода -->
         <div class="updates-section">
             <div>
-                <label for="version">Введите версию:</label>
-                <input type="text" id="version" placeholder="Введите номер версии">
+                <label for="version"> Введите версию:</label>
+                <input type="text" id="version" @bind="changes_In_The_System.Action_Type" placeholder="Введите номер версии">
             </div>
             <div>
                 <label for="update-text">Введите текст обновления:</label>
-                <textarea id="update-text" placeholder="Введите описание обновления"></textarea>
+                <textarea id="update-text" @bind="changes_In_The_System.Text_update"  placeholder="Введите описание обновления"></textarea>
             </div>
         </div>
 
         <!-- Кнопки -->
         <div class="buttons-container">
-            <button class="cancel-button">Отмена</button>
-            <button class="save-button">Сохранить</button>
+            <button class="cancel-button" @onclick="Calback">Отмена</button>
+            <button class="save-button" @onclick="Create">Сохранить</button>
         </div>
     </main>
 </div>
@@ -66,6 +68,7 @@
 @code {
     Roles roles = new Roles() { RolesId = 1, NameRole = "" };
 
+    Changes_in_the_system changes_In_The_System = new Changes_in_the_system();
     protected override async Task OnInitializedAsync()
     {
         try
@@ -80,5 +83,28 @@
 
         }
     }
+    public async Task Calback()
+    {
+        try
+        {
 
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+
+        }
+    }
+    public async Task Create()
+    {
+        try
+        {
+    
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+
+        }
+    }
 }
