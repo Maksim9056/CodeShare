@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CodeShare_Library.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreat25 : Migration
+    public partial class InitialCreatms12122 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -143,7 +143,8 @@ namespace CodeShare_Library.Migrations
                     SnippetsId = table.Column<long>(type: "bigint", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     CreateAt = table.Column<string>(type: "text", nullable: false),
-                    Comment_Text = table.Column<string>(type: "text", nullable: false)
+                    Comment_Text = table.Column<string>(type: "text", nullable: false),
+                    IsHidden = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -219,8 +220,8 @@ namespace CodeShare_Library.Migrations
                     ImageId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ImageDate = table.Column<string>(type: "text", nullable: false),
-                    LogotypeId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    LogotypeId = table.Column<long>(type: "bigint", nullable: true),
+                    UserId = table.Column<long>(type: "bigint", nullable: true),
                     CreateAt = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -346,6 +347,17 @@ namespace CodeShare_Library.Migrations
                     { 82L, "IDL (Interactive Data Language)" },
                     { 83L, "IDL (Industrial Design Language)" },
                     { 84L, "IDL (Interface Definition Language)" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Rate",
+                columns: new[] { "RateId", "Name_Rate" },
+                values: new object[,]
+                {
+                    { 1L, "Плохо" },
+                    { 2L, "Средне" },
+                    { 3L, "Хорошо" },
+                    { 4L, "Отлично" }
                 });
 
             migrationBuilder.InsertData(

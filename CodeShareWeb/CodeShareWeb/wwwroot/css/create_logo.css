@@ -1,27 +1,47 @@
 ﻿/* Общие стили */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     display: flex;
     height: 100vh;
-    background: linear-gradient(180deg, #4E82F5, #6B3FA0);
-    color: #333;
+    background: linear-gradient(135deg, #6b3fa0, #2a61d8);
+    color: #fff;
 }
 
 .container {
     display: flex;
+    margin: 0;
+    padding: 0;
     width: 100%;
-    height: 100%;
 }
 
+.logosy {
+    width: 30px;
+    background-size: contain;
+    height: 30px;
+}
+/* Sidebar */
 .sidebar {
-    width: 300px;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: white;
-    padding: 30px 20px;
+    position: fixed; /* Фиксируем sidebar */
+    top: 0;
+    left: 0; /* Убираем любые отступы от левого края */
+    height: 100vh; /* Высота на весь экран */
+    width: 250px; /* Задаем ширину */
+    background: #6a11cb;
+    color: #fff;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Убедитесь, что sidebar выше других элементов */
+}
+
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
 }
 
 .menu-item {
@@ -33,14 +53,10 @@ body {
     background: rgba(255, 255, 255, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2)
 }
-.logos {
-    width: 100px;
-    height: auto;
-    background-size: contain;
-    height: 100px;
-}
+
     .menu-item.active {
         background: linear-gradient(135deg, #6a11cb, #2575fc);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -49,6 +65,83 @@ body {
     .menu-item:hover {
         background: rgba(255, 255, 255, 0.3);
         transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: #fff;
+    border-top-left-radius: 20px;
+    padding: 30px;
+    margin-left: 250px; /* Оставляем место для sidebar */
+    padding: 20px;
+    color: #333;
+    flex-direction: column;
+}
+
+/* Основной контент */
+/*.content {
+    flex: 1;
+    margin-left: 250px;*/ /* Оставляем место для sidebar */
+/*padding: 20px;
+    display: flex;
+    flex-direction: column;
+}*/
+.content-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.content-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #6b3fa0;
+    position: relative;
+}
+
+    .content-title::after {
+        content: '';
+        width: 60px;
+        height: 4px;
+        background: #6b3fa0;
+        display: block;
+        margin: 8px auto 0;
+        border-radius: 2px;
+    }
+
+.user-info {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.user-icon {
+    width: 40px;
+    height: 40px;
+    background: #e0e0e0;
+    border-radius: 50%;
+    border: 2px solid #6b3fa0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+    .user-icon:hover {
+        border-color: #a057d2;
+        transform: scale(1.1);
     }
 
 .main-content {
@@ -166,6 +259,100 @@ body {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
+
+
+/* Кнопки рядом со списком */
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 15px;
+    margin-left: 20px;
+}
+
+/* Общий стиль кнопок */
+.button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    /* Кнопка "Добавить" */
+    .button.add-button {
+        background: #6b3fa0;
+        color: #fff;
+    }
+
+        .button.add-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+    /* Кнопка "Сохранить" или "Показать ещё" */
+    .button.save-button {
+        background: #ccc;
+        color: #333;
+    }
+
+        .button.save-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+/* Кнопка действия внизу (если нужна) */
+.action {
+    text-align: center;
+}
+
+    .action button {
+        padding: 15px 25px;
+        font-size: 16px;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+    }
+
+        .action button:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.4);
+        }
+
+.logosy {
+    width: 30px;
+    background-size: contain;
+    height: 30px;
+}
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
+
+.sidebar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .user-avatar {
     width: 40px;
     height: 40px;
@@ -181,4 +368,275 @@ body {
     max-height: 300px; /* Ограничение высоты изображения */
     object-fit: contain; /* Пропорциональное масштабирование */
     border-radius: 8px; /* Немного округляем углы для красоты */
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #6B3FA0;
+    padding: 10px 20px;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.top-bar-left,
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.content-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-image: url('Logo.png'); /* Заглушка, поменяйте под себя */
+    background-size: cover;
+    background-position: center;
+}
+
+.add-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background: #6B3FA0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .add-button:hover {
+        background: #59328A;
+    }
+
+/* =============== БОКОВАЯ ПАНЕЛЬ (SIDEBAR) =============== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background: #6a11cb; /* можно заменить на #6B3FA0, если нужно единообразие */
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+    .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+        .sidebar nav ul li {
+            margin: 10px 0;
+        }
+
+            .sidebar nav ul li a {
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 15px;
+                display: block;
+                border-radius: 5px;
+                transition: background 0.3s ease;
+            }
+
+                .sidebar nav ul li a.active {
+                    background: linear-gradient(135deg, #6a11cb, #2575fc);
+                    color: #fff;
+                    font-weight: bold;
+                }
+
+                .sidebar nav ul li a:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                }
+.updates-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 800px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+    /* Кнопка-демо в сайдбаре (если нужна) */
+    .sidebar .menu-button {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .sidebar .menu-button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+/* Для мобильных экранов прячем sidebar */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+}
+
+/* =============== ОСНОВНОЙ КОНТЕНТ =============== */
+
+.content {
+    margin-left: 250px; /* Оставляем место под sidebar */
+    padding: 20px;
+    background-color: #fff;
+    min-height: 100vh;
+    box-sizing: border-box;
+    /* Закругление и тень (по желанию) */
+    border-top-left-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* =============== ТАБЛИЦА ЛОГОТИПОВ =============== */
+
+.logos-list {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
+
+.logos-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .logos-table th,
+    .logos-table td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .logos-table th {
+        background: #f7f7f7;
+        color: #333;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+        .logos-table th:nth-child(2),
+        .logos-table td:nth-child(2) {
+            width: 200px; /* Ширина столбца для фото */
+        }
+
+/* Активация строки (текущий логотип) */
+.active-logo {
+    background-color: #e8f5e9;
+    border-left: 4px solid #4caf50;
+}
+
+    .active-logo td {
+        font-weight: bold;
+    }
+
+/* =============== КНОПКИ В ТАБЛИЦЕ =============== */
+
+.table-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 5px 0; /* Разделение кнопок */
+}
+
+    .table-button.use {
+        background: #2196f3;
+        color: #fff;
+    }
+
+    .table-button.delete {
+        background: #f44336;
+        color: #fff;
+    }
+
+    .table-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+/* =============== ИЗОБРАЖЕНИЯ =============== */
+
+.image-container {
+    width: 150px;
+    height: auto;
+    text-align: center;
+}
+
+    .image-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px; /* Небольшое скругление */
+    }
+
+/* =============== АДАПТИВНОСТЬ (МОБИЛЬНАЯ ВЕРСИЯ) =============== */
+
+@media (max-width: 768px) {
+    /* Убираем sidebar, контент на всю ширину */
+    .content {
+        margin-left: 0;
+        border-top-left-radius: 0;
+    }
+
+    .logos-table th,
+    .logos-table td {
+        font-size: 12px; /* уменьшенный шрифт */
+    }
+
+    .image-container {
+        width: 100px;
+    }
+
+    .add-button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .table-button {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
 }

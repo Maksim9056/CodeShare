@@ -3,6 +3,7 @@ using CodeShare_Library.Abstractions;
 using CodeShare_Library.Date;
 using CodeShareUsers.Service;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Json;
@@ -46,6 +47,10 @@ namespace CodeShareUsers
 
                 builder.Services.AddDbContext<CodeShareDB>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));
+                //                builder.Services.AddDbContext<CodeShareDB>(options =>
+                //options.UseSqlServer(builder.Configuration.GetConnectionString("CodeSharу112")));
+                //options.UseNpgsql(builder.Configuration.GetConnectionString("CodeShare")));
+
                 Log.Warning("Это предупреждение!Подключение к базе CodeShare");
 
                 builder.Services.AddScoped<IManagentUser, ManagementUser>();

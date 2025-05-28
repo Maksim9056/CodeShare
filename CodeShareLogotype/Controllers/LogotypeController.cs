@@ -39,6 +39,11 @@ namespace CodeShareLogotype.Controllers
             return Ok(await ILogotype.GetList(take, loaded));
         }
 
+        [HttpDelete("delete{Id_logotype}")]
+        public async Task<IActionResult> DeleteLogotype(long  Id_logotype)
+        {
+            return Ok(await ILogotype.Delete(Id_logotype));
+        }
 
         [HttpPut("edit/{real}")]
         public async Task<IActionResult> EditLogotype_active([FromBody] Logotype image ,bool real =true)

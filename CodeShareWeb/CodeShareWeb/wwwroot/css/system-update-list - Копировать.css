@@ -1,40 +1,31 @@
 ﻿/* Общие стили */
 body {
     margin: 0;
-    padding: 0;
     font-family: 'Poppins', sans-serif;
-    min-height: 100vh; /* Вместо display: flex используем min-height */
+    display: flex;
+    height: 100vh;
     background: linear-gradient(135deg, #6b3fa0, #2a61d8);
     color: #fff;
 }
 
-/* Контейнер для всей страницы */
 .container {
     display: flex;
+    margin: 0;
+    padding: 0;
     width: 100%;
-    min-height: 100vh; /* Чтобы контейнер растягивался на всю высоту экрана */
 }
-
-/* Логотипы/иконки (при необходимости переименуйте под свои нужды) */
 .logosy {
     width: 30px;
+    background-size: contain;
     height: 30px;
-    background-size: contain;
 }
-
-.logos {
-    width: 100px;
-    height: 100px;
-    background-size: contain;
-}
-
 /* Sidebar */
 .sidebar {
-    position: fixed;
+    position: fixed; /* Фиксируем sidebar */
     top: 0;
-    left: 0;
-    width: 250px;
-    height: 100vh;
+    left: 0; /* Убираем любые отступы от левого края */
+    height: 100vh; /* Высота на весь экран */
+    width: 250px; /* Задаем ширину */
     background: #6a11cb;
     color: #fff;
     display: flex;
@@ -42,57 +33,14 @@ body {
     align-items: center;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    z-index: 10; /* Убедитесь, что sidebar выше других элементов */
 }
-
-    /* Пример, если нужен логотип в sidebar */
-    .sidebar .logo {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 30px;
-        text-align: center;
-        padding: 10px;
-        border: 2px solid #fff;
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* Меню в sidebar */
-    .sidebar nav ul {
-        list-style: none;
-        padding: 0;
-        width: 100%;
-        margin: 0;
-    }
-
-        .sidebar nav ul li {
-            margin: 10px 0;
-        }
-
-            .sidebar nav ul li a {
-                color: #fff;
-                text-decoration: none;
-                padding: 10px 15px;
-                display: block;
-                border-radius: 5px;
-                transition: background 0.3s ease;
-            }
-
-                .sidebar nav ul li a.active {
-                    background: linear-gradient(135deg, #6a11cb, #2575fc);
-                    color: #fff;
-                    font-weight: bold;
-                }
-
-                .sidebar nav ul li a:hover {
-                    background: rgba(255, 255, 255, 0.1);
-                }
-
-/* Общие элементы меню */
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
 .menu-item {
     padding: 15px;
     text-align: center;
@@ -101,8 +49,9 @@ body {
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.1);
     cursor: pointer;
+    transition: all 0.3s ease;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2)
 }
 
     .menu-item.active {
@@ -116,20 +65,29 @@ body {
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     }
 
-/* Контентная часть */
 .content {
     flex: 1;
-    margin-left: 250px; /* Оставляем место под sidebar */
-    background: #fff; /* Белый фон контента */
-    color: #333; /* Тёмный текст */
-    padding: 30px; /* Единый отступ вокруг */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: #fff;
     border-top-left-radius: 20px;
-    box-sizing: border-box;
-    /* Можно добавить min-height: 100vh, если нужно,
-       чтобы контент растягивался на всю высоту */
+    padding: 30px;
+    margin-left: 250px; /* Оставляем место для sidebar */
+    padding: 20px;
+    color: #333;
+
+    flex-direction: column;
 }
 
-/* Заголовок внутри контента */
+/* Основной контент */
+/*.content {
+    flex: 1;
+    margin-left: 250px;*/ /* Оставляем место для sidebar */
+    /*padding: 20px;
+    display: flex;
+    flex-direction: column;
+}*/
 .content-header {
     text-align: center;
     margin-bottom: 20px;
@@ -152,7 +110,6 @@ body {
         border-radius: 2px;
     }
 
-/* Блок информации о пользователе (в правом верхнем углу контента) */
 .user-info {
     position: absolute;
     top: 20px;
@@ -185,7 +142,9 @@ body {
         transform: scale(1.1);
     }
 
-/* Контейнер для списка обновлений */
+
+
+
 .updates-container {
     display: flex;
     justify-content: space-between;
@@ -207,7 +166,7 @@ body {
         text-align: center;
     }
 
-/* Список обновлений */
+
 .updates-list {
     flex: 1;
     display: flex;
@@ -215,7 +174,12 @@ body {
     gap: 10px;
 }
 
-/* Отдельный элемент списка обновлений */
+.updates-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .update-item {
     padding: 10px 15px;
     background: #fff;
@@ -232,7 +196,6 @@ body {
         transform: translateY(-3px);
     }
 
-/* Кнопки рядом со списком */
 .buttons {
     display: flex;
     flex-direction: column;
@@ -242,7 +205,6 @@ body {
     margin-left: 20px;
 }
 
-/* Общий стиль кнопок */
 .button {
     padding: 12px 20px;
     font-size: 16px;
@@ -253,7 +215,6 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-    /* Кнопка "Добавить" */
     .button.add-button {
         background: #6b3fa0;
         color: #fff;
@@ -264,18 +225,61 @@ body {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-    /* Кнопка "Сохранить" или "Показать ещё" */
     .button.save-button {
         background: #ccc;
         color: #333;
     }
+
 
         .button.save-button:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-/* Кнопка действия внизу (если нужна) */
+.sidebar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+    .sidebar nav ul li {
+        margin: 10px 0;
+    }
+
+        .sidebar nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+            .sidebar nav ul li a.active {
+                background: linear-gradient(135deg, #6a11cb, #2575fc);
+                color: #fff;
+                font-weight: bold;
+            }
+
+            .sidebar nav ul li a:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+/* Кнопка действия */
 .action {
     text-align: center;
 }

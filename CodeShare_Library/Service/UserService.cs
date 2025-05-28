@@ -19,14 +19,15 @@ namespace CodeShare_Library.Service
           
             UrlUsersApi = urlUsersApi;
             _httpClient = new HttpClient();
+            _httpClient.BaseAddress=new Uri(UrlUsersApi);
         } 
 
         public async Task<Users> CreateUser(Users users)
         {
-            url=$"{UrlUsersApi}/ManagementUser";
+            //url=$"{UrlUsersApi}/ManagementUser";
             var content = new StringContent(JsonSerializer.Serialize(users), Encoding.UTF8, "application/json");
 
-            _response =   await  _httpClient.PostAsync(url, content);
+            _response =   await  _httpClient.PostAsync("/ManagementUser", content);
             if (_response.IsSuccessStatusCode)
             {
                  Users Users = await  _response.Content.ReadFromJsonAsync<Users>();
@@ -41,7 +42,7 @@ namespace CodeShare_Library.Service
             try
             {
                 
-                url = $"{UrlUsersApi}/ManagementUser/edit";
+                //url = $"{UrlUsersApi}/ManagementUser/edit";
                 HttpClient httpClient = new HttpClient();
                 if (httpClient.BaseAddress == null)
                 {
@@ -53,7 +54,8 @@ namespace CodeShare_Library.Service
                     httpClient.BaseAddress = new Uri(url);
 
                 }
-                var responseMessage = await httpClient.PutAsJsonAsync(url, users);
+                //var responseMessage = await httpClient.PutAsJsonAsync(url, users);
+                var responseMessage = await _httpClient.PutAsJsonAsync("/ManagementUser/edit", users);
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
@@ -125,7 +127,6 @@ namespace CodeShare_Library.Service
                     httpClient.BaseAddress = new Uri(url);
 
                 }
-                //_httpClient.BaseAddress = new Uri(url);
                 Users Users_responseMessage = await httpClient.GetFromJsonAsync<Users>(url);
 
                 return Users_responseMessage;
@@ -147,7 +148,20 @@ namespace CodeShare_Library.Service
 
                 url = $"{UrlUsersApi}/ManagementUser?Email={Email}&Password={Password}";
                 //_httpClient.BaseAddress = new Uri(url);
-                Users Roles_responseMessage = await _httpClient.GetFromJsonAsync<Users>(url);
+                HttpClient httpClient = new HttpClient();
+
+                if (httpClient.BaseAddress == null)
+                {
+
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                Users Roles_responseMessage = await httpClient.GetFromJsonAsync<Users>(url);
                 return Roles_responseMessage;
 
             }

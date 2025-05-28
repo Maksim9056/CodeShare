@@ -8,7 +8,8 @@
 @inject IFilesService IFilesService
 @inject ILogotype ILogotype
 @* <meta name="viewport" content="width=device-width, initial-scale=1.0">
- *@<title>Логотипы системы</title>
+ *@
+<title>Логотипы системы</title>
 <link rel="stylesheet" href="/css/logos-page.css">
 <!-- Верхняя панель (header) -->
 <div class="top-bar">
@@ -25,7 +26,7 @@
  <Sidebar roles="roles" />
 <!-- Основной контент -->
 <div class="content">
-    @if (view_Logotypes.Count > 1)
+    @if (view_Logotypes.Count > 0)
     {
         
     
@@ -84,48 +85,21 @@
     </div>
     }
 </div>
-@code{
+@code
+{
+    private List<Logotype> Logotypes = new List<Logotype>();
+    private List<Image> Image = new List<Image>();
+    HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
+    private int take = 5;
+    List<View_Logotype> view_Logotypes = new List<View_Logotype>();
+    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
 
-    // @*   @if (!logo.Realtime)
-    //                         {
-    //                             <button class="table-button use" @onclick="() => SetCurrentLogo(logo)">Использовать</button>
-    //                         }
-    //                         <button class="table-button delete" @onclick="() => DeleteLogo(logo)">Удалить</button> *@
-    // @*                                     <img src="@logo.ImageUrl" alt="@logo.Title" />
 
-    //                               else if (logo.ImageBytes != null && logo.ImageBytes.Length > 0)
-    //                             {
-    //                                 <img src="data:image/png;base64,@Convert.ToBase64String(logo.ImageBytes)" alt="@logo.Title" />
-    //                             } *@
+
     public void Create_logo()
     {
         NavigationManager.NavigateTo("/Create_logo");
     }
-
-    Roles roles = new Roles() { RolesId = 1, NameRole = "" };
-    // // Примерная модель логотипа
-    // public class LogoItem
-    // {
-    //     public string Title { get; set; }
-    //     public string ImageUrl { get; set; }    // Хранение URL
-    //     public byte[] ImageBytes { get; set; }  // Хранение картинки в байтах
-    //     public bool IsActive { get; set; }
-    // }
-
-    // // Список логотипов (в реальном проекте - может быть загружен из БД или API)
-    // private List<LogoItem> Logos = new()
-    // {
-    //     new LogoItem { Title = "Логотип 1", ImageUrl = "images/logo1.png", IsActive = true },
-    //     new LogoItem { Title = "Логотип 2", ImageUrl = "images/logo2.png", IsActive = false },
-    //     // Пример хранения картинки в байтах:
-    //     new LogoItem
-    //     {
-    //         Title = "Байтовый логотип",
-    //         ImageBytes = new byte[] { /* ...здесь ваши реальные байты... */ },
-    //         IsActive = false
-    //     }
-    // };
-
 
     private void AddNewLogo()
     {
@@ -138,9 +112,10 @@
     {
         try
         {
-         await Task.Delay(100);
-        }
+            var Log = await ILogotype.Delete(view_Logotype.LogotypeId);
 
+
+        }
         catch (Exception e)
         {
             Log.Error(e.Message);
@@ -166,22 +141,7 @@
             Log.Error(e.Message);
         }
     }
-    // private void SetCurrentLogo(LogoItem logo)
-    // {        NavigationManager.NavigateTo("/Create_logo");
-
-    //     // Сбросить флаг IsActive у всех
-    //     foreach (var l in Logos)
-    //         l.IsActive = false;
-
-    //     // Установить флаг у выбранного
-    //     logo.IsActive = true;
-    // }
-
-    // private void DeleteLogo(LogoItem logo)
-    // {
-    //     // Удалить логотип из списка
-    //     Logos.Remove(logo);
-    // }
+    
     protected override async Task OnInitializedAsync()
     {
         try
@@ -198,10 +158,8 @@
     }
  
 
-    private List<Logotype> Logotypes = new List<Logotype>();
-    private List<Image> Image = new List<Image>();
-    HashSet<long> loadedIds = new HashSet<long>(); // Создаем пустой набор для уникальных Id
-    private int take = 5;
+
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         try
@@ -209,9 +167,10 @@
 
             if (firstRender)
             {
-                await  Load();
+                await  Load(); 
+                StateHasChanged();
+
             }
-            StateHasChanged();
         }
         catch (Exception ex)
         {
@@ -220,7 +179,6 @@
         }
     }
 
-    List<View_Logotype> view_Logotypes = new List<View_Logotype>();
     public async Task Load()
     {
         try
@@ -233,12 +191,12 @@
                 var image = await IFilesService.GetLogotype(logotype.LogotypeId);
 
                 View_Logotype view_Logotype = new View_Logotype() 
-                { Active = logotype.Active, Inactive = logotype.Inactive, 
+                {   Active = logotype.Active, Inactive = logotype.Inactive, 
                     Name_Logotype = logotype.Name_Logotype,
                     Realtime = logotype.Realtime, 
                     LogotypeId = logotype.LogotypeId,
                     ImageId = image.ImageDate ,
-                        Image = image.ImageId
+                    Image = image.ImageId
                 };
 
                 view_Logotypes.Add(view_Logotype);
@@ -268,4 +226,54 @@
         public bool Inactive { get; set; }
         public bool Realtime { get; set; }
     }
+    // @*   @if (!logo.Realtime)
+    //                         {
+    //                             <button class="table-button use" @onclick="() => SetCurrentLogo(logo)">Использовать</button>
+    //                         }
+    //                         <button class="table-button delete" @onclick="() => DeleteLogo(logo)">Удалить</button> *@
+    // @*                                     <img src="@logo.ImageUrl" alt="@logo.Title" />
+
+    //                               else if (logo.ImageBytes != null && logo.ImageBytes.Length > 0)
+    //                             {
+    //                                 <img src="data:image/png;base64,@Convert.ToBase64String(logo.ImageBytes)" alt="@logo.Title" />
+    //                             } *@
+    // // Примерная модель логотипа
+    // public class LogoItem
+    // {
+    //     public string Title { get; set; }
+    //     public string ImageUrl { get; set; }    // Хранение URL
+    //     public byte[] ImageBytes { get; set; }  // Хранение картинки в байтах
+    //     public bool IsActive { get; set; }
+    // }
+
+    // // Список логотипов (в реальном проекте - может быть загружен из БД или API)
+    // private List<LogoItem> Logos = new()
+    // {
+    //     new LogoItem { Title = "Логотип 1", ImageUrl = "images/logo1.png", IsActive = true },
+    //     new LogoItem { Title = "Логотип 2", ImageUrl = "images/logo2.png", IsActive = false },
+    //     // Пример хранения картинки в байтах:
+    //     new LogoItem
+    //     {
+    //         Title = "Байтовый логотип",
+    //         ImageBytes = new byte[] { /* ...здесь ваши реальные байты... */ },
+    //         IsActive = false
+    //     }
+    // };
+
+    // private void SetCurrentLogo(LogoItem logo)
+    // {        NavigationManager.NavigateTo("/Create_logo");
+
+    //     // Сбросить флаг IsActive у всех
+    //     foreach (var l in Logos)
+    //         l.IsActive = false;
+
+    //     // Установить флаг у выбранного
+    //     logo.IsActive = true;
+    // }
+
+    // private void DeleteLogo(LogoItem logo)
+    // {
+    //     // Удалить логотип из списка
+    //     Logos.Remove(logo);
+    // }
 }

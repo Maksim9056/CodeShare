@@ -16,7 +16,7 @@ namespace CodeShare_Library.Abstractions
 
         Task<Logotype> Get();
 
-        Task<Logotype> Delete(Logotype logotype);
+        Task<Logotype> Delete(long logotype);
 
         Task<List<Logotype>> GetList(int take, HashSet<long> loadedIds);
     }

@@ -39,9 +39,27 @@ namespace CodeShareLogotype.Service
             }
         }
 
-        public Task<Logotype> Delete(Logotype logotype)
+
+        public async Task<Logotype> Delete(long logotype)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+              Logotype Logotype = await _CodeShareDB.Logotype.FirstOrDefaultAsync(u => u.LogotypeId == logotype);
+
+
+                _CodeShareDB.Logotype.Remove(Logotype);
+
+
+
+                await _CodeShareDB.SaveChangesAsync();
+                return Logotype;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message},logotype {logotype}");
+                return new Logotype();
+            }
         }
 
         public async Task<Logotype> Get()
@@ -101,8 +119,13 @@ namespace CodeShareLogotype.Service
             try
             {
                 var logotyp = await _CodeShareDB.Logotype.FirstOrDefaultAsync(u => u.Active == true && u.Realtime == true);
-                logotyp.Realtime = false;
-                logotyp.Active = false;
+                if (logotyp != null)
+                {
+
+
+                    logotyp.Realtime = false;
+                    logotyp.Active = false;
+                }
 
                  await _CodeShareDB.SaveChangesAsync();
                 var logotypes = await _CodeShareDB.Logotype.FirstOrDefaultAsync(u => u.LogotypeId == logotype.LogotypeId);

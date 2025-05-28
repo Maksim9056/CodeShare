@@ -16,13 +16,13 @@
 <title>CodeShare - Страница тем</title>
 <div class="container">
     <Sidebar roles="roles" />
-    <h3>Topics</h3>
+ 
     <!-- Основной контент -->
     <main class="content">
         <header class="header">
             <h1>Страница тем</h1>
             <div class="user-settings">
-                <span>Имя</span>
+                <span>@Users.UsersName</span>
                 <div class="logo">
 
                     <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
@@ -75,6 +75,7 @@
     Roles roles = new Roles() { RolesId = 2, NameRole = "" };
     List<CodeSnippets> codeSnippets = new List<CodeSnippets>();
     Image Image = new Image() { };
+    Users Users = new Users() { };
 
     protected override async Task OnInitializedAsync()
     {
@@ -101,7 +102,7 @@
                 var users = await UserService.GetUser(Convert.ToInt64(keyUser));
                 codeSnippets = await ICodeShareCodeSnippets.GetAllCodeSnippets(users.UsersId);
                 Image = await IFilesService.Get(users);
-
+                Users = users;
                 StateHasChanged();
             }
         }

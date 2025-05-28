@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CodeShare_Library.Migrations
 {
     [DbContext(typeof(CodeShareDB))]
-    [Migration("20250211143604_InitialCreat29")]
-    partial class InitialCreat29
+    [Migration("20250224182855_InitialCreatms12122")]
+    partial class InitialCreatms12122
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -189,10 +189,10 @@ namespace CodeShare_Library.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("LogotypeId")
+                    b.Property<long?>("LogotypeId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("ImageId");
@@ -888,14 +888,12 @@ namespace CodeShare_Library.Migrations
                     b.HasOne("CodeShare_Library.Models.Logotype", null)
                         .WithMany()
                         .HasForeignKey("LogotypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CodeShare_Library.Models.Users", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CodeShare_Library.Models.Logotype", b =>

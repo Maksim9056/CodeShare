@@ -54,16 +54,30 @@
         <section class="code-review">
             @if (DELETE == false)
             {
-                
-            
 
-            <div class="code-container">
-                <button @onclick="Comments_management">Настройки темы</button>
 
+
+                <div class="code-container">
+                    <!-- Код и инструменты Добавить проверку Доступно только владельцу-->
+                    @if (codeSnippets != null)
+                        {
+
+
+                        @if (codeSnippets.UserId == Users.UsersId)
+                        {
+
+
+                            <button @onclick="Comments_management">Настройки темы</button>
+                        }
+                    }
+                    <h2>
+                          <span >@codeSnippets.Title</span>
+                            </h2>
                 <div class="code-header">
 
                     @if (language !=null)
-                    {
+                        {
+                           
                     <h2>
                             Код  <span class="language">:@language.Programming_language</span>
                     </h2>

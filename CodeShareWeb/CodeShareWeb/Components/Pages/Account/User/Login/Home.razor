@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 @using Microsoft.Extensions.Caching.Memory
+@using Serilog
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
@@ -33,7 +34,7 @@
             <a href="Reset-password" class="forgot-password">Забыли пароль?</a>
             <div class="button-group">
                 <button type="button" @onclick="Reg" class="register-button">Регистрация</button>
-                <button type="button" @onclick="Log" class="login-button">Войти</button>
+                <button type="button" @onclick="Log_" class="login-button">Войти</button>
             </div>
         </form>
     </div>
@@ -82,6 +83,8 @@
     public void Reg()
     {
         NavigationManager.NavigateTo("/Registration");
+        Log.Information("/Registration");
+
     }
 
 
@@ -102,7 +105,7 @@
     //     } 
     // }
 
-    public async Task Log()
+    public async Task Log_()
     {
         try
         {
@@ -126,23 +129,28 @@
                     // Создаем клеймы
                     // var customAuthStateProvider = AuthStateProvider as CustomAuthenticationStateProvider;
                     // customAuthStateProvider?.SignIn(users.Email, role.NameRole);
-                    authMessage = "Вы успешно вошли в систему!";
                     // MemoryCache.Set("Id", users.UsersId);
                     // MemoryCache.Set("Roles", role.NameRole);
                     // await localStorage.SetItemAsync("Id", users.UsersId);
                     // await localStorage.SetItemAsync("Roles", users.RoleId);
                     switch (users.RoleId)
-                    {
+                    {                    
+
                         case 2:
                             await localStorage.SetItemAsync("CodeUserId", users.UsersId);
                             await localStorage.SetItemAsync("CodeUserRoleId", users.RoleId);
                             NavigationManager.NavigateTo("/Main");
+                            authMessage = "Вы успешно вошли в систему!";
                             break;
 
                         case 1:
-                            NavigationManager.NavigateTo("/Account-settings");
+                            Log.Information("Get  Find / Users {@User}  ", users);
+     
                             await localStorage.SetItemAsync("CodeUserAdminId", users.UsersId);
                             await localStorage.SetItemAsync("CodeUserRoleId", users.RoleId);
+                            NavigationManager.NavigateTo("/Account-settings");
+                     
+                            authMessage = "Вы успешно вошли в систему!";
 
                             break;
                     }
@@ -155,6 +163,8 @@
                     Console.WriteLine("Пользователь не найден или пароль неверный.");
 
                     authMessage = "Пользователь не найден или пароль неверный или пользователя имя.";
+                    Log.Information(authMessage);
+
                     // StateHasChanged();
                     StateHasChanged();
                 }
@@ -164,6 +174,8 @@
                 if (string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(Email))
                 {
                     authMessage = $"Не ввели Email  {Email}  и  Password {Password}.";
+                    Log.Information(authMessage);
+
 
                 }
                 else
@@ -171,11 +183,15 @@
                     if (string.IsNullOrEmpty(Email))
                     {
                         authMessage = "Email не может быть пустым.";
+                        Log.Information(authMessage);
+
                     }
 
                     if (string.IsNullOrEmpty(Password))
                     {
                         authMessage = "Пароль не может быть пустым.";
+                        Log.Information(authMessage);
+
                     }
                 }
 
@@ -184,7 +200,8 @@
         }
         catch(Exception e)
         {
-            
+            Log.Information(e.Message);
+
         }
 
 

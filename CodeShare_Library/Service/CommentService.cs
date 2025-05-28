@@ -112,8 +112,7 @@ namespace CodeShare_Library.Service
                     Comment_responseMessage= comments.ToList();
                 }
 
-                //List<Comment> Roles_responseMessage = await httpClient.GetFromJsonAsync<List<Comment>>(url, loadedIds);
-                //_httpClient.BaseAddress = null;
+      
                 return Comment_responseMessage;
             }
             catch (Exception ex)

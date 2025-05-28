@@ -62,9 +62,41 @@ namespace CodeShare_Library.Service
             }
         }
 
-        public Task<Logotype> Delete(Logotype logotype)
-        {
-            throw new NotImplementedException();
+        public async Task<Logotype> Delete(long logotype)
+        {  
+
+            try
+            {
+                Logotype logotype1 = new Logotype();
+
+                url = $"{UrlLogotypeServiceApi}/Logotype/delete{logotype}";
+                HttpClient httpClient = new HttpClient();
+                if (httpClient.BaseAddress == null)
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+                else
+                {
+                    httpClient.BaseAddress = new Uri(url);
+
+                }
+
+                var responseMessage = await httpClient.DeleteAsync(url);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var User_Answer = await responseMessage.Content.ReadFromJsonAsync<Logotype>();
+                    logotype1 = User_Answer;
+                }
+
+
+                return logotype1;
+            }
+            catch (Exception ex)
+            {
+                return new Logotype() { };
+            }
         }
 
         public async  Task<Logotype> Update(Logotype logotype)

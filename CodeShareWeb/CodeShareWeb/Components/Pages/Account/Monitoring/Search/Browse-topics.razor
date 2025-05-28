@@ -110,33 +110,16 @@
             {
 
                 var keyUser = await localStorage.GetItemAsStringAsync("CodeUserId");
+                Log.Information("Get  Find browse-topics User  localStorage ", keyUser);
+
                 var users = await UserService.GetUser(Convert.ToInt64(keyUser));
+                Log.Information("Get  Find browse-topics User {@User}  ", users);
+
                 // Log.Information($"Получили{users.UsersName} значение теме" + users.UsersId);
                 Users = users;
-                // var key = await localStorage.GetItemAsStringAsync("CodeShareId");
-                // Console.WriteLine(key);
-                // Log.Information($"Пользователь{users.UsersName}  CodeShareId  {codeSnippets.CodeSnippetsId}    {codeSnippets.Title} {codeSnippets.Programming_language}");
-                // codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
-
-                // //(key);
-                // var lines = codeSnippets.Code.Split('\n');
-                // for (int i = 0; i < lines.Length; i++)
-                // {
-                //     CodeLines.Add(new CodeLine
-                //         {
-                //             LineNumber = i + 1,
-                //             Content = lines[i]
-                //         });
-                // }
-                // language = new Language();
-                // language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
-                // Log.Information($"Пользователь{users.UsersName}  CodeShareId {codeSnippets.CodeSnippetsId}   {codeSnippets.Title} {language.Programming_language}");
-                // Comment.UserId = users.UsersId;
-                // Comment.SnippetsId = codeSnippets.CodeSnippetsId;
-                // Rate = await IRateService.GetListRates();
-                // // ICommentService.GetListComment(key);
-                // await LoadMoreComments();
+  
                 Image = await IFilesService.Get(users);
+                Log.Information("Get  Find browse-topics Image {@Imag}  ", Image);
 
                 await   Find();
 
@@ -172,9 +155,13 @@
 
                 foreach (var CodeSnippets_new in _new_CodeSnippets)
                 {
+                    Log.Information("Get  Find browse-topics Topic  {@CodeSnippet}  ", CodeSnippets_new);
+
                     
                     var language = new Language();
                     language = await ILanguage.GetByIdAsync(CodeSnippets_new.Programming_language);
+                    Log.Information("Get  Find browse-topics Language {@Languag}  ", language);
+
                     CodeSnippetsView codeSnippetsView = new CodeSnippetsView(CodeSnippets_new, language);
                     CodeSnippetsViewS.Add(codeSnippetsView);
                     // CodeSnippets.Add(CodeSnippets_new);
@@ -197,8 +184,13 @@
     public async Task Comments_management(long CodeShare)
     {
         await localStorage.SetItemAsync("CodeShareId", CodeShare);
+        Log.Information($"Save browse-topics localStorage Topic {CodeShare}  ");
+
         NavigationManager.NavigateTo("/review-code");
+        Log.Information($"NavigateTo browse-topics localStorage Topic {CodeShare}  ");
+
     }
+
     public class CodeSnippetsView
     {
 
@@ -229,5 +221,27 @@
 
     }
 
+    // var key = await localStorage.GetItemAsStringAsync("CodeShareId");
+    // Console.WriteLine(key);
+    // Log.Information($"Пользователь{users.UsersName}  CodeShareId  {codeSnippets.CodeSnippetsId}    {codeSnippets.Title} {codeSnippets.Programming_language}");
+    // codeSnippets = await ICodeShareCodeSnippets.GetCodeSnippets(Convert.ToInt64(key));
 
+    // //(key);
+    // var lines = codeSnippets.Code.Split('\n');
+    // for (int i = 0; i < lines.Length; i++)
+    // {
+    //     CodeLines.Add(new CodeLine
+    //         {
+    //             LineNumber = i + 1,
+    //             Content = lines[i]
+    //         });
+    // }
+    // language = new Language();
+    // language = await ILanguage.GetByIdAsync(codeSnippets.Programming_language);
+    // Log.Information($"Пользователь{users.UsersName}  CodeShareId {codeSnippets.CodeSnippetsId}   {codeSnippets.Title} {language.Programming_language}");
+    // Comment.UserId = users.UsersId;
+    // Comment.SnippetsId = codeSnippets.CodeSnippetsId;
+    // Rate = await IRateService.GetListRates();
+    // // ICommentService.GetListComment(key);
+    // await LoadMoreComments();
 }

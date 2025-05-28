@@ -64,9 +64,7 @@ namespace CodeShare_Library.Service
                 url = $"{UrlRolesApi}/CodeShareRoles/roles/user";
                 _httpClient.BaseAddress = new Uri(url);
                 Roles Roles_responseMessage =  await  _httpClient.GetFromJsonAsync<Roles>(url);
-                //_response.EnsureSuccessStatusCode();
-                //var jsonResponse =await  _response.Content.ReadAsStringAsync();
-                ////  /CodeShareRoles/roles/user
+
                 return Roles_responseMessage;
             }
             catch (Exception ex)

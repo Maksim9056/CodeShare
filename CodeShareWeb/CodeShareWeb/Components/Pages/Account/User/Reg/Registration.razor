@@ -1,6 +1,7 @@
 ﻿@page "/Registration"
 @using CodeShare_Library.Abstractions
 @using CodeShare_Library.Models
+@using Serilog
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @inject IRolesProvider RolesProvider
@@ -62,6 +63,7 @@
         {
 
             Roles = await RolesProvider.GetUser();
+            Log.Information("Roles   /Registration Roles {@Role}  ", Roles);
 
         }
         catch(Exception e)
@@ -82,6 +84,8 @@
 
     public void Calback()
     {
+        Log.Information("Calback /Registration the urls / ");
+
         NavigationManager.NavigateTo("/");
     }
 
@@ -93,12 +97,16 @@
         Users users = await IUserServise.CreateUser(user);
         if (!string.IsNullOrEmpty(users.Email))
         {
+            Log.Information("Registr   /Registration Users {@User}  ", users);
+
             NavigationManager.NavigateTo("/");
 
         }
         else
         {
-          erorr = "Ошибка регистрации";
+            erorr = "Ошибка регистрации";
+            Log.Information(erorr);
+
 
         }
     }

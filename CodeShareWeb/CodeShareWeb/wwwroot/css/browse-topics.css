@@ -183,8 +183,11 @@ body {
 
 .topic-language {
     font-size: 14px;
-    color: #666;
+    color: black;
+    
 }
+
+
 
 .go-to-button {
     padding: 8px 15px;
