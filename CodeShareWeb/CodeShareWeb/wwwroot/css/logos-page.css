@@ -1,5 +1,63 @@
 ﻿/* =============== БАЗОВЫЕ СТИЛИ =============== */
 
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #6B3FA0;
+    padding: 16px 24px;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    max-width: 100%;
+    padding-left: 0; /* убрать внутренний отступ */
+}
+
+
+    .top-bar h1 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+.top-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/*.add-button {
+    background-color: white;
+    color: #6B3FA0;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+*/
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-image: url('Logo.png');
+    background-size: cover;
+    background-position: center;
+    border: 2px solid white;
+}
+
+
+.header-left h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -20,7 +78,7 @@ body {
 
 /* =============== ШАПКА (TOP BAR) =============== */
 
-.top-bar {
+/*.top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,10 +106,10 @@ body {
     height: 40px;
     border: 2px solid #fff;
     border-radius: 50%;
-    background-image: url('Logo.png'); /* Заглушка, поменяйте под себя */
-    background-size: cover;
+    background-image: url('Logo.png');*/ /* Заглушка, поменяйте под себя */
+    /*background-size: cover;
     background-position: center;
-}
+}*/
 
 .add-button {
     padding: 10px 20px;
@@ -64,9 +122,9 @@ body {
     transition: background 0.3s;
 }
 
-    .add-button:hover {
+    /*.add-button:hover {
         background: #59328A;
-    }
+    }*/
 
 /* =============== БОКОВАЯ ПАНЕЛЬ (SIDEBAR) =============== */
 
@@ -275,5 +333,12 @@ body {
     .table-button {
         font-size: 12px;
         padding: 8px 12px;
+    }
+}
+@media (max-width: 768px) {
+    .page-header {
+        margin-left: 0;
+        border-radius: 0;
+        text-align: center;
     }
 }

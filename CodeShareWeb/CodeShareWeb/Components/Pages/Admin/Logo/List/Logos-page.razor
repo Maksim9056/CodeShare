@@ -12,20 +12,23 @@
 <title>Логотипы системы</title>
 <link rel="stylesheet" href="/css/logos-page.css">
 <!-- Верхняя панель (header) -->
-<div class="top-bar">
-    <div class="top-bar-left">
-        <h1 class="content-title">Логотипы системы</h1>
-    </div>
 
-    <div class="top-bar-right">
+@* <main class="container"> 
+ *@
+<div class="content">
+
+<header class="top-header">
+    <div class="header-left">
+        <h1>Логотипы системы</h1>
+    </div>
+    <div class="header-actions">
         <button class="add-button" @onclick="AddNewLogo">Добавить логотип</button>
         <div class="user-avatar"></div>
     </div>
-</div>
+</header>
 
  <Sidebar roles="roles" />
 <!-- Основной контент -->
-<div class="content">
     @if (view_Logotypes.Count > 0)
     {
         
@@ -85,6 +88,9 @@
     </div>
     }
 </div>
+
+@* </main>
+ *@
 @code
 {
     private List<Logotype> Logotypes = new List<Logotype>();
