@@ -43,7 +43,7 @@
             <div class="topics-list">
                 @foreach (var Code in codeSnippets)
                 {
-                    <li class="topic" data-latest="true" @onclick="() => Comments_management(Code.CodeSnippetsId)">
+                    <div class="topic" data-latest="true" @onclick="() => Comments_management(Code.CodeSnippetsId)">
                         @*                         <a href="/review-code">
                     *@
                         <div class="topic-title"> @Code.Title</div>
@@ -51,7 +51,7 @@
 
                         @*   </a> *@
 
-                    </li>
+                    </div>
                 }
 
             </div>

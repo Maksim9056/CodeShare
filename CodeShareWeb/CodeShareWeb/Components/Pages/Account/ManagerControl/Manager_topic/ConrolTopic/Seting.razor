@@ -50,14 +50,16 @@
                 <div class="comments-settings">
                     <h3>Настройки для комментариев</h3>
                 <button class="button hide" @onclick="Comments_management">Скрывать</button>
-                <button class="button block" @onclick="Block_Comments_management">Заблокировать  </button>
-                    <button class="button ban" @onclick="Private_Commetr">Запретить </button>
+@*                 <button class="button block" @onclick="Block_Comments_management">Заблокировать  </button>
+ *@                   
+             <button class="button ban" @onclick="Private_Commetr">Запретить </button>
             <button class="button allow" @onclick="permission_Commetr" >Разрешить</button>
         </div>
 
         <div class="actions">
-            <button class="button delete">Удалить</button>
-                <button class="button delete-theme" @onclick="Delete">Удалить тему</button>
+@*             <button class="button delete">Удалить</button>
+ *@               
+ <button class="button delete-theme" @onclick="Delete">Удалить тему</button>
         </div>
 
         <div class="save">

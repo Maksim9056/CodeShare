@@ -22,11 +22,12 @@
 <link rel="stylesheet" href="/css/review-code.css">
 <style>
     .code-line {
-    cursor: pointer;
-    padding: 5px;
+        cursor: pointer;
+        padding: 5px;
     }
+
     .selected {
-    background-color: lightblue;
+        background-color: lightblue;
     }
 </style>
 
@@ -38,16 +39,14 @@
         <header class="header">
             @if (Users.UsersName != null)
             {
-
-
                 <h1>Проверка кода и оценка</h1>
                 <div class="user-settings">
                     <span>@Users.UsersName</span>
-                <div class="logo">
+                    <div class="logo">
 
-                    <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
-                </div>                <a href="/User-profile">Настройки</a>
-            </div>
+                        <img src="data:image/png;base64,@Image.ImageDate" alt="Аватар пользователя" class="logosy" />
+                    </div>                <a href="/User-profile">Настройки</a>
+                </div>
             }
         </header>
         <!-- Код и инструменты -->
@@ -60,134 +59,132 @@
                 <div class="code-container">
                     <!-- Код и инструменты Добавить проверку Доступно только владельцу-->
                     @if (codeSnippets != null)
-                        {
-
-
+                    {
                         @if (codeSnippets.UserId == Users.UsersId)
                         {
-
-
                             <button @onclick="Comments_management">Настройки темы</button>
                         }
                     }
                     <h2>
-                          <span >@codeSnippets.Title</span>
-                            </h2>
-                <div class="code-header">
-
-                    @if (language !=null)
-                        {
-                           
-                    <h2>
-                            Код  <span class="language">:@language.Programming_language</span>
+                        <span>@codeSnippets.Title</span>
                     </h2>
-                    }
-                </div>
-                <div class="code-section" id="code-display">
-                    @foreach (var line in CodeLines)
-                    {
-                        <div class="code-line @(IsSelected(line) ? "selected" : "")"
-                        @onclick="() => OnLineClick(line)">
-                            <span class="line-number">@line.LineNumber:</span>
-                            <span class="line-content">@line.Content</span>
-                        </div>
-                    }
+                    <div class="code-header">
 
-                </div>
+                        @if (language != null)
+                        {
 
-            </div>
+                            <h2>
+                                Код  <span class="language">:@language.Programming_language</span>
+                            </h2>
+                        }
+                    </div>
+                    <div class="code-section" id="code-display">
+                        @foreach (var line in CodeLines)
+                        {
+                            <div class="code-line @(IsSelected(line) ? "selected" : "")"
+                                 @onclick="() => OnLineClick(line)">
+                                <span class="line-number">@line.LineNumber:</span>
+                                <span class="line-content">@line.Content</span>
+                            </div>
+                        }
 
-        @if (setting.Block == false)
-        {
-                    
-                
-                    
-            <!-- Форма комментариев -->
-            <div class="comments-section">
-                <h3>Оставьте комментарий</h3>
-                <form  method="POST">
-                    <div class="form-group">
-                        <label for="selected-range">Выбранный диапазон :</label>
-                        <input type="text" value="@GetSelectedRange()" id="selected-range" readonly placeholder="Нажмите на линии, чтобы выбрать диапозон" />
                     </div>
 
-                    <div class="form-group">
-                        <textarea id="comment" @bind="Comment_Text" name="comment" rows="4" placeholder="Напишите свой комментарий здесь..."></textarea>
-                    </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="rating">Оцените этот код:</label>
-                        Rate
-                        <select id="rating" name="rating" @onchange="OnLanguageChanged">
-                           @foreach (var line in Rate)
-                           {
-                                <option value="@line.RateId">@line.Name_Rate</option>
-                           
-                           }
+                @if (setting.Block == false)
+                {
+
+
+
+                    <!-- Форма комментариев -->
+                    <div class="comments-section">
+                        <h3>Оставьте комментарий</h3>
+                        <form method="POST">
+                            <div class="form-group">
+                                <label for="selected-range">Выбранный диапазон :</label>
+                                <input type="text" value="@GetSelectedRange()" id="selected-range" readonly placeholder="Нажмите на линии, чтобы выбрать диапозон" />
+                            </div>
+
+                            <div class="form-group">
+                                <textarea id="comment" @bind="Comment_Text" name="comment" rows="4" placeholder="Напишите свой комментарий здесь..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rating">Оцените этот код:</label>
+
+                                <select id="rating" name="rating" @onchange="OnLanguageChanged">
+                                    <option></option>
+
+                                    @foreach (var line in Rate)
+                                    {
+                                        <option value="@line.RateId">@line.Name_Rate</option>
+
+                                    }
                                 </select>
+                            </div>
+
+                            <div class="form-buttons">
+                                <button type="button" @onclick="Create_Comment" class="save-button">Сохранить</button>
+                                <button type="button" class="cancel-button" @onclick="GetSelected">Отменить выбранный диапазон</button>
+                            </div>
+                        </form>
                     </div>
 
-                    <div class="form-buttons">
-                        <button type="button" @onclick="Create_Comment" class="save-button">Сохранить</button>
-                        <button type="button" class="cancel-button" @onclick="GetSelected">Отменить выбранный диапазон</button>
+                    <!-- Фильтры -->
+                    <div class="filters">
+                        <h3>Фильтры</h3>
+                        <div class="filter-group">
+                            <label for="filter-rating">Фильтр по рейтингу:</label>
+                            <select id="filter-rating">
+                                <option value="all">Все</option>
+                                <option value="excellent">Отлично</option>
+                                <option value="good">Хорошо</option>
+                                <option value="average">Средне</option>
+                                <option value="bad">Плохо</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-range">Фильтр по диапазону:</label>
+                            <input type="text" id="filter-range" placeholder="Введите диапазон, например, 1-3">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-user">Фильтр по пользователю:</label>
+                            <input type="text" id="filter-user" placeholder="Введите имя пользователя">
+                        </div>
                     </div>
-                </form>
-            </div>
 
-            <!-- Фильтры -->
-            <div class="filters">
-                <h3>Фильтры</h3>
-                <div class="filter-group">
-                    <label for="filter-rating">Фильтр по рейтингу:</label>
-                    <select id="filter-rating">
-                        <option value="all">Все</option>
-                        <option value="excellent">Отлично</option>
-                        <option value="good">Хорошо</option>
-                        <option value="average">Средне</option>
-                        <option value="bad">Плохо</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="filter-range">Фильтр по диапазону:</label>
-                    <input type="text" id="filter-range" placeholder="Введите диапазон, например, 1-3">
-                </div>
-                <div class="filter-group">
-                    <label for="filter-user">Фильтр по пользователю:</label>
-                    <input type="text" id="filter-user" placeholder="Введите имя пользователя">
-                </div>
-            </div>
-
-            <!-- Комментарии -->
-            <div class="comments">
-                <h3>Комментарии</h3>
+                    <!-- Комментарии -->
+                    <div class="comments">
+                        <h3>Комментарии</h3>
                         <ul class="comments-list">
                             @foreach (var comment in Comments)
-                    {
+                            {
 
-                                   
 
-                      <div class="comment-body">
+
+                                <div class="comment-body">
                                     <p>@comment.Comment_Text</p>
                                     <p>@comment.Selected_Range</p>
                                     <p>@comment.UserId</p>
                                     <p>@comment.CreateAt</p>
-                      </div>
+                                </div>
 
-                    }
-                </ul>
-                <button @onclick="LoadMoreComments" >
-                    @(isLoading ? "Загрузка..." : hasMore ? "Показать ещё" : "Больше комментариев нет")
-                </button>
-                </div>
+                            }
+                        </ul>
+                        <button @onclick="LoadMoreComments">
+                            @(isLoading ? "Загрузка..." : hasMore ? "Показать ещё" : "Больше комментариев нет")
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <p>Тема коментарии отключены.</p>
+                }
             }
             else
             {
-                <p>Тема коментарии отключены.</p>
-            }
-            }
-            else
-            {
-            <p>Тема  удалили и коментарии!Перейди на другую тему.</p>
+                <p>Тема  удалили и коментарии!Перейди на другую тему.</p>
             }
         </section>
     </main>

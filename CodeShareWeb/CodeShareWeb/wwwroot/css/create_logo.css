@@ -1,20 +1,31 @@
-﻿/* Общие стили */
+﻿/* Общие стили ю*/
 body {
     margin: 0;
+    padding: 0;
     font-family: 'Poppins', sans-serif;
-    display: flex;
-    height: 100vh;
+    min-height: 100vh; /* Вместо display: flex используем min-height */
     background: linear-gradient(135deg, #6b3fa0, #2a61d8);
     color: #fff;
 }
 
-.container {
+
+/*.container {
     display: flex;
     margin: 0;
     padding: 0;
     width: 100%;
+}*/
+.container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh; /* Чтобы контейнер растягивался на всю высоту экрана */
 }
-
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
 .logosy {
     width: 30px;
     background-size: contain;

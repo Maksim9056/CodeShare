@@ -45,8 +45,18 @@
     background-position: center;
     border: 2px solid white;
 }
-
-
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
 .header-left h1 {
     font-size: 24px;
     margin: 0;
@@ -111,6 +121,33 @@ body {
     background-position: center;
 }*/
 
+.logosy {
+    width: 30px;
+    background-size: contain;
+    height: 30px;
+}
+
+.logos {
+    width: 100px;
+    height: auto;
+    background-size: contain;
+    height: 100px;
+}
+
+.sidebar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .add-button {
     padding: 10px 20px;
     font-size: 16px;
@@ -148,6 +185,75 @@ body {
         padding: 0;
         margin: 0;
         width: 100%;
+    }
+
+        .sidebar nav ul li {
+            margin: 10px 0;
+        }
+
+            .sidebar nav ul li a {
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 15px;
+                display: block;
+                border-radius: 5px;
+                transition: background 0.3s ease;
+            }
+
+                .sidebar nav ul li a.active {
+                    background: linear-gradient(135deg, #6a11cb, #2575fc);
+                    color: #fff;
+                    font-weight: bold;
+                }
+
+                .sidebar nav ul li a:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                }
+.logos {
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background: #6a11cb;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+    /* Пример, если нужен логотип в sidebar */
+    .sidebar .logo {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-align: center;
+        padding: 10px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Меню в sidebar */
+    .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+        width: 100%;
+        margin: 0;
     }
 
         .sidebar nav ul li {

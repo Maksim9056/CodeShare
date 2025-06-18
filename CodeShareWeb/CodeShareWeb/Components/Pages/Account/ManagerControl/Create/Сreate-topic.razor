@@ -164,6 +164,7 @@
             codeSnippets.UserId = Users.UsersId;
             // codeSnippets.IsAdmin;
             var topic = await ICodeShareCodeSnippets.Create(codeSnippets);
+            await localStorage.SetItemAsync("CodeShareId", topic.CodeSnippetsId);
 
             // Setting
             NavigationManager.NavigateTo("/review-code");
